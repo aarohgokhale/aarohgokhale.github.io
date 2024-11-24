@@ -30,3 +30,5 @@ theme = 'PaperMod'
   taxonomy = ['html', 'rss']
   term = ['html', 'rss']
 
+[params]
+  math = true

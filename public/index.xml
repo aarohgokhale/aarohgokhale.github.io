@@ -6,14 +6,21 @@
     <description>Recent content on Aaroh&#39;s Blog</description>
     <generator>Hugo -- 0.139.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 23 Nov 2024 22:04:12 -0600</lastBuildDate>
+    <lastBuildDate>Sun, 24 Nov 2024 00:11:15 -0600</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Missing Out on The Old Internet</title>
+      <link>http://localhost:1313/ramblings/the-old-internet/</link>
+      <pubDate>Sun, 24 Nov 2024 00:11:15 -0600</pubDate>
+      <guid>http://localhost:1313/ramblings/the-old-internet/</guid>
+      <description>One of the reasons I decided to start writing a blog this year was because I was inspired by an old blog I found while watching Code Geass all the way back in December last year. I wanted to see other people&amp;#39;s opinions on Code Geass, and I stumbled upon a seemingly &lt;em&gt;ancient&lt;/em&gt; blog that chronicled the release of every new episode of CG while it was &lt;em&gt;airing&lt;/em&gt;. Something about the blog really pulled me in. I read some other posts on that blog from that era—mostly about releases of new techonology—and it transported me to a bygone era of the internet.</description>
+    </item>
     <item>
       <title>A Review of Org Roam and Org Roam UI</title>
       <link>http://localhost:1313/ramblings/org-roam-review/</link>
       <pubDate>Sat, 23 Nov 2024 22:04:12 -0600</pubDate>
       <guid>http://localhost:1313/ramblings/org-roam-review/</guid>
-      <description>Here is my review of the org roam and org roam ui packages.</description>
+      <description>I have been using the &lt;a href=&#34;https://www.orgroam.com/&#34;&gt;Org Roam&lt;/a&gt; package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the &lt;a href=&#34;https://en.wikipedia.org/wiki/Zettelkasten&#34;&gt;zettelkasten&lt;/a&gt; philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won&amp;#39;t go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.</description>
     </item>
     <item>
       <title>The Pernicious Gum</title>

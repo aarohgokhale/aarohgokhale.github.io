@@ -1,7 +1,7 @@
 ---
 title: "A Review of Org Roam and Org Roam UI"
 date: 2024-11-23T22:04:12-06:00
-summary: Here is my review of the org roam and org roam ui packages.
+summary: I have been using the [[https://www.orgroam.com/][Org Roam]] package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the [[https://en.wikipedia.org/wiki/Zettelkasten][zettelkasten]] philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won't go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.
 ---
 
 I have been using the [[https://www.orgroam.com/][Org Roam]] package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the [[https://en.wikipedia.org/wiki/Zettelkasten][zettelkasten]] philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won't go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.

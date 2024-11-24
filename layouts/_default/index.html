@@ -7,6 +7,10 @@
 
 {{ .Summary | truncate 200 }}
 
+<head>
+  <link rel="stylesheet" type="text/css" href="/css/custom.css">
+</head>
+
 <div class="main-content">
     <header style="text-align: center;">
         <h1>{{ .Title }}</h1>
@@ -43,11 +47,11 @@
         <br>
         <ul style="list-style-type:none">
             {{ range $recentPosts }}
-            <li class="post-preview">
+            <li class="post-preview" onclick="location.href='{{ .Permalink }}'">
                 <a href="{{ .Permalink }}">
                     <h3 style="text-decoration: underline">{{ .Title }}</h3>
                 </a>
-                <p>{{ .Summary }}</p>
+                <p class="unselectable">{{ .Summary }}</p>
                 <br>
             </li>
             {{ end }}

@@ -1,7 +1,6 @@
 /* custom.css */
 
 /* Style the recent posts section */
-
 .recent-posts {
   margin-top: 30px;
 }
@@ -11,22 +10,23 @@
   margin-bottom: 15px;
 }
 
+/* Style the list and individual post previews */
 .recent-posts ul {
   list-style-type: none;
   padding: 0;
 }
 
 .recent-posts li.post-preview {
-  background-color: #f9f9f9; 
-  border: 1px solid #ddd;    
-  border-radius: 8px;        
-  margin-bottom: 20px;       
-  padding: 20px;             
-  transition: background-color 0.3s ease; 
+  background-color: #f9f9f9; /* Light background for each post */
+  border: 1px solid #ddd;   /* Add a border around each post */
+  border-radius: 8px;        /* Optional: rounded corners */
+  margin-bottom: 20px;       /* Space between posts */
+  padding: 20px;             /* Padding inside each box */
+  transition: background-color 0.3s ease; /* Add smooth transition on hover */
 }
 
 .recent-posts li.post-preview:hover {
-  background-color: #efefef; 
+  background-color: #efefef; /* Change background on hover */
 }
 
 .recent-posts li.post-preview h3 {
@@ -34,15 +34,54 @@
   margin: 0;
 }
 
+
+.dark .recent-posts li.post-preview {
+    background-color: #2e2e33; 
+    border: #2e2e33;   /* Add a border around each post */
+    border-radius: 8px;        /* Optional: rounded corners */
+    margin-bottom: 20px;       /* Space between posts */
+    padding: 20px;             /* Padding inside each box */
+    transition: background-color 0.3s ease; /* Add smooth transition on hover */
+    cursor: pointer;
+}
+
+.dark .recent-posts li.post-preview:hover {
+  background-color: #1e1e22; /* Change background on hover */
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.dark .recent-posts li.post-preview p {
+  font-size: 1em;
+  color: rgb(155, 156, 157);
+  line-height: 1.5; /* Increase line height for better readability */
+/*  max-height: 100px; /* Limit the height of the excerpt to 100px */
+  overflow: hidden; /* Hide any content that overflows */
+  text-overflow: ellipsis; /* Add ellipsis if text overflows */
+}
+
+.dark .recent-posts li.post-preview a {
+  color: #FFFFFF;
+  text-decoration: underline;
+}
+
 .recent-posts li.post-preview p {
   font-size: 1em;
   color: #666;
-  line-height: 1.5; 
-  max-height: 100px; 
-  overflow: hidden; 
-  text-overflow: ellipsis;
+  line-height: 1.5; /* Increase line height for better readability */
+/*  max-height: 100px; /* Limit the height of the excerpt to 100px */
+  overflow: hidden; /* Hide any content that overflows */
+  text-overflow: ellipsis; /* Add ellipsis if text overflows */
 }
 
+/* Optional: Style the links */
 .recent-posts li.post-preview a {
   color: #333;
   text-decoration: none;

@@ -1,0 +1,23 @@
+baseURL = 'https://aaroh.github.io/'
+languageCode = 'en-us'
+title = "Aaroh's Blog"
+theme = 'PaperMod'
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 1
+
+  [[menu.main]]
+    identifier = "blog"
+    name = "Ramblings"
+    url = "/ramblings/"
+    weight = 2
+
+  [[menu.main]]
+    identifier = "short-stories"
+    name = "Short Stories"
+    url = "/short-stories/"
+    weight = 3

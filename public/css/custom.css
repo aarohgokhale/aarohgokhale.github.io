@@ -1,0 +1,53 @@
+/* custom.css */
+
+/* Style the recent posts section */
+
+.recent-posts {
+  margin-top: 30px;
+}
+
+.recent-posts h2 {
+  font-size: 2em;
+  margin-bottom: 15px;
+}
+
+.recent-posts ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recent-posts li.post-preview {
+  background-color: #f9f9f9; 
+  border: 1px solid #ddd;    
+  border-radius: 8px;        
+  margin-bottom: 20px;       
+  padding: 20px;             
+  transition: background-color 0.3s ease; 
+}
+
+.recent-posts li.post-preview:hover {
+  background-color: #efefef; 
+}
+
+.recent-posts li.post-preview h3 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.recent-posts li.post-preview p {
+  font-size: 1em;
+  color: #666;
+  line-height: 1.5; 
+  max-height: 100px; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+.recent-posts li.post-preview a {
+  color: #333;
+  text-decoration: none;
+}
+
+.recent-posts li.post-preview a:hover {
+  text-decoration: underline;
+}

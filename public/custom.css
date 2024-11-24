@@ -1,0 +1,54 @@
+/* custom.css */
+
+/* Style the recent posts section */
+.recent-posts {
+  margin-top: 30px;
+}
+
+.recent-posts h2 {
+  font-size: 2em;
+  margin-bottom: 15px;
+}
+
+/* Style the list and individual post previews */
+.recent-posts ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.recent-posts li.post-preview {
+  background-color: #f9f9f9; /* Light background for each post */
+  border: 1px solid #ddd;   /* Add a border around each post */
+  border-radius: 8px;        /* Optional: rounded corners */
+  margin-bottom: 20px;       /* Space between posts */
+  padding: 20px;             /* Padding inside each box */
+  transition: background-color 0.3s ease; /* Add smooth transition on hover */
+}
+
+.recent-posts li.post-preview:hover {
+  background-color: #efefef; /* Change background on hover */
+}
+
+.recent-posts li.post-preview h3 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.recent-posts li.post-preview p {
+  font-size: 1em;
+  color: #666;
+  line-height: 1.5; /* Increase line height for better readability */
+  max-height: 100px; /* Limit the height of the excerpt to 100px */
+  overflow: hidden; /* Hide any content that overflows */
+  text-overflow: ellipsis; /* Add ellipsis if text overflows */
+}
+
+/* Optional: Style the links */
+.recent-posts li.post-preview a {
+  color: #333;
+  text-decoration: none;
+}
+
+.recent-posts li.post-preview a:hover {
+  text-decoration: underline;
+}

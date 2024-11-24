@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Aaroh&#39;s Blog</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Aaroh&#39;s Blog</description>
+    <generator>Hugo -- 0.139.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Nov 2024 12:24:20 -0600</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Pernicious Gum</title>
+      <link>http://localhost:1313/short-stories/the-pernicious-gum/</link>
+      <pubDate>Tue, 19 Nov 2024 12:24:20 -0600</pubDate>
+      <guid>http://localhost:1313/short-stories/the-pernicious-gum/</guid>
+      <description>As soon as he got a break from his studying, he walked over to the closest grocery store and started looking for gum. Something was off. Marary usually went for fruit or mint flavored gum that wasn&amp;#39;t too sweet. Today, however, no matter where he looked, all he could see was sour gum. He scanned every shelf in the gum section to no avail. Being somewhat pressed for time, Marary grabbed a pack of sour gum without looking, thinking that he would come back later to stock up on more acceptable flavors.</description>
+    </item>
+    <item>
+      <title>My Utter Disappointment with Trigun</title>
+      <link>http://localhost:1313/ramblings/trigun-review/</link>
+      <pubDate>Tue, 19 Nov 2024 12:03:11 -0600</pubDate>
+      <guid>http://localhost:1313/ramblings/trigun-review/</guid>
+      <description>When you listen to the &lt;em&gt;Trigun&lt;/em&gt; OP, you are electrified. The energetic guitar riffs, combined with the cool visuals that make the main character look like a badass, really got me pumped for the show ahead of me. Add to that the near-legendary reputation &lt;em&gt;Trigun&lt;/em&gt; has garnered on internet Anime spaces, and you have a show that may only live up to its expectations through incredible quality and depth. &lt;em&gt;Trigun&lt;/em&gt; is neither of those. In fact, it&amp;#39;s not even a good show.</description>
+    </item>
+  </channel>
+</rss>

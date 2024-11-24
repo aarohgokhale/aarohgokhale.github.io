@@ -1,0 +1,43 @@
+{{ define "main" }}
+
+{{ $ramblingPosts := (where .Site.RegularPages "Section" "ramblings") }}
+{{ $storyPosts := (where .Site.RegularPages "Section" "short-stories") }}
+{{ $allPosts := (union $ramblingPosts $storyPosts) }}
+{{ $recentPosts := first 5 $allPosts }}
+
+{{ .Summary | truncate 200 }}
+
+<div class="main-content">
+    <header style="text-align: center;">
+        <h1>{{ .Title }}</h1>
+        <p>{{ .Content }}</p>
+    </header>
+    
+    <br>
+
+    <section>
+        <h2></h2>
+        <ul>
+            Welcome to my Blog. Here I post my short stories, reviews of various types of media, articles, rants, and whatever I feel like writing about, including about Technology and Mathematics.
+        </ul>
+    </section>
+
+    <br>
+
+    <section class="recent-posts">
+        <h2>Recent Posts</h2>
+        <br>
+        <ul style="list-style-type:none">
+            {{ range $recentPosts }}
+            <li class="post-preview">
+                <a href="{{ .Permalink }}">
+                    <h3>{{ .Title }}</h3>
+                </a>
+                <p>{{ .Summary }}</p>
+                <br>
+            </li>
+            {{ end }}
+        </ul>
+    </section>
+</div>
+{{ end }}

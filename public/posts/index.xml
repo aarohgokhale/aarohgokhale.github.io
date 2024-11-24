@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on My New Hugo Site</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on My New Hugo Site</description>
+    <generator>Hugo -- 0.139.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Nov 2024 12:24:20 -0600</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Pernicious Gum</title>
+      <link>http://localhost:1313/posts/the-pernicious-gum/</link>
+      <pubDate>Tue, 19 Nov 2024 12:24:20 -0600</pubDate>
+      <guid>http://localhost:1313/posts/the-pernicious-gum/</guid>
+      <description>&lt;p&gt;
+It was a chilly November evening, and Marary Saina was studying for his topology final as he chewed on the last piece of gum he had left. He often chewed on gum as a stress-relief mechanism and always kept a spare pack of it at hand. This time, however, he had forgotten to restock gum in his last trip to the grocery store.&lt;/p&gt;
+&lt;p&gt;
+As soon as he got a break from his studying, he walked over to the closest grocery store and started looking for gum. Something was off. Marary usually went for fruit or mint flavored gum that wasn&amp;#39;t too sweet. Today, however, no matter where he looked, all he could see was sour gum. He scanned every shelf in the gum section to no avail. Being somewhat pressed for time, Marary grabbed a pack of sour gum without looking, thinking that he would come back later to stock up on more acceptable flavors.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>My Utter Disappointment with Trigun</title>
+      <link>http://localhost:1313/posts/trigun-review/</link>
+      <pubDate>Tue, 19 Nov 2024 12:03:11 -0600</pubDate>
+      <guid>http://localhost:1313/posts/trigun-review/</guid>
+      <description>&lt;p&gt;
+&lt;img src=&#34;http://localhost:1313/trigun-characters.png&#34; alt=&#34;/trigun-characters.png&#34; title=&#34;/trigun-characters.png&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-1&#34;&gt;
+Warning: Heavy spoilers for &lt;em&gt;Trigun&lt;/em&gt;
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+When you listen to the &lt;em&gt;Trigun&lt;/em&gt; OP, you are electrified. The energetic guitar riffs, combined with the cool visuals that make the main character look like a badass, really got me pumped for the show ahead of me. Add to that the near-legendary reputation &lt;em&gt;Trigun&lt;/em&gt; has garnered on internet Anime spaces, and you have a show that may only live up to its expectations through incredible quality and depth. &lt;em&gt;Trigun&lt;/em&gt; is neither of those. In fact, it&amp;#39;s not even a good show. Given how highly it is regarded on the internet, this take might be seen as blasphemous. However, a closer look at the show reveals that not only does this show have little of substance to offer with its writing, it isn&amp;#39;t even passable as an action-packed turn-your-brain-off show. The show has problems in many aspects, from the seriously underdeveloped protagonist, to the annoying and unnecessary side characters that tag along on every journey, to the seemingly aimless plot the show has for the first half or so, to the unconvincing villain and surface level philosophy, to the serious lack of world building and satisfying answers to the mysteries set up in the show. The best word that comes to mind when describing &lt;em&gt;Trigun&lt;/em&gt; is &amp;#34;undercooked&amp;#34;.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

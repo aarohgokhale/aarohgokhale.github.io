@@ -21,3 +21,12 @@ theme = 'PaperMod'
     name = "Short Stories"
     url = "/short-stories/"
     weight = 3
+
+[outputs]
+  home = ['html', 'rss']
+  page = ['html']
+  rss = ['rss']
+  section = ['html', 'rss']
+  taxonomy = ['html', 'rss']
+  term = ['html', 'rss']
+

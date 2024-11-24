@@ -39,15 +39,6 @@ theme = 'PaperMod'
 [params]
   math = true
   ShowAllPagesInArchive = true
-  [params.homeInfoParams]
-    Title = "Hi there wave"
-    Content = "Can be Info, links, about..."
-
-  [[params.socialIcons]]
-    name = "<platform>"
-    url = "<link>"
-
-  [[params.socialIcons]]
-    name = "<platform 2>"
-    url = "<link2>"
-
+  ShowCodeCopyButtons = true
+  ShowFullTextinRSS = true
+  ShowReadingTime = true

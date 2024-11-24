@@ -14,6 +14,17 @@
       <pubDate>Sun, 24 Nov 2024 00:11:15 -0600</pubDate>
       <guid>http://localhost:1313/ramblings/the-old-internet/</guid>
       <description>One of the reasons I decided to start writing a blog this year was because I was inspired by an old blog I found while watching Code Geass all the way back in December last year. I wanted to see other people&amp;#39;s opinions on Code Geass, and I stumbled upon a seemingly &lt;em&gt;ancient&lt;/em&gt; blog that chronicled the release of every new episode of CG while it was &lt;em&gt;airing&lt;/em&gt;. Something about the blog really pulled me in. I read some other posts on that blog from that era—mostly about releases of new techonology—and it transported me to a bygone era of the internet.</description>
+      <content:encoded><![CDATA[<p>
+One of the reasons I decided to start writing a blog this year was because I was inspired by an old blog I found while watching Code Geass all the way back in December last year. I wanted to see other people&#39;s opinions on Code Geass, and I stumbled upon a seemingly <em>ancient</em> blog that chronicled the release of every new episode of CG while it was <em>airing</em>. Something about the blog really pulled me in. I read some other posts on that blog from that era—mostly about releases of new techonology—and it transported me to a bygone era of the internet.</p>
+<p>
+The internet that I grew up on (I mainly started using the internet extensively around 2013 onward) was quite a bit different from the internet that came just a few years before that. The rapidly changing nature of the web meant that by the time I got truly using the internet on an everyday basis, much of its original charm was gone. I&#39;m talking blogs, forums, IRC. Sure these things might exist to some extent today, but the landscape of today&#39;s internet looks vastly different. It seems that the functionality of blogs and forums has now been replaced by things such as Twitter, Reddit, and Youtube. The almost complete centralization of expression (there are exceptions) has, as it seems to me, made the internet lose the charm that it once had. When I visit old forums, I see that people were genuinely engaging with each other, talking sincerely about their interests. On Reddit, there are a hundred bots on every post. Everything is moderated to death, and barely anything seems genuine. It really doesn&#39;t feel like there are real people on the other side of the screen writing the things that are written on Reddit. Some of the smaller subreddits manage to replicate the feeling of old forums to some extent, but it&#39;s just not the same. I can&#39;t quite place my finger on it. Maybe I am just romanticizing an era that I wasn&#39;t a part of, much the same way people like to think fondly of the past with a distorted lens.</p>
+<p>
+Whenever I find a blog that has been in writing for a very long time, I always find it really fun and interesting to go all the way back to the very first post. A couple of blogs that come to mind are from professors, such as the <a href="https://scottaaronson.blog/">Shtetl-Optimized</a> blog by Dr. Scott Aaronson, or the <a href="https://golem.ph.utexas.edu/category/">n-Category Café</a> by several professors from different universities. Visiting the posts from the early days of these blogs gives me a glimpse into the past. It really feels like a completely different internet from what we have now. People don&#39;t interact like that on the internet nowadays. There&#39;s some excitement and a feeling of freshness to those posts. Now that online social conventions have matured and become commonplace, we don&#39;t get to see comments like that. It seems like the more the internet has become governed by algorithms and attention maximization, the less it is a place of novel curiosity and intrigue. It may seem like a cliché, but it does seem like the internet is a less fun place to just &#34;hang out&#34; in these days. Given how many applications are doing everything in their power to suck us into a cycle of infinite scrolling, it seems like messaging people and finding relevant information will soon be just a few of the remaining things worth doing on the internet.</p>
+<p>
+In the past few months, I was reading the entirety of the <em>dragon ball</em> manga, and I frequently found myself asking random questions about plot points and power scaling, like a typical dragon ball fan. I kept finding myself returning to a website called <a href="https://www.kanzenshuu.com/">Kazenshuu</a>, where I frequently found very old posts about the exact issues and questions I had with and about the manga. It seemed like a really cool place for &#34;real&#34; dragon ball fans to hang out and talk. It seemed to have a lot more passion and enthusiasm about the series than the equivalent Reddit communities. It seemed like something that should exist for every hobby. Of course, I have visited my fair share of forums for things like <em>Gentoo</em> and <em>Arch</em> linux, and things like GameFAQs, but it really seems like something that could be much more commonplace for all sorts of hobbies. Now, I could just be ignorant, and these places probably do exist, but I do think that things like Reddit take away from the popularity of forums. I would really like to see a widespread resurgence in the popularity of individual forums for different fandoms and hobbies, and a move away from centralized platforms like Twitter and Reddit. Given how Reddit has shown its true colors over the last few years, it would probably be the best for everybody if forums became popular again.</p>
+<p>
+All in all, what I would really love to see a resurgence of is a <em>personal internet</em>, where more people have their own websites and more people put out their own content rather than just consuming things that are being shoved in their faces. Of course, this is incredibly unlikely given the direction that we seem to be headed in, but one can hope…</p>
+]]></content:encoded>
     </item>
     <item>
       <title>A Review of Org Roam and Org Roam UI</title>
@@ -21,6 +32,79 @@
       <pubDate>Sat, 23 Nov 2024 22:04:12 -0600</pubDate>
       <guid>http://localhost:1313/ramblings/org-roam-review/</guid>
       <description>I have been using the &lt;a href=&#34;https://www.orgroam.com/&#34;&gt;Org Roam&lt;/a&gt; package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the &lt;a href=&#34;https://en.wikipedia.org/wiki/Zettelkasten&#34;&gt;zettelkasten&lt;/a&gt; philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won&amp;#39;t go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.</description>
+      <content:encoded><![CDATA[
+<p>
+I have been using the <a href="https://www.orgroam.com/">Org Roam</a> package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the <a href="https://en.wikipedia.org/wiki/Zettelkasten">zettelkasten</a> philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won&#39;t go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+The Benefits
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+Motivation
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>One of the most immediate and apparent benefits of using org roam has almost nothing to do with the methodology of zettelkastens themselves, but more so with the way the <a href="https://github.com/org-roam/org-roam-ui">Org Roam UI</a> package allows org roam users to visualize their graph of org roam nodes. Org roam UI displays all nodes and their connections in a really nice interactive graph with lots of theming and display options. It also comes with a really nice physics engine that allows the user to drag nodes around for cool visual effects. For me, one of the nonobvious benefits of this package has actually been the ability to see my web of notes grow larger and more dense over time. It can really be a source of motivation to write more notes and try to find as many connections between concepts as possible, because connections in concepts directly translate to more densely connected areas in the graph. The drive to find as many connections as possible is then itself very helpful for the retention of information, since each connection forces me to revisit an old concept and see how it relates to the new concept I am writing about. The whole system really helps reinforce different topics altogether and allows me to see how things are connected in the big picture. </p>
+<figure>
+<img src="/orui.png" alt="/orui.png" title="/orui.png" /><figcaption>
+My Current Org Roam UI Graph
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+Connections
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>The most obvious point of connection between topics is the <em>set</em>. The set is one of the most primitive objects in modern mathematics and is used in essentially every field of study that uses mathematics to model something. With this, we must realize that connections that go through the set node are nearly meaningless. They don&#39;t really say much about how two concepts are connected. The same is true about <em>functions</em>. What is more interesting is when two areas in the graph such as topology and algebra are connected nontrivially through a node such as the <em>isomorphism</em> node. Isomorphisms are normally defined on <em>groups</em>, <em>rings</em>, and similar algebraic structures, but <em>homeomorphisms</em> can themselves be viewed as isomorphisms of <em>topological spaces</em>, since they are structure preserving maps. Perhaps such generalized connections would be more abundant with category theory, when I get to learning it. Of course, there are literal connecting points between algebra and topology too, like the fundamental group.</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+Typesetting
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>This isn&#39;t really much of a benefit as much as it is an essential feature. If emacs didn&#39;t have in-buffer LaTeX previews or if org roam ui didn&#39;t have the ability to display LaTeX using katex, I would simply have not used these packages. Much of what I take notes on has mathematical notation all over the place, so it is crucial for any notetaking app to be able to display math.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+The Drawbacks
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+Poor Conventional Notetaking
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>The most apparent drawback with using org roam has been my inability to map conventional notes onto this system in an easy manner. The thing with educational content, be it in lecture form or textbook form, is that it hardly lends itself to be sorted into nice chunks separated by specific concepts. I have often experienced attending a lecture or reading a textbook where an entire section is dedicated to the development of multiple intertwining ideas altogether, and this really doesn&#39;t work well with the structure of dividing things up into individual concepts that are then connected with links. Perhaps this actually isn&#39;t as much of a downside as I think it is. There does seem to be some merit to the idea that if I am forced to convert standard expository material into this format, I am much more likely to absorb it. I would need to know how to split up a section into different org roam nodes, which would then force me to truly understand what is going on and how the different concepts are related. Another thing that I haven&#39;t actually explored is the daily note functionality, which might actually be better suited for first writing down whatever is coming at my way from textbooks or lectures. I could then sift through the lecture notes and properly organize them into final org roam nodes. This would perhaps actually help my retention and understanding of the topic by forcing me to revisit everything that I write down. </p>
+<p>
+Coming back to the point, org roam doesn&#39;t map as easily to conventional notetaking as regular org mode does, and requires some additional conversion work. Perhaps that is a good thing in the long run if one can stick to it.</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+LaTeX Notetaking is Suboptimal in General
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>Another thing to note is that LaTeX notetaking, and probably any typesetting based notetaking in general, is quite suboptimal in terms of ease of use when compared to good old pen and paper. I find that mathematical concepts flow quite a bit more smoothly when I am using pen and paper. There is much less friction when converting an abstract idea in my head to symbolic notation on paper. There is an obvious tradeoff here: we are trading ease of use for ease of access (due to search and hyperlinks) and easier preservation (making a backup is trivial compared to pen and paper).</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-2">
+<h2 id="headline-8">
+Final Thoughts
+</h2>
+<div id="outline-text-headline-8" class="outline-text-2">
+<p>This experiment of using org roam has been fairly succesful and helped me take more notes this semester than any semester that came before. By rewarding me for taking notes and making connections, org roam has made studying and reviewing a lot more fun than it used to be. I have seen what some other people&#39;s UI graphs look like, and mine completely pales in comparison. I hope to have a respectable graph by the end of the Spring 2025 semester.</p>
+</div>
+</div>
+]]></content:encoded>
     </item>
     <item>
       <title>My Utter Disappointment with Trigun</title>
@@ -28,6 +112,65 @@
       <pubDate>Tue, 19 Nov 2024 12:03:11 -0600</pubDate>
       <guid>http://localhost:1313/ramblings/trigun-review/</guid>
       <description>When you listen to the &lt;em&gt;Trigun&lt;/em&gt; OP, you are electrified. The energetic guitar riffs, combined with the cool visuals that make the main character look like a badass, really got me pumped for the show ahead of me. Add to that the near-legendary reputation &lt;em&gt;Trigun&lt;/em&gt; has garnered on internet Anime spaces, and you have a show that may only live up to its expectations through incredible quality and depth. &lt;em&gt;Trigun&lt;/em&gt; is neither of those. In fact, it&amp;#39;s not even a good show.</description>
+      <content:encoded><![CDATA[
+<p>
+<img src="/trigun-characters.png" alt="/trigun-characters.png" title="/trigun-characters.png" /></p>
+<div id="outline-container-headline-1" class="outline-3">
+<h3 id="headline-1">
+Warning: Heavy spoilers for <em>Trigun</em>
+</h3>
+<div id="outline-text-headline-1" class="outline-text-3">
+<p>
+When you listen to the <em>Trigun</em> OP, you are electrified. The energetic guitar riffs, combined with the cool visuals that make the main character look like a badass, really got me pumped for the show ahead of me. Add to that the near-legendary reputation <em>Trigun</em> has garnered on internet Anime spaces, and you have a show that may only live up to its expectations through incredible quality and depth. <em>Trigun</em> is neither of those. In fact, it&#39;s not even a good show. Given how highly it is regarded on the internet, this take might be seen as blasphemous. However, a closer look at the show reveals that not only does this show have little of substance to offer with its writing, it isn&#39;t even passable as an action-packed turn-your-brain-off show. The show has problems in many aspects, from the seriously underdeveloped protagonist, to the annoying and unnecessary side characters that tag along on every journey, to the seemingly aimless plot the show has for the first half or so, to the unconvincing villain and surface level philosophy, to the serious lack of world building and satisfying answers to the mysteries set up in the show. The best word that comes to mind when describing <em>Trigun</em> is &#34;undercooked&#34;.</p>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-2">
+<h2 id="headline-2">
+The Protagonist
+</h2>
+<div id="outline-text-headline-2" class="outline-text-2">
+<p>Vash The Stampede is easily the most iconic figure in the <em>Trigun</em> canon and is the focus of many of the art pieces that have come from the franchise. Many fans cite Vash as the reason for their enjoyment of the show. For me, however, Vash seems to not only be a not great protagonist, he actively makes the show worse. Initially, it isn&#39;t easy to accept that Vash, for the majority of the show&#39;s runtime, isn&#39;t the badass he is made out to be by the show&#39;s OP. After accepting this fact, however, you would still want Vash to be a well written, fleshed out character with flaws that are explored well in the show. You would at least expect his motivations to be reasonably derived from his backstory, and you would expect his philosophy to be challenged at some point in the show. Alas, all of these things either don&#39;t happen at all, or happen in the most shallow and half-assed way possible.</p>
+<p>
+We start the show off with a goofy Vash who is very reluctant to use any violence at all, even for self-defense. This is a good enough start, and sets up a mystery as to why he is so strongly against using any form of violence. We get one episode exploring Vash&#39;s backstory, where some lame anecdote about trying to save both a spider and its victim butterfly is used to show Vash&#39;s conviction from a young age. The only real reason he seems to think this is due to Rem&#39;s influence. This is the only episode we get about Vash&#39;s backstory, and leaves much to be desired in terms of justifying his philosophical convictions. The only other part that tries to explain his unwillingness to use violence is the fact that his arm can somehow grow a nuke that can cause great devastation, and that it has caused such devastation of human life in the past. This was also an interesting thread and could have been explored really well. But all we get are some vague flashbacks and trauma, leaving the viewer desiring for more context about the nuke. There is zero information about why his hand can become a nuke at all.</p>
+<p>
+Another pain point regarding Vash is the utter lack of growth. He begins thinking that all forms of violence are bad and is never seriously challenged about this belief. Even when he does end up killing a character, that character happens to be a genocidal maniac who plans to kill Vash&#39;s friends. There are no real moments where Vash has to make a morally grey decision by applying violence to the detriment of someone who isn&#39;t completely evil. Even when he does kill the one person he kills, he spends an entire episode agonizing over it, but comes out none the wiser from the arc. What is even more absurd is when he blames himself for the priest killing a literal Gung-Ho-Gun who would&#39;ve otherwise killed all the orphans. Vash&#39;s broken moral code is never properly challenged, and it leaves a sour taste in the viewer&#39;s mouth by the end of the show. The whole dilemma of having to choose between saving the butterfly and saving the spider is never explored. In the end, Vash does choose to kill Knives to save his friends, so that is at least some sort of resolution to the dilemma (i.e. kill the spider, but only if the other option is mass genocide), but it doesn&#39;t feel well explored.</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-2">
+<h2 id="headline-3">
+The Story
+</h2>
+<div id="outline-text-headline-3" class="outline-text-2">
+<p>Any great show needs at least a good story. There can be shows that are enjoyable without a good story, but I would argue that they are undeserving of the level of admiration received by <em>Trigun</em>. Unfortunately, <em>Trigun</em> is neither enjoyable, nor does it have a good story. It certainly doesn&#39;t deserve the admiration it gets. <em>Trigun</em>&#39;s story is an unbearable slew of completely pointless episodic stories that border on being filler with unbaked plot points sprinkled here and there with no real overarching conflict, culminating in a rushed final arc that doesn&#39;t do the potential of the setup justice. There were several episodes that could have been completely done away with without changing the story at all. These episodes could have easily been used to instead expand on few plot points that had been set up. Let&#39;s take the bulbs for example. The <em>Trigun</em> world seems to have these strange bulbs that seem to power cities, and Vash strangely has the power to somewhat manipulate these bulbs. These bulbs are barely shown at all, and there is essentially no explanation for why they exist, how they function, and how they play into the larger story. They just exist as a cool decoration to the world, but don&#39;t provide much of substance. Similarly, the nuke on Vash&#39;s hand is given absolutely no explanation. Just one episode explaining its existence would have greatly improved the world building in the show. Another thing that could have had an entire episode dedicated to it was the flashback Vash has, very he is holding a young girl who has just experienced the devastation of her town. It is quite obvious that this destruction was caused by Vash&#39;s nuke in some way, but it would have been an excellent addition to the show if they had spent an entire episode properly going through the events of this flashback. It would maybe be acceptable to not have such an episode in another show, where the plot is so tightly written that it leaves no room for unnecessary expository episodes, but in a show like <em>Trigun</em>, where half the episodes are pointless, the creators could have easily fit in an entire telling of the tragic event.</p>
+<p>
+The most disappointing part of the story is the development of the conflict between Vash and Knives. <em>Trigun</em> has <strong>one</strong> episode dedicated to the development of Vash&#39;s backstory, the development of his motivations as a character, his relationship with Knives, and the beginning of the civilization on the planet they lived on. One. They tried to fit the most interesting and important bits of the story in one single episode, and it went just as well as could be expected. Knives&#39; hate for humanity felt unearned, his sudden turn as a villain felt forced, and the time we got with Rem felt 10 episodes too short. Vash&#39;s relationship with Rem felt incredibly underdeveloped from the few snippets we got in the episode. The episode left me with several more questions than I had before the episode. Making the viewer ask even more questions can actually be a great thing when done correctly. It can help build suspense and mystery, and significantly increase the viewer&#39;s interest in continuing the story. When done correctly, mysteries that are set up early on in the story can feel incredibly rewarding when they are resolved. The problem with <em>Trigun</em> is that for every mystery it resolves, it creates ten more that never see the light of day after their creation. It wouldn&#39;t even be such a problem if <em>Trigun</em> had an otherwise good plot, but the fact that the <strong>entire</strong> plot rested on this particular backstory made the fact that they rushed it even more egregious. It isn&#39;t like they had no episodes to spare for a better development of this backstory either. With the countless episodes spent with Vash going on borderline filler adventures with the insurance girls, the creators of the show had absolutely no reason not to dedicate a few of those episodes to a better development of the plot. Speaking of the insurance girls…</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-2">
+<h2 id="headline-4">
+The Side Characters
+</h2>
+<div id="outline-text-headline-4" class="outline-text-2">
+<p>There is no way of sugarcoating it, the side characters in this show are almost completely unbearable (except for Wolfwood, the one saving grace). Both Meryl and Milly are one-note characters that spend the majority of their screentime acting out their roles as almost sitcom characters (in an unfunny sitcom). Merly is the &#34;serious&#34; and &#34;concerned&#34; woman who refuses to believe that Vash is the real Vash (a gag that the show repeated until it drained every ounce of comedic value it might have had when it was done initially). She has no humor throughout the show and goes through almost no development. Milly is slightly more bearable, though she too starts out as a caricature, a ditsy girl who doesn&#39;t understand the social norms of the world. She does show some improvement as a character, but she too is almost unbearable for first 60-70% of the show. Both the insurance girls are completely irrelevant to the plot, and the story wouldn&#39;t change even a single if they were removed. They simply serve as unsucessful comic relief, and could have easily been replaced by characters that had felt like real people with real emotions and growth. Wolfwood is the one character in the show that I found to be actually compelling. Though his backstory was a little bit cliched, his character really did have a real conflict. He was the one character who had to make morally tough decisions, and he felt like he was the only adult in the cast. A show where Wolfwood was the main the character would be significantly better than <em>Trigun</em>.</p>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+The Villain(s)
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<p>The Gung-Ho-Guns have cool designs, and that&#39;s about it. Their abilties make no sense, their backstories and motivations are not compelling, and they don&#39;t work well as a coherent gang of villains. Knives is a terrible villain. He appears really late in the show, since the first half of the show is wasted by having Vash and co. go through incredibly unnecessary adventures. When he does appear, he isn&#39;t very compelling. Why does Knives hate humanity so much? How can he activate Vash&#39;s nuke? What even are Knives and Vash? Are they humans that have mutations? Are they aliens? Are they angels? The show leaves countless questions about Knives and Vash completely unanswered, and barely develops Knives&#39; motivation as villain. Now, villains that are evil for simple reasons can be done well, but they need the villainous acts to match. Knives barely appears in the show so we don&#39;t even get to see his villainous acts. Admittedly, the villains didn&#39;t annoy me nearly as much as the other aspects of the show. </p>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-2">
+<h2 id="headline-6">
+Conclusion
+</h2>
+<div id="outline-text-headline-6" class="outline-text-2">
+<p>Maybe the <em>Trigun</em> manga expands on the mysteries that are set up. I&#39;ve read that the <em>Trigun</em> anime and manga are different enough that they should be considered separate works. Perhaps this is the case and perhaps the manga does do justice to its characters and story. But as I have laid out, the anime is far from that. The pacing is awful, the story fails to maintain momentum and fails to deliver on its mysteries, the characters and annoying and one-note, and the show doesn&#39;t even have proper badassery for the first half or so. For the amount of hype I had seen going into this show, I was expecting something on par with some of the all-time greats of anime such as <em>Akira</em> and <em>Monster</em>. I was prepared to be disappointed, but I still expected at least an entertaining show. So when I had to drag myself through the 23 episodes excruciatingly boring episodes (the backstory episode was quite good), I lost some of my faith in the opinions of anime fans. Oh, and <em>Trigun</em> has <strong>TWO</strong> recap episodes in its 26-episode run.  </p>
+</div>
+</div>
+]]></content:encoded>
     </item>
   </channel>
 </rss>

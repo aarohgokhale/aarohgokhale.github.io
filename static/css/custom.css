@@ -25,8 +25,18 @@
   transition: background-color 0.3s ease; /* Add smooth transition on hover */
 }
 
-.recent-posts li.post-preview:hover {
-  background-color: #efefef; /* Change background on hover */
+@media (hover: hover) {
+    .recent-posts li.post-preview:hover {
+	background-color: #efefef; /* Change background on hover */
+    }
+
+    .dark .recent-posts li.post-preview:hover {
+	background-color: #1e1e22; /* Change background on hover */
+    }
+
+    .recent-posts li.post-preview a:hover {
+	text-decoration: underline;
+    }
 }
 
 .recent-posts li.post-preview h3 {
@@ -43,10 +53,6 @@
     padding: 20px;             /* Padding inside each box */
     transition: background-color 0.3s ease; /* Add smooth transition on hover */
     cursor: pointer;
-}
-
-.dark .recent-posts li.post-preview:hover {
-  background-color: #1e1e22; /* Change background on hover */
 }
 
 .unselectable {
@@ -69,7 +75,6 @@
 
 .dark .recent-posts li.post-preview a {
   color: #FFFFFF;
-  text-decoration: underline;
 }
 
 .recent-posts li.post-preview p {
@@ -87,6 +92,4 @@
   text-decoration: none;
 }
 
-.recent-posts li.post-preview a:hover {
-  text-decoration: underline;
-}
+

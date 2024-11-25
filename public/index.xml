@@ -2,50 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Aaroh&#39;s Blog</title>
-    <link>http://localhost:1313/</link>
+    <link>https://aaroh.github.io/</link>
     <description>Recent content on Aaroh&#39;s Blog</description>
     <generator>Hugo -- 0.139.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Nov 2024 16:52:52 -0600</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>A review of PUTNAMBENCH</title>
-      <link>http://localhost:1313/technical/putnam-bench/</link>
-      <pubDate>Sun, 24 Nov 2024 16:52:52 -0600</pubDate>
-      <guid>http://localhost:1313/technical/putnam-bench/</guid>
-      <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Chaudhuri et al., where the capabilities of modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
-      <content:encoded><![CDATA[
-<p>
-While looking at computer science research areas that I could find interesting, I stumbled upon formal methods, and more specifically, automated symbolic reasoning, theorem proving, and the integration of modern machine learning with formal reasoning. I decided to read some research papers to get a feel for this area, since it looked quite interesting to me. In this article, I am going to review and outline one interesting paper I read in this area. I will continue writing further articles about other papers I read.</p>
-<div id="outline-container-headline-1" class="outline-2">
-<h2 id="headline-1">
-PUTNAMBENCH
-</h2>
-<div id="outline-text-headline-1" class="outline-text-2">
-<p>The first interesting paper I stumbled upon was the <a href="https://arxiv.org/abs/2407.11214">PUTNAMBENCH</a> paper by Chaudhuri et al., where the capabilities of modern <em>neural models</em> in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition. </p>
-<p>
-The improvement that PUTNAMBENCH makes on existing benchmarks is that it introduces college level problems into the mix, with some problems even requiring ideas from research level mathematics, according to the paper. A few additional reasons cited for the creation of this benchmark were:</p>
-<ul>
-<li>The limited scope of existing benchmarks</li>
-<li>Existing benchmarks being designed for older frameworks</li>
-<li>Preventing the leakage of benchmark data into the training data for LLMs (in general, the paper claims that this necessitates periodically creating new benchmarks)</li>
-</ul>
-<p>One issue that PUTNAMBENCH had to address was that Putnam problems often aren&#39;t stated as logical propositions. In fact, more often than not, they require the student to both come up with a closed form solution and then prove that the solution is indeed correct. PUTNAMBENCH addresses this issue by decoupling the generation of closed form solutions from the proofs of correctness into two tasks, where success in one task does not hinge on the success of the other (though they might be highly correlated). It seems like the the first task is a strict superset of the first task, though, since it requires not only the generation of a closed form solution, but also a proof of correctness. The second task only asks for a proof of correctness of a pre-provided closed form solution.</p>
-<p>
-PUTNAMBENCH is claimed in the paper to be the first formalization of a large number of Putnam problems in Lean, Isabelle, or Coq, which is what is used to justify the idea that there isn&#39;t much cross-contamination between the dataset produced by the paper and the data used by large language models for training. I found this to be an interesting claim. Large language models probably have seen Putnam problems and their solutions in their natural language forms, but the claim that they haven&#39;t been exposed to formalizations of these problems and their proofs does seem plausible. It is then an interesting question whether or not seeing the natural language variants would give a language model an unfair advantage in the solving of the formalizations. The paper does address the possibility of such an indirect form contamination.</p>
-<p>
-The results of running various theorem proving models on these formalizations was quite astonishing to me, as a newcomer to this field. None of provers were able to get more than even a handful of the problems. I don&#39;t know whether this is typical of benchmarks for formal theorem proving, but it was a surprise to me. It also indicated to me that there is much progress left to be made in this area.</p>
-<p>
-After reading this paper, I was curious to learn about the current state of the art in neurosymbolic reasoning. I wanted to learn how some of the models used (though unsuccesfully) in the PUTNAMBENCH paper worked. I therefore started reading some papers on this area. I also wanted to a bit about theorem proving frameworks, so I also began reading about those.</p>
-</div>
-</div>
-]]></content:encoded>
-    </item>
+    <lastBuildDate>Sun, 24 Nov 2024 00:11:15 -0600</lastBuildDate>
+    <atom:link href="https://aaroh.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Missing Out on The Old Internet</title>
-      <link>http://localhost:1313/ramblings/the-old-internet/</link>
+      <link>https://aaroh.github.io/ramblings/the-old-internet/</link>
       <pubDate>Sun, 24 Nov 2024 00:11:15 -0600</pubDate>
-      <guid>http://localhost:1313/ramblings/the-old-internet/</guid>
+      <guid>https://aaroh.github.io/ramblings/the-old-internet/</guid>
       <description>One of the reasons I decided to start writing a blog this year was because I was inspired by an old blog I found while watching Code Geass all the way back in December last year. I wanted to see other people&amp;#39;s opinions on Code Geass, and I stumbled upon a seemingly &lt;em&gt;ancient&lt;/em&gt; blog that chronicled the release of every new episode of CG while it was &lt;em&gt;airing&lt;/em&gt;. Something about the blog really pulled me in. I read some other posts on that blog from that era—mostly about releases of new techonology—and it transported me to a bygone era of the internet.</description>
       <content:encoded><![CDATA[<p>
 One of the reasons I decided to start writing a blog this year was because I was inspired by an old blog I found while watching Code Geass all the way back in December last year. I wanted to see other people&#39;s opinions on Code Geass, and I stumbled upon a seemingly <em>ancient</em> blog that chronicled the release of every new episode of CG while it was <em>airing</em>. Something about the blog really pulled me in. I read some other posts on that blog from that era—mostly about releases of new techonology—and it transported me to a bygone era of the internet.</p>
@@ -61,9 +28,9 @@ All in all, what I would really love to see a resurgence of is a <em>personal in
     </item>
     <item>
       <title>A Review of Org Roam and Org Roam UI</title>
-      <link>http://localhost:1313/reviews/org-roam-review/</link>
+      <link>https://aaroh.github.io/reviews/org-roam-review/</link>
       <pubDate>Sat, 23 Nov 2024 22:04:12 -0600</pubDate>
-      <guid>http://localhost:1313/reviews/org-roam-review/</guid>
+      <guid>https://aaroh.github.io/reviews/org-roam-review/</guid>
       <description>I have been using the &lt;a href=&#34;https://www.orgroam.com/&#34;&gt;Org Roam&lt;/a&gt; package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the &lt;a href=&#34;https://en.wikipedia.org/wiki/Zettelkasten&#34;&gt;zettelkasten&lt;/a&gt; philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won&amp;#39;t go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.</description>
       <content:encoded><![CDATA[
 <p>
@@ -141,9 +108,9 @@ Final Thoughts
     </item>
     <item>
       <title>The Pernicious Gum</title>
-      <link>http://localhost:1313/short-stories/the-pernicious-gum/</link>
+      <link>https://aaroh.github.io/short-stories/the-pernicious-gum/</link>
       <pubDate>Tue, 19 Nov 2024 12:24:20 -0600</pubDate>
-      <guid>http://localhost:1313/short-stories/the-pernicious-gum/</guid>
+      <guid>https://aaroh.github.io/short-stories/the-pernicious-gum/</guid>
       <description>As soon as he got a break from his studying, he walked over to the closest grocery store and started looking for gum. Something was off. Marary usually went for fruit or mint flavored gum that wasn&amp;#39;t too sweet. Today, however, no matter where he looked, all he could see was sour gum. He scanned every shelf in the gum section to no avail. Being somewhat pressed for time, Marary grabbed a pack of sour gum without looking, thinking that he would come back later to stock up on more acceptable flavors.</description>
       <content:encoded><![CDATA[<p>
 <img src="/gum.png" alt="/gum.png" title="/gum.png" /></p>
@@ -173,9 +140,9 @@ At this point, Marary was devastated. He was on the verge of tears, and he wante
     </item>
     <item>
       <title>My Utter Disappointment with Trigun</title>
-      <link>http://localhost:1313/reviews/trigun-review/</link>
+      <link>https://aaroh.github.io/reviews/trigun-review/</link>
       <pubDate>Tue, 19 Nov 2024 12:03:11 -0600</pubDate>
-      <guid>http://localhost:1313/reviews/trigun-review/</guid>
+      <guid>https://aaroh.github.io/reviews/trigun-review/</guid>
       <description>When you listen to the &lt;em&gt;Trigun&lt;/em&gt; OP, you are electrified. The energetic guitar riffs, combined with the cool visuals that make the main character look like a badass, really got me pumped for the show ahead of me. Add to that the near-legendary reputation &lt;em&gt;Trigun&lt;/em&gt; has garnered on internet Anime spaces, and you have a show that may only live up to its expectations through incredible quality and depth. &lt;em&gt;Trigun&lt;/em&gt; is neither of those. In fact, it&amp;#39;s not even a good show.</description>
       <content:encoded><![CDATA[
 <p>

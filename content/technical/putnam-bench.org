@@ -2,13 +2,13 @@
 title: "A review of PUTNAMBENCH"
 date: 2024-11-24T16:52:52-06:00
 draft: true
-summary: The first interesting paper I stumbled upon was the [[https://arxiv.org/abs/2407.11214][PUTNAMBENCH]] paper by Chaudhuri et al., where the capabilities of modern /nueral models/ in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.
+summary: The first interesting paper I stumbled upon was the [[https://arxiv.org/abs/2407.11214][PUTNAMBENCH]] paper by Chaudhuri et al., where the capabilities of modern /neural models/ in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.
 ---
 
 While looking at computer science research areas that I could find interesting, I stumbled upon formal methods, and more specifically, automated symbolic reasoning, theorem proving, and the integration of modern machine learning with formal reasoning. I decided to read some research papers to get a feel for this area, since it looked quite interesting to me. In this article, I am going to review and outline one interesting paper I read in this area. I will continue writing further articles about other papers I read.
 
 * PUTNAMBENCH
-The first interesting paper I stumbled upon was the [[https://arxiv.org/abs/2407.11214][PUTNAMBENCH]] paper by Chaudhuri et al., where the capabilities of modern /nueral models/ in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition. 
+The first interesting paper I stumbled upon was the [[https://arxiv.org/abs/2407.11214][PUTNAMBENCH]] paper by Chaudhuri et al., where the capabilities of modern /neural models/ in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition. 
 
 The improvement that PUTNAMBENCH makes on existing benchmarks is that it introduces college level problems into the mix, with some problems even requiring ideas from research level mathematics, according to the paper. A few additional reasons cited for the creation of this benchmark were:
 

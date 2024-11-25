@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Technical on Aaroh&#39;s Blog</title>
-    <link>http://localhost:1313/technical/</link>
+    <link>https://aaroh.github.io/technical/</link>
     <description>Recent content in Technical on Aaroh&#39;s Blog</description>
     <generator>Hugo -- 0.139.0</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 24 Nov 2024 16:52:52 -0600</lastBuildDate>
-    <atom:link href="http://localhost:1313/technical/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://aaroh.github.io/technical/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A review of PUTNAMBENCH</title>
-      <link>http://localhost:1313/technical/putnam-bench/</link>
+      <link>https://aaroh.github.io/technical/putnam-bench/</link>
       <pubDate>Sun, 24 Nov 2024 16:52:52 -0600</pubDate>
-      <guid>http://localhost:1313/technical/putnam-bench/</guid>
+      <guid>https://aaroh.github.io/technical/putnam-bench/</guid>
       <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Chaudhuri et al., where the capabilities of modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
       <content:encoded><![CDATA[
 <p>
@@ -30,9 +30,9 @@ The improvement that PUTNAMBENCH makes on existing benchmarks is that it introdu
 <li>Existing benchmarks being designed for older frameworks</li>
 <li>Preventing the leakage of benchmark data into the training data for LLMs (in general, the paper claims that this necessitates periodically creating new benchmarks)</li>
 </ul>
-<p>One issue that PUTNAMBENCH had to address was that Putnam problems often aren&#39;t stated as logical propositions. In fact, more often than not, they require the student to both come up with a closed form solution and then prove that the solution is indeed correct. PUTNAMBENCH addresses this issue by decoupling the generation of closed form solutions from the proofs of correctness into two tasks, where success in one task does not hinge on the success of the other (though they might be highly correlated). It seems like the the first task is a strict superset of the first task, though, since it requires not only the generation of a closed form solution, but also a proof of correctness. The second task only asks for a proof of correctness of a pre-provided closed form solution.</p>
+<p>One issue that PUTNAMBENCH had to address was that Putnam problems often aren&#39;t stated as logical propositions. In fact, more often than not, they require the student to both come up with a closed form solution and then prove that the solution is indeed correct. PUTNAMBENCH addresses this issue by splitting up generation of closed form solutions from the proofs of correctness into two tasks of different difficulty levels, where success in one task likely has high correlation with success in the other. The second task only asks for a proof of correctness of a pre-provided closed form solution. The first task is a strict superset of the second task, since it requires not only the generation of a closed form solution, but also a proof of correctness.</p>
 <p>
-PUTNAMBENCH is claimed in the paper to be the first formalization of a large number of Putnam problems in Lean, Isabelle, or Coq, which is what is used to justify the idea that there isn&#39;t much cross-contamination between the dataset produced by the paper and the data used by large language models for training. I found this to be an interesting claim. Large language models probably have seen Putnam problems and their solutions in their natural language forms, but the claim that they haven&#39;t been exposed to formalizations of these problems and their proofs does seem plausible. It is then an interesting question whether or not seeing the natural language variants would give a language model an unfair advantage in the solving of the formalizations. The paper does address the possibility of such an indirect form contamination.</p>
+PUTNAMBENCH is claimed in the paper to be the first formalization of a large number of Putnam problems in Lean, Isabelle, or Coq, which is what is used to justify the idea that there isn&#39;t much cross-contamination between the dataset produced by the paper and the data used by large language models for training. I found this to be an interesting claim. Large language models probably have seen Putnam problems and their solutions in their natural language forms, but the claim that they haven&#39;t been exposed to formalizations of these problems and their proofs does seem plausible. It is then an interesting question whether or not seeing the natural language variants would give a language model an unfair advantage in the solving of the formalizations. The paper does acknowledge the possibility of such an indirect form of contamination.</p>
 <p>
 The results of running various theorem proving models on these formalizations was quite astonishing to me, as a newcomer to this field. None of provers were able to get more than even a handful of the problems. I don&#39;t know whether this is typical of benchmarks for formal theorem proving, but it was a surprise to me. It also indicated to me that there is much progress left to be made in this area.</p>
 <p>

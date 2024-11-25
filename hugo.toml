@@ -3,6 +3,8 @@ languageCode = 'en-us'
 title = "Aaroh's Blog"
 theme = 'PaperMod'
 
+PluralizeListTitles = false
+
 [menu]
   [[menu.main]]
     identifier = "home"
@@ -39,6 +41,7 @@ theme = 'PaperMod'
     name = "Archive"
     url = "/archives/"
     weight = 6
+  
 
 [outputs]
   home = ['html', 'rss']

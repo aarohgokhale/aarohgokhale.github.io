@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>The Pernicious Gum | Aaroh&#39;s Blog</title>
+<title>A Review of Org Roam and Org Roam UI | Aaroh&#39;s Blog</title>
 <meta name="keywords" content="">
-<meta name="description" content="As soon as he got a break from his studying, he walked over to the closest grocery store and started looking for gum. Something was off. Marary usually went for fruit or mint flavored gum that wasn&#39;t too sweet. Today, however, no matter where he looked, all he could see was sour gum. He scanned every shelf in the gum section to no avail. Being somewhat pressed for time, Marary grabbed a pack of sour gum without looking, thinking that he would come back later to stock up on more acceptable flavors.">
-<meta name="author" content="Aaroh Gokhale">
-<link rel="canonical" href="http://localhost:1313/short-stories/the-pernicious-gum/">
+<meta name="description" content="I have been using the Org Roam package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the zettelkasten philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won&#39;t go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/reviews/org-roam-review/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css" integrity="sha256-1vzSCk&#43;4bvpN&#43;sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,7 +18,7 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/short-stories/the-pernicious-gum/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/reviews/org-roam-review/">
 <noscript>
     <style>
         #theme-toggle,
@@ -157,36 +157,84 @@ document.addEventListener("DOMContentLoaded", function() {
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      The Pernicious Gum
+      A Review of Org Roam and Org Roam UI
     </h1>
-    <div class="post-meta"><span title='2024-11-19 12:24:20 -0600 CST'>November 19, 2024</span>&nbsp;·&nbsp;7 min&nbsp;·&nbsp;Aaroh Gokhale
+    <div class="post-meta"><span title='2024-11-23 22:04:12 -0600 CST'>November 23, 2024</span>&nbsp;·&nbsp;5 min
 
 </div>
   </header> 
-  <div class="post-content"><p>
-<img src="/gum.png" alt="/gum.png" title="/gum.png" /></p>
+  <div class="post-content">
 <p>
-It was a chilly November evening, and Marary Saina was studying for his topology final as he chewed on the last piece of gum he had left. He often chewed on gum as a stress-relief mechanism and always kept a spare pack of it at hand. This time, however, he had forgotten to restock gum in his last trip to the grocery store.</p>
+I have been using the <a href="https://www.orgroam.com/">Org Roam</a> package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the <a href="https://en.wikipedia.org/wiki/Zettelkasten">zettelkasten</a> philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won&#39;t go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+The Benefits
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+Motivation
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>One of the most immediate and apparent benefits of using org roam has almost nothing to do with the methodology of zettelkastens themselves, but more so with the way the <a href="https://github.com/org-roam/org-roam-ui">Org Roam UI</a> package allows org roam users to visualize their graph of org roam nodes. Org roam UI displays all nodes and their connections in a really nice interactive graph with lots of theming and display options. It also comes with a really nice physics engine that allows the user to drag nodes around for cool visual effects. For me, one of the nonobvious benefits of this package has actually been the ability to see my web of notes grow larger and more dense over time. It can really be a source of motivation to write more notes and try to find as many connections between concepts as possible, because connections in concepts directly translate to more densely connected areas in the graph. The drive to find as many connections as possible is then itself very helpful for the retention of information, since each connection forces me to revisit an old concept and see how it relates to the new concept I am writing about. The whole system really helps reinforce different topics altogether and allows me to see how things are connected in the big picture. </p>
+<figure>
+<img src="/orui.png" alt="/orui.png" title="/orui.png" /><figcaption>
+My Current Org Roam UI Graph
+</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+Connections
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>The most obvious point of connection between topics is the <em>set</em>. The set is one of the most primitive objects in modern mathematics and is used in essentially every field of study that uses mathematics to model something. With this, we must realize that connections that go through the set node are nearly meaningless. They don&#39;t really say much about how two concepts are connected. The same is true about <em>functions</em>. What is more interesting is when two areas in the graph such as topology and algebra are connected nontrivially through a node such as the <em>isomorphism</em> node. Isomorphisms are normally defined on <em>groups</em>, <em>rings</em>, and similar algebraic structures, but <em>homeomorphisms</em> can themselves be viewed as isomorphisms of <em>topological spaces</em>, since they are structure preserving maps. Perhaps such generalized connections would be more abundant with category theory, when I get to learning it. Of course, there are literal connecting points between algebra and topology too, like the fundamental group.</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+Typesetting
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>This isn&#39;t really much of a benefit as much as it is an essential feature. If emacs didn&#39;t have in-buffer LaTeX previews or if org roam ui didn&#39;t have the ability to display LaTeX using katex, I would simply have not used these packages. Much of what I take notes on has mathematical notation all over the place, so it is crucial for any notetaking app to be able to display math.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+The Drawbacks
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+Poor Conventional Notetaking
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>The most apparent drawback with using org roam has been my inability to map conventional notes onto this system in an easy manner. The thing with educational content, be it in lecture form or textbook form, is that it hardly lends itself to be sorted into nice chunks separated by specific concepts. I have often experienced attending a lecture or reading a textbook where an entire section is dedicated to the development of multiple intertwining ideas altogether, and this really doesn&#39;t work well with the structure of dividing things up into individual concepts that are then connected with links. Perhaps this actually isn&#39;t as much of a downside as I think it is. There does seem to be some merit to the idea that if I am forced to convert standard expository material into this format, I am much more likely to absorb it. I would need to know how to split up a section into different org roam nodes, which would then force me to truly understand what is going on and how the different concepts are related. Another thing that I haven&#39;t actually explored is the daily note functionality, which might actually be better suited for first writing down whatever is coming at my way from textbooks or lectures. I could then sift through the lecture notes and properly organize them into final org roam nodes. This would perhaps actually help my retention and understanding of the topic by forcing me to revisit everything that I write down. </p>
 <p>
-As soon as he got a break from his studying, he walked over to the closest grocery store and started looking for gum. Something was off. Marary usually went for fruit or mint flavored gum that wasn&#39;t too sweet. Today, however, no matter where he looked, all he could see was sour gum. He scanned every shelf in the gum section to no avail. Being somewhat pressed for time, Marary grabbed a pack of sour gum without looking, thinking that he would come back later to stock up on more acceptable flavors.</p>
-<p>
-He came back home, opened the pack of gum, popped two pieces in his mouth, and went back to his desk to continue studying. After about ten minutes of chewing, Marary felt a mild sense of pain in his canines. He had expected this. This had been his experience with sour hard candy, and it was part of the reason he avoided sour candy and gum like the plague. This time, however, his need for gum had exceeded his distaste for sour acidity. He chewed on through the pain and kept working on practice problems. After about 30 minutes, the gum had lost even the final remaining dregs of flavor, and Marary was ready to spit it out and go for the next couple of pieces. As soon as he spit out the gum, a sharp, stinging pain came onto all four of his canines. The pain subsided within a few seconds, but it left Marary thoroughly shaken. He decided not to go for another piece, and continued studying.</p>
-<p>
-As he tried to complete more practice problems, he realized that his concentration had been completely disturbed. Something didn&#39;t feel right. He kept thinking about the gum. Though sour candy had usually caused him mild pain and trouble, the stinging pain at the end was like nothing he had ever experienced. Marary thought about the contents of the gum. Citric acid. Though citric acid was present in other commonplace foods such as oranges and lemons, Marary felt that the the citric acid in the gum was especially corrosive. Initially, he dismissed it as an irrational thought. But the longer he tried to ignore these thoughts, the more impairing they became. He kept thinking about how even though he had spit out the gum, its flavoring must have remained on his teeth. He imagined the enamel on his teeth slowly corroding away, exposing the incredibly sensitive nerve endings underneath. Just the thought of food touching those nerve endings made Marary pull his lips inward.</p>
-<p>
-He couldn&#39;t take it anymore. Marary jumped out of his chair and ran for the sink in his bathroom. He started vigorously rinsing his mouth with water. A minute later, he stopped and immediately started thinking about whether the water coming out of his sink was neutral. It hadn&#39;t occurred to him that the tap water might itself be slightly acidic. He ran to the nearest drugstore and came back with a pH test strip, and dropped some tap water on it, and compared the color to the provided scale. It was a pH of 6.5. Not good, he thought. He vaguely remembered hearing in his chemistry class that a pH below 7 was considered acidic. Marary started to panic. If the water itself was acidic, it clearly wouldn&#39;t be able to neutralize the acid from the gum. He tried to remember alkaline foods. Nuts, spinach, broccoli. He ran to his pantry and grabbed a fistful of almonds and started eating them. He calmed down, for the moment. He composed himself, and continued working on his problems.</p>
-<p>
-As the night got darker, Marary started getting drowsy. He thought that he had studied quite enough, and he decided to take a warm shower before heading to bed. Thirty seconds after getting into the shower, Marary accidentally got some of the shower water into his mouth. He suddenly remembered the pH reading from before, and at that moment the sharp, stinging pain came back to him as though he had been struck by lightning. Marary jumped out of the shower, turned off the water, and rushed to eat more almonds. At this point, he was convinced that the amount of time his teeth had spent drenched in acid was enough to have caused significant damage to the enamel of his teeth. He worried that any more acidity would lead to his teeth corroding entirely. He decided to visit the dentist&#39;s office the very next day to make sure that his suspicions were correct. He called to see if they had an appointment, and scheduled one for the morning of the next day.</p>
-<p>
-With that, Marary made his way to bed. He turned off the lights, pulled up his blanket, and turned to his right side in order to fall asleep. He couldn&#39;t fall asleep, though. He was restless. In his anxiety, he accidentally clenched his teeth. Sharp pain went up all four of his canines again and he opened his eyes wide. He was sure that he had irreparably damaged his teeth. He placed his index finger on his upper-right canine, and felt it dampen. He immediately turned on the bedroom lights, and stared at his index finger. His finger was drenched in what seemed to be blood from his gums. He touched his canine again, only to get another unbearable sensation of stinging pain, and more blood on his finger. He swore he had also felt his canine starting to move. He went to the bathroom, turned on the lights, and looked into the mirror with an open mouth. Nothing. There was nothing to be seen on his teeth. They all seemed to be perfectly positioned in his mouth with no signs of bleeding or movement.</p>
-<p>
-Marary was bewildered. He swore his gums had been bleeding and his canine nerves had been exposed and his tooth had been on the verge of completely falling off. He was afraid that he had no way of convincing anyone that this had been the case if he could not even convince himself with a mirror. With an upset mind and a shaken resolve, he went back to bed.</p>
-<p>
-As soon as his teeth touched each other, they started hurting again. He tried to ignore them, but the pain just wouldn&#39;t stop. He eventually decided to just keep his mouth open all night. But whenever he was about his fall asleep, his mouth would inadvertently seal shut and he would be awoken with a sharp pain. At this point, Marary was exhausted, frustrated, and sleep deprived. He no longer had the will to keep ignoring the pain. He decided to try one last thing: he got a large, thick ball of cotton, and placed it in his mouth in a way that would prevent his upper and lower teeth from touching each other. He felt somewhat content with this arrangement, and started to doze off. </p>
-<p>
-Soon his saliva started soaking the cotton, making it thinner and thinner. Given the cold weather, Marary&#39;s nose had gotten quite stuffy. In an attempt to breathe in more air, his mouth involuntarily opened itself and sucked in a whole bunch of air, causing the cotton to be pulled right into his throat, causing him to wake up with a start, gasping for air. Marary was startled. Being in a half asleep state, he had almost completely forgotten about his teeth. He spit out the ball of cotton and accidentally clamped down his teeth. In a sudden flash, he remembered about his teeth, and the pain came rushing back.</p>
-<p>
-At this point, Marary was devastated. He was on the verge of tears, and he wanted to pull his hair out. He thought his teeth were surely so corroded at this point, that even a contact with air would trigger the extremely vulnerable nerve endings on his teeth. Marary wanted to cry. He wished he had never gotten the sour gum in the first place. He didn&#39;t care about preserving his teeth anymore. He knew that they had been completely ruined at this point. He just wanted to be free of the pain. He started rummaging around his house, trying to find something that might help him. He laid his eyes on the perfect tool. The next day, Marary called the dentist&#39;s office to tell them that he would no longer need their services. However, they couldn&#39;t quite make out what he was trying to say.</p>
+Coming back to the point, org roam doesn&#39;t map as easily to conventional notetaking as regular org mode does, and requires some additional conversion work. Perhaps that is a good thing in the long run if one can stick to it.</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+LaTeX Notetaking is Suboptimal in General
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>Another thing to note is that LaTeX notetaking, and probably any typesetting based notetaking in general, is quite suboptimal in terms of ease of use when compared to good old pen and paper. I find that mathematical concepts flow quite a bit more smoothly when I am using pen and paper. There is much less friction when converting an abstract idea in my head to symbolic notation on paper. There is an obvious tradeoff here: we are trading ease of use for ease of access (due to search and hyperlinks) and easier preservation (making a backup is trivial compared to pen and paper).</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-2">
+<h2 id="headline-8">
+Final Thoughts
+</h2>
+<div id="outline-text-headline-8" class="outline-text-2">
+<p>This experiment of using org roam has been fairly succesful and helped me take more notes this semester than any semester that came before. By rewarding me for taking notes and making connections, org roam has made studying and reviewing a lot more fun than it used to be. I have seen what some other people&#39;s UI graphs look like, and mine completely pales in comparison. I hope to have a respectable graph by the end of the Spring 2025 semester.</p>
+</div>
+</div>
 
 
   </div>

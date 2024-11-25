@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Technicals on Aaroh&#39;s Blog</title>
+    <link>http://localhost:1313/technical/</link>
+    <description>Recent content in Technicals on Aaroh&#39;s Blog</description>
+    <generator>Hugo -- 0.139.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 24 Nov 2024 16:52:52 -0600</lastBuildDate>
+    <atom:link href="http://localhost:1313/technical/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A review of PUTNAMBENCH</title>
+      <link>http://localhost:1313/technical/putnam-bench/</link>
+      <pubDate>Sun, 24 Nov 2024 16:52:52 -0600</pubDate>
+      <guid>http://localhost:1313/technical/putnam-bench/</guid>
+      <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Chaudhuri et al., where the capabilities of modern &lt;em&gt;nueral models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
+      <content:encoded><![CDATA[
+<p>
+While looking at computer science research areas that I could find interesting, I stumbled upon formal methods, and more specifically, automated symbolic reasoning, theorem proving, and the integration of modern machine learning with formal reasoning. I decided to read some research papers to get a feel for this area, since it looked quite interesting to me. In this article, I am going to review and outline one interesting paper I read in this area. I will continue writing further articles about other papers I read.</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+PUTNAMBENCH
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>The first interesting paper I stumbled upon was the <a href="https://arxiv.org/abs/2407.11214">PUTNAMBENCH</a> paper by Chaudhuri et al., where the capabilities of modern <em>nueral models</em> in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition. </p>
+<p>
+The improvement that PUTNAMBENCH makes on existing benchmarks is that it introduces college level problems into the mix, with some problems even requiring ideas from research level mathematics, according to the paper. A few additional reasons cited for the creation of this benchmark were:</p>
+<ul>
+<li>The limited scope of existing benchmarks</li>
+<li>Existing benchmarks being designed for older frameworks</li>
+<li>Preventing the leakage of benchmark data into the training data for LLMs (in general, the paper claims that this necessitates periodically creating new benchmarks)</li>
+</ul>
+<p>One issue that PUTNAMBENCH had to address was that Putnam problems often aren&#39;t stated as logical propositions. In fact, more often than not, they require the student to both come up with a closed form solution and then prove that the solution is indeed correct. PUTNAMBENCH addresses this issue by decoupling the generation of closed form solutions from the proofs of correctness into two tasks, where success in one task does not hinge on the success of the other (though they might be highly correlated). It seems like the the first task is a strict superset of the first task, though, since it requires not only the generation of a closed form solution, but also a proof of correctness. The second task only asks for a proof of correctness of a pre-provided closed form solution.</p>
+<p>
+PUTNAMBENCH is claimed in the paper to be the first formalization of a large number of Putnam problems in Lean, Isabelle, or Coq, which is what is used to justify the idea that there isn&#39;t much cross-contamination between the dataset produced by the paper and the data used by large language models for training. I found this to be an interesting claim. Large language models probably have seen Putnam problems and their solutions in their natural language forms, but the claim that they haven&#39;t been exposed to formalizations of these problems and their proofs does seem plausible. It is then an interesting question whether or not seeing the natural language variants would give a language model an unfair advantage in the solving of the formalizations. The paper does address the possibility of such an indirect form contamination.</p>
+<p>
+The results of running various theorem proving models on these formalizations was quite astonishing to me, as a newcomer to this field. None of provers were able to get more than even a handful of the problems. I don&#39;t know whether this is typical of benchmarks for formal theorem proving, but it was a surprise to me. It also indicated to me that there is much progress left to be made in this area.</p>
+<p>
+After reading this paper, I was curious to learn about the current state of the art in neurosymbolic reasoning. I wanted to learn how some of the models used (though unsuccesfully) in the PUTNAMBENCH paper worked. I therefore started reading some papers on this area. I also wanted to a bit about theorem proving frameworks, so I also began reading about those.</p>
+</div>
+</div>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>

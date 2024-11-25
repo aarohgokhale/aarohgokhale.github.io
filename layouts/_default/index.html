@@ -1,9 +1,6 @@
 {{ define "main" }}
 
-{{ $ramblingPosts := (where .Site.RegularPages "Section" "ramblings") }}
-{{ $storyPosts := (where .Site.RegularPages "Section" "short-stories") }}
-{{ $allPosts := (union $ramblingPosts $storyPosts) }}
-{{ $recentPosts := first 5 $allPosts }}
+{{ $recentPosts := first 5 .Site.RegularPages }}
 
 {{ .Summary | truncate 200 }}
 
@@ -51,7 +48,7 @@
                 <a href="{{ .Permalink }}">
                     <h3 style="text-decoration: underline">{{ .Title }}</h3>
                 </a>
-                <p class="unselectable">{{ .Summary }}</p>
+                <p class="unselectable">{{ .Summary }}..</p>
                 <br>
             </li>
             {{ end }}

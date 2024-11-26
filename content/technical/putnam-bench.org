@@ -1,5 +1,5 @@
 ---
-title: "A review of PUTNAMBENCH"
+title: "A Summary of PUTNAMBENCH"
 date: 2024-11-24T16:52:52-06:00
 summary: The first interesting paper I stumbled upon was the [[https://arxiv.org/abs/2407.11214][PUTNAMBENCH]] paper by Chaudhuri et al., where the capabilities of modern /neural models/ in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.
 ---

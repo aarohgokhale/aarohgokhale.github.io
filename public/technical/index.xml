@@ -2,17 +2,144 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Technical on Aaroh&#39;s Blog</title>
-    <link>https://aaroh.github.io/technical/</link>
+    <link>http://localhost:1313/technical/</link>
     <description>Recent content in Technical on Aaroh&#39;s Blog</description>
     <generator>Hugo -- 0.139.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 24 Nov 2024 16:52:52 -0600</lastBuildDate>
-    <atom:link href="https://aaroh.github.io/technical/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Nov 2024 11:27:07 -0600</lastBuildDate>
+    <atom:link href="http://localhost:1313/technical/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>A review of PUTNAMBENCH</title>
-      <link>https://aaroh.github.io/technical/putnam-bench/</link>
+      <title>A Summary of &#34;Reasoning With Neural Tensor Networks for Knowledge Base Completion&#34;</title>
+      <link>http://localhost:1313/technical/neural-tensor-kb-completion/</link>
+      <pubDate>Mon, 25 Nov 2024 11:27:07 -0600</pubDate>
+      <guid>http://localhost:1313/technical/neural-tensor-kb-completion/</guid>
+      <description>Here, I summarize and try to explain in detail what I read and understood in the paper entitled &amp;#34;Reasoning With Neural Tensor Networks for Knowledge Base Completion&amp;#34; by Socher, Chen, Manning, and Ng from Stanford.</description>
+      <content:encoded><![CDATA[
+<p>
+Here, I summarize and try to explain in detail what I read and understood in the paper entitled <a href="https://proceedings.neurips.cc/paper/2013/file/b337e84de8752b27eda3a12363109e80-Paper.pdf">&#34;Reasoning With Neural Tensor Networks for Knowledge Base Completion&#34;</a> by Socher, Chen, Manning, and Ng from Stanford.</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Main Ideas
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>The overall goal of the paper is to answer whether two entities, $(e_1, e_2)$, are in a given relation $R$. </p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+Neural Tensor Network
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>This is a modified neural network architecture that has a <em>bilinear</em> tensor layer instead of a standard linear layer that directly relates the two entities. The aim of this model is compute a score that indicates how likely it is for the two entities to be in a given relationship. The function is defined by:</p>
+<p>
+$$g(e_1, R, e_2) = u^{T}_{R} f \left(e_1^T W_{R}^{[1:k]}e_2 + V_{R}\begin{bmatrix}e_1 \\ e_2\end{bmatrix} + b_R\right)$$</p>
+<p>
+$W_{R}^{[1:k]} \in \mathbb{R}^{d \times d \times k}$ is a tensor, and $e_{1}^{T}W_{R}^{[1:k]}e_2$ is what the paper calls a &#34;bilinear tensor product&#34; (I couldn&#39;t find a formal definition of this anywhere online), which is then added to the output of a standard layer, $V_R$, which is then added to the the bias, $b_R$. The whole sum is then passed through $f$, which is elementwise $\tanh$, and finally multiplied on the left by $u_R^{T}$, where $u_R$ is determines how the activated weights are combined to get a signle final score $g \in \mathbb{R}$.</p>
+<p>
+This equation seemed a bit daunting to me at first, so here&#39;s a more careful examination of what is going on:</p>
+<p>
+First, a reminder of what $\tanh$ looks like:</p>
+<figure>
+<img src="/tanh.png" alt="/tanh.png" title="/tanh.png" /><figcaption>
+Credit: Desmos
+</figcaption>
+</figure>
+<p>
+The following sum is fed into an elementwise $\tanh$ that operates on a vector in $\mathbb{R}^{k}$:</p>
+<p>
+$$e_{1}^{T}W_{R}^{[1:k]}e_2 + V_{R}\begin{bmatrix}e_1 \\ e_2\end{bmatrix} + b_R$$</p>
+<ul>
+<li>The easiest to identify thing here is the bias node, which is represented by the vector $b_R$.</li>
+<li>The next easy thing to identify here is the regular neural network layer, represented by the product $V_{R}\begin{bmatrix}e_1 \\ e_2\end{bmatrix}$, where $V_{R} \in \mathbb{R}^{k \times 2d}$ represents the weight matrix that specifies how to linearly combine the input in $k$ different ways. The vector $\begin{bmatrix}e_1 \\ e_2 \end{bmatrix}$ is just a singular vector in $\mathbb{R}^{2d}$ constructed by vertically concatenating the entries of $e_1$ and $e_2$ into one vector. So far so good. The expression $V_{R}\begin{bmatrix}e_1 \\ e_2 \end{bmatrix} + b_R$ itself is taken straight out of the expression for a single neural network layer in a classical neural network, where this sum is then passed through an activation function and then through the remaining layers.</li>
+<li>All that remains to parse is the most interesting and different part of the sum, the bilinear tensor product, $e_{1}^{T}W_{R}^{[1:k]}e_{2}$. This notation was slightly confusing, but a diagram from the paper was illustrative: this operation represents stacking $k$ bilinear forms $e_1^{T}W_{R}^{i}e_2, i \in \{1, \ldots, k\}$ on top of each other to get a vector in $\mathbb{R}^{k}$. The tensor $W_{R}^{[1:k]}$ can be thought of as $k$ slices put together, where each slice is a $d \times d$ matrix relating entries from $e_1$ to entries in $e_2$. A concrete example might be of use: Let $d, k = 2$, let $e_1 = \begin{bmatrix}a \\ b\end{bmatrix}$ and let $e_2 = \begin{bmatrix}c \\ d\end{bmatrix}$. Let $W^{1}_{R} = \begin{bmatrix} w_{11}^1 &amp; w_{12}^1 \\ w_{21}^1 &amp; w_{22}^1 \end{bmatrix}$ and $W_{R}^{2} = \begin{bmatrix} w_{11}^2 &amp; w_{12}^2 \\ w_{21}^2 &amp; w_{22}^2 \end{bmatrix}$. Then $$W_{R}^{1}e_2 = \begin{bmatrix}w_{11}^{1}c + w_{12}^{1}d \\ w_{21}^{1}c + w_{22}^{1}d\end{bmatrix} \text{ and } W_{R}^{2}e_2 = \begin{bmatrix}w_{11}^{2}c + w_{12}^{2}d \\ w_{21}^{2}c + w_{22}^{2}d\end{bmatrix}$$</li>
+</ul>
+<p>Then</p>
+<p>
+$$e_{1}^{T}W_{R}^{1}e_2 = a(w_{11}^{1}c + w_{12}^{1}d) + b(w_{21}^{1}c + w_{22}^{1}d) $$</p>
+<p>
+and</p>
+<p>
+$$e_{1}^{T}W_{R}^{2}e_2 = a(w_{11}^{2}c + w_{12}^{2}d) + b(w_{21}^{2}c + w_{22}^{2}d)$$</p>
+<p>
+The interesting thing to note in both of these forms is that each entry in $e_1$ gets to be multiplied with each entry in $e_2$, and the product of any two individual entries is given a distinct weight. The final &#34;bilinear tensor product&#34; is then</p>
+<p>
+$$e_{1}^{T}W_{R}^{[1:2]}e_{2} = \begin{bmatrix}
+w_{11}^{1}ac + w_{12}^{1}ad + w_{21}^{1}bc + w_{22}^{1}bd \\
+w_{11}^{2}ac + w_{12}^{2}ad + w_{21}^{2}bc + w_{22}^{2}bd
+\end{bmatrix}$$</p>
+<p>
+What I have understood through this example is that the bilinear tensor product term is just $k$ bilinear forms stacked on top of each other. What this means is that each entry in $e_1$ gets to be multiplied with each entry in $e_2$ $k$ times with $k$ different weights. Thus, we get to turn $k$ knobs, where a knob is a $d \times d$ matrix representing the strength of association between pairs of entries in $e_1$ and $e_2$. The paper explains that this bilinear term allows us the model to explicitly relate the two inputs multiplicatively, rather than just having an implict nonlinear association that we would get with this term removed.</p>
+<p>
+In summary, not only do we get to control how the stacked input vector is recombined, we also get to control how pairwise products of the vector entries are weighted.</p>
+<p>
+Finally, once the big sum is passed through the $\tanh$ activation function, the resulting $k$-vector gets multiplied by $u_{R}^{T}$, which is a row $k$-vector, thus giving us a single score at the very end.</p>
+<p>
+The paper points out that the Neural Tensor Network model, as defined above, combines the ideas and strengths from several different model types.</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+Loss Function
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+The loss function or training objective in this paper is called a &#34;contrastive max-margin&#34; objective function. The paper descrbes one main idea used to motivate this objective function: if we have a training set $T^{(i)} = (e_{1}^{(i)}, R^{(i)}, e_{2}^{(i)})$, each triplet that actually belongs to the training set should receive a higher score than a triplet where one of the entities is replaced randomly with a new entity. This seems like a natural requirement, since the relationships defined by triplets in the training set are <em>known</em> to be true. The triplets where an entity has been replaced by a random entity is called a <em>corrupted</em> triplet. The set of corrupted triplets is denoted by $T_{c}^{(i)} = (e_{1}^{(i)}, R^{(i)}, e_c)$. Here, $e_c$ has been randomly sampled from the set of all entities that can appear at that position in the relation $R^{(i)}$. (‼ one point I was confused about here was whether or not $e_c$ is parameterized by $i$. It seems like it should be, since the possible choices of $e_c$ depends on the relation $R^{(i)}$, which itself is indexed by $i$). What I found a little bit interesting here is that the corruption only happens in one position. A relation $R$ doesn&#39;t have to be symmetric, which means that a corruption $(e_1, R, e_c)$ is different from a corruption $(e_c, R_, e_2)$. Why, then, do we only corrupt on the right?</p>
+<p>
+As we saw earlier, the Neural Tensor Network model itself is parameterized by the choice of relation $R$, and in particular, each relation $R$ has its own set of weight matrices/tensors, $W_R, V_R, u_R, b_R$. Here, I faced another point of confusion. The paper defines $\mathbf{\Omega}$ to be the set of NTN parameters for <em>all</em> relationships, and it is comprised of $\mathbf{u}$, $\mathbf{W}$, $\mathbf{V}$, $\mathbf{b}$, and $\mathbf{E}$. While the first four of these are clear, I am a little confused about what $E$ is supposed to be. Is it the set of all entities? Finally, the paper defines the objective function as:</p>
+<p>
+$$J(\mathbf{\Omega}) = \sum_{i = 1}^{N}\sum_{c = 1}^{C}\max\left(0, 1 - g(T^{(i)}) + g(T_{c}^{(i)})\right) + \lambda ||\mathbf{\Omega}||_{2}^{2}$$</p>
+<p>
+Where $N$ is the number of training points, $C$ is the number of randomly sampled corrupted triplets of each given correct triplet (i.e. in the training set). The max in the summation forces the the minimizer to drive $g(T^{(i)})$ to be as much larger than $g(T_{c}^{(i)})$ as possible, up until it reaches exactly $1$ more than $g(T_{c}^{(i)})$, at which point any additional increase in $g(T^{(i)})$ is meaningless for the output $J$. The $\lambda ||\mathbf{\Omega}||_{2}^{2}$ summand is a standard $L_2$ regularization term that helps with overfitting.</p>
+<p>
+This equation for the objective function was a little puzzling initially, since it isn&#39;t quite clear what it means to take the $2$-norm of $\mathbf{\Omega}$, which itself wasn&#39;t defined very precisely. Though reading onto the paragrah after that reveals that this ambiguous notation is actually defining a set of five different objective functions (perhaps we can the final objective as the minimization of their sum?) This is still a point of slight unclarity for me. The paper uses the <a href="https://en.wikipedia.org/wiki/Limited-memory_BFGS">L-BFGS</a> nonlinear optimization method to find a local minimum of the cost function. </p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+Vector Representations
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>In the framework being used for this paper, each entity has a vector representation $e \in \mathbb{R}^d$. It seems like this framework was being used in multiple papers in the early 2010s, including in <a href="https://ronan.collobert.com/pub/2011_knowbases_aaai.pdf">&#34;Learning Structured Embeddings of Knowledge Bases&#34;</a> by Bordes, Weston, Collobert, and Bengio, in which a way of assigning entities vector representations is discussed. </p>
+<p>
+The NTN paper (the one currently being summarized) proposes a new scheme for representing entities using the composition of <em>word vectors</em>, which are vectors in $\mathbb{R}^d$. An entity is represnted by the average of the vectors of words that compose to it. For example, $v_{\textit{homo sapiens}} = 0.5(v_{\textit{homo}} + v_{\textit{sapiens}})$. </p>
+<p>
+The total number of entities is $N_E$ and the total number of unique words is $N_W$. If the training is done on words, the entity embedding is $E \in \mathbb{R}^{d \times N_W}$ and if the training is performed with whole vectors, the entity embedding is $E \in \mathbb{R}^{d \times N_E}$. </p>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+Experimental Results
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<p>The experiments performed in the paper were quite succesful, achieving accuracies of $86.2\%$ on the WordNet dataset and $90\%$ on the FreeBase dataset, though the improvement seemed marginal over an existing model called the Bilinear Model (not quite the same as the NTN, though it uses an idea that inspired the NTN).</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-2">
+<h2 id="headline-6">
+Final Thoughts
+</h2>
+<div id="outline-text-headline-6" class="outline-text-2">
+<p>This was my first look at Knowledge Base completion. I thought it was quite an interesting area and I might look further into it later. What brought me to this paper was the paper called <a href="https://arxiv.org/abs/1705.11040">End-To-End Differentiable Proving</a> by Rocktäschel and Riedel, which I wanted to study as a part of my dive into automated and neurosymbolic reasoning. I will attempt to summarize that paper next.</p>
+</div>
+</div>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>A Summary of &#34;End-to-End Differentiable Proving&#34;</title>
+      <link>http://localhost:1313/technical/end-to-end-diff-prove/</link>
+      <pubDate>Mon, 25 Nov 2024 00:54:50 -0600</pubDate>
+      <guid>http://localhost:1313/technical/end-to-end-diff-prove/</guid>
+      <description>&lt;p&gt;
+I have been reading and studying a paper by Rocktäschel and Riedel entitled &amp;#34;End-to-End Differential Proving&amp;#34;, where they develop a  &lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>
+I have been reading and studying a paper by Rocktäschel and Riedel entitled &#34;End-to-End Differential Proving&#34;, where they develop a  </p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>A Summary of PUTNAMBENCH</title>
+      <link>http://localhost:1313/technical/putnam-bench/</link>
       <pubDate>Sun, 24 Nov 2024 16:52:52 -0600</pubDate>
-      <guid>https://aaroh.github.io/technical/putnam-bench/</guid>
+      <guid>http://localhost:1313/technical/putnam-bench/</guid>
       <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Chaudhuri et al., where the capabilities of modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
       <content:encoded><![CDATA[
 <p>

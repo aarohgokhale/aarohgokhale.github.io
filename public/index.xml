@@ -6,12 +6,34 @@
     <description>Recent content on Aaroh&#39;s Blog</description>
     <generator>Hugo -- 0.139.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Nov 2024 11:27:07 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 26 Nov 2024 09:11:00 -0600</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Summary of &#34;End-to-End Differentiable Proving&#34;</title>
+      <link>http://localhost:1313/technical/end-to-end-diff-prove/</link>
+      <pubDate>Tue, 26 Nov 2024 09:11:00 -0600</pubDate>
+      <guid>http://localhost:1313/technical/end-to-end-diff-prove/</guid>
+      <description>&lt;p&gt;
+Here, I summarize and try to explain in detail what I learned from the paper entitled &amp;#34;End-to-End Differentiable Proving&amp;#34;&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+Main Ideas
+&lt;/h2&gt;
+&lt;/div&gt;</description>
+      <content:encoded><![CDATA[
+<p>
+Here, I summarize and try to explain in detail what I learned from the paper entitled &#34;End-to-End Differentiable Proving&#34;</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Main Ideas
+</h2>
+</div>
+]]></content:encoded>
+    </item>
     <item>
       <title>A Summary of &#34;Reasoning With Neural Tensor Networks for Knowledge Base Completion&#34;</title>
       <link>http://localhost:1313/technical/neural-tensor-kb-completion/</link>
-      <pubDate>Mon, 25 Nov 2024 11:27:07 -0600</pubDate>
+      <pubDate>Tue, 26 Nov 2024 01:00:00 -0600</pubDate>
       <guid>http://localhost:1313/technical/neural-tensor-kb-completion/</guid>
       <description>Here, I summarize and try to explain in detail what I read and understood in the paper entitled &amp;#34;Reasoning With Neural Tensor Networks for Knowledge Base Completion&amp;#34; by Socher, Chen, Manning, and Ng from Stanford.</description>
       <content:encoded><![CDATA[
@@ -122,17 +144,6 @@ Final Thoughts
 <p>This was my first look at Knowledge Base completion. I thought it was quite an interesting area and I might look further into it later. What brought me to this paper was the paper called <a href="https://arxiv.org/abs/1705.11040">End-To-End Differentiable Proving</a> by Rocktäschel and Riedel, which I wanted to study as a part of my dive into automated and neurosymbolic reasoning. I will attempt to summarize that paper next.</p>
 </div>
 </div>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>A Summary of &#34;End-to-End Differentiable Proving&#34;</title>
-      <link>http://localhost:1313/technical/end-to-end-diff-prove/</link>
-      <pubDate>Mon, 25 Nov 2024 00:54:50 -0600</pubDate>
-      <guid>http://localhost:1313/technical/end-to-end-diff-prove/</guid>
-      <description>&lt;p&gt;
-I have been reading and studying a paper by Rocktäschel and Riedel entitled &amp;#34;End-to-End Differential Proving&amp;#34;, where they develop a  &lt;/p&gt;</description>
-      <content:encoded><![CDATA[<p>
-I have been reading and studying a paper by Rocktäschel and Riedel entitled &#34;End-to-End Differential Proving&#34;, where they develop a  </p>
 ]]></content:encoded>
     </item>
     <item>

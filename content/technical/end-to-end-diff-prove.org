@@ -1,8 +1,10 @@
 ---
 title: "A Summary of \"End-to-End Differentiable Proving\""
-date: 2024-11-25T00:54:50-06:00
+date: 2024-11-26T09:11:00-06:00
 summary: 
 draft: true
 ---
 
-I have been reading and studying a paper by Rocktäschel and Riedel entitled "End-to-End Differential Proving", where they develop a  
+Here, I summarize and try to explain in detail what I learned from the paper entitled "End-to-End Differentiable Proving"
+
+* Main Ideas

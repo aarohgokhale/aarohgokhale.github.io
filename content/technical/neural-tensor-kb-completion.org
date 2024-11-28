@@ -1,6 +1,6 @@
 ---
 title: "A Summary of \"Reasoning With Neural Tensor Networks for Knowledge Base Completion\""
-date: 2024-11-25T11:27:07-06:00
+date: 2024-11-26T01:00:00-06:00
 summary: Here, I summarize and try to explain in detail what I read and understood in the paper entitled "Reasoning With Neural Tensor Networks for Knowledge Base Completion" by Socher, Chen, Manning, and Ng from Stanford.
 ---
 
@@ -71,7 +71,7 @@ This equation for the objective function was a little puzzling initially, since 
 ** Vector Representations
 In the framework being used for this paper, each entity has a vector representation $e \in \mathbb{R}^d$. It seems like this framework was being used in multiple papers in the early 2010s, including in [[https://ronan.collobert.com/pub/2011_knowbases_aaai.pdf]["Learning Structured Embeddings of Knowledge Bases"]] by Bordes, Weston, Collobert, and Bengio, in which a way of assigning entities vector representations is discussed. 
 
-The NTN paper (the one currently being summarized) proposes a new scheme for representing entities using the composition of /word vectors/, which are vectors in $\mathbb{R}^d$. An entity is represnted by the average of the vectors of words that compose to it. For example, $v_{\textit{homo sapiens}} = 0.5(v_{\textit{homo}} + v_{\textit{sapiens}})$. 
+The NTN paper (the one currently being summarized) states that the NTN model works well with randomly initialized entity vectors, which are then learned for each entity through the training process (since the actually relationships between entity vectors are part of the traning data, which then translates to the learned function $g$). The paper also proposes a new scheme for representing entities using the composition of /word vectors/, which are vectors in $\mathbb{R}^d$. An entity is represnted by the average of the vectors of words that compose to it. For example, $v_{\textit{homo sapiens}} = 0.5(v_{\textit{homo}} + v_{\textit{sapiens}})$. This can then embed some similarities between entities before even training. The example used in the training is /homo erectus/. If this entity hasn't been seen before, a fact about /homo sapiens/ can still be extended to it due to the fact that $v_{\textit{homo}}$ is in the word compositions for both vector representations, which means that $v_{\textit{homo erectus}}$ will start out relatively close to $v_{\textit{homo sapiens}}$ even though $v_{\textit{erectus}}$ is random.
 
 The total number of entities is $N_E$ and the total number of unique words is $N_W$. If the training is done on words, the entity embedding is $E \in \mathbb{R}^{d \times N_W}$ and if the training is performed with whole vectors, the entity embedding is $E \in \mathbb{R}^{d \times N_E}$. 
 

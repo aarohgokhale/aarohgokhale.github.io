@@ -1,6 +1,6 @@
 ---
 title: "A Summary of \"End-to-End Differentiable Proving\""
-date: 2024-11-26T09:11:00-06:00
+date: 2024-11-30T09:11:30-06:00
 summary: Here, I summarize and try to explain in detail what I learned from the paper entitled "End-to-End Differentiable Proving" by Rocktäschel and Riedel.
 ---
 

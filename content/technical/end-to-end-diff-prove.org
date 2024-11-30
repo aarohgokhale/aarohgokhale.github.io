@@ -1,10 +1,107 @@
 ---
 title: "A Summary of \"End-to-End Differentiable Proving\""
 date: 2024-11-26T09:11:00-06:00
-summary: 
-draft: true
+summary: Here, I summarize and try to explain in detail what I learned from the paper entitled "End-to-End Differentiable Proving" by Rocktäschel and Riedel.
 ---
 
-Here, I summarize and try to explain in detail what I learned from the paper entitled "End-to-End Differentiable Proving"
+Here, I summarize and try to explain in detail what I learned from the paper entitled [[https://arxiv.org/abs/1705.11040]["End-to-End Differentiable Proving"]] by Rocktäschel and Riedel.
 
 * Main Ideas
+The main idea of this paper is to combine strategies from automated symbolic reasoning and learned vector representations symbolic entities to get a hybrid model of theorem proving, where proof search is enhanced by indicating that a proof is more likely to succeed if the entities within the goal have high similarity to entities in known proofs.
+
+** Basics
+The first barrier to entry in this paper is understanding the logic programming framework being used. Theorems are posed as queries to a database, proving a theorem involves systematically substituting the terms in the query until something that already exists in the database is reached, at which point the query is considered a success. If nothing is found, it fails.
+*** Definitions:
+- *atom*: An /atom/ consists of a /predicate/ and a list of terms. For example, something like $[\text{isCoprimeWith}, 8, 9]$. More generally, $[R, t_1, t_2, \ldots, t_n]$, where $R$ is an $n$-ary relation called the predicate. In this paper, a term can be either a /constant/ or a /variable/. The example they use is $[\text{grandfatherOf}, Q, \text{BART}]$, where $\text{grandfatherOf}$ is the predicate, $Q$ is a variable, and $\text{BART}$ is a constant.
+
+- *rule*: A /rule/ is a structure of the form $H \mathrel{:-} \mathbb{B}$, where $H$ is an atom called the /head/ and $\mathbb{B}$ is a possibly empty conjuction of atoms called the /body/ of the rule. From my understanding, a rule of the form $q \mathrel{:-} [p_1, p_2, \ldots, p_N]$ describes the implication $p_1 \land p_2 \land \ldots \land p_N \rightarrow q$. A rule with no free variables (all the variables are universally quantified) is called a /ground rule/, and a ground rule with no body is called a /fact/.
+
+- *substitution set*: A /substitution set/ is a set of the form $\psi = \{X_1/t_1, \ldots, X_n/t_n\}$, which represents an assignment of free variables $X_1, \ldots, X_n$ to terms $t_1, \ldots, t_n$ respectively. Applying a substitution to an atom replaces all occurrences of variables in the substitution set with their repsective terms.
+
+*** Backward Chaining Algorithm:
+The algorithm used to prove a statement or to The basic idea of the algorithm is as follows: a function called OR is applied to the query (the goal). It iterates through the set of all rules and finds a [[https://en.wikipedia.org/wiki/Unification_(computer_science)][unification]] of the goal with the rule's head (by trying to substitute the variables in either formula to match each other, and by making sure that when both terms are constants that they are equal). If OR is succesful in finding a unification, it calls a function called AND, which then proves all the atoms in the body of that rule (since each rule is an implication based on a conjuction of premises). AND uses the substitution set that was used to unify the goal with the rule head, and applies it to the subgoals (the atoms in the body). It then calls OR on the subgoals one by one to prove them.
+
+As someone with no experience in prolog and this framework of thinking, I found the pseudocode for the backward chaining algorithm a little bit cryptic. Below I transliterate the pseudocode from the appendix of the paper in just plain text (the original had $\LaTeX$):
+
+#+begin_src
+ or(G, S) = [S' | S' in and(B, unify(H, G, S)) for H :- B in K]
+
+ and(_, FAIL) = FAIL
+ and([], S) = S
+ and(G : bigG, S) = [S'' | S'' in and(bigG, S') for S' in or(substitute(G, S), S)]
+
+ unify(_,_,FAIL) = FAIL
+ unify([],[],S) = S
+ unify([],_,_) = FAIL
+ unify(_,[],_) = FAIL
+ unify(h : H, g : G, S) = unify(H, G, S + {h/g} if h in V, 
+                                      S + {g/h} if g in V and h not in V,
+                                      S         if g = h
+                                      FAIL      otherwise)
+
+ substitute([], _) = []
+ substitute(g : G, S) = x if g/x in S, g otherwise : substitute(G,S)
+#+end_src
+
+*** Explanation: 
+The first function, =or=, is collecting sets =S'= such that they belong to the result of taking applying =and= to the bodies, =B=, of the rule heads, =H=, that manage to be unified with the goal, =G=. The =and= function, when given a set of subgoals, called =bigG,= and an existing substitution set =S=, goes through the subgoals one by one and applies =or= to them after applying the substitution corresponding to =S=. If =or= succeeds, it returns a new substitution set =S'=, which can then be used for the remaining subgoals in =bigG=. If =and= succesfully goes through all subgoals, it returns a final set of substitution sets that essentially together contain the proof for =G=. The logic used for =unify= and =substitute= is really straightforward, so I won't go into that here. The notational quirk that I was somewhat unware of, is the use of the colon =:= to denote splitting a list's first element from the rest of the list. This is really quite similar to the way Haskell splits lists, with the notation =[x:xs]= used to denote the list as a whole but with the first element =x= and the rest of the list =xs= accessible as values.
+
+** Differentiable Prover
+The main thing defined in this paper is the NTP (Neural Theorem Prover), which is a neural network that takes in a goal and tries to prove it using a modified version of prolog's backward chaining algorithm, and spits out a sucess score. NTPS are defined in terms of /modules/, which are subgraphs that are designed for one particular task that is part of a larger goal of the whole network. Each module takes atoms, rules, and a /proof state/ as input, and returns a list of new proof states. A proof state is a tuple $S = (\psi, \rho)$, where $\psi$ is the substitution set constructed in the proof so far, and $\rho$ is a neural network that outputs a real valued success score of a partial proof. Once a module is constructed, it recursively instantiates submodules to continue the proof. The substitution set of a proof state $S$ is denoted $S_{\psi}$, and the corresponding neural network for calculating proof success is denoted $S_{\rho}$.
+
+*** Unification Module
+One of the main modifications that NTPs make to the original backward chaining algorithm is that when unifying two atoms, symbol comparison is replaced with a computation that measures the similarity of the vector representations of those two symbols. The example used is the comparison of the predicates =grandfatherOf= and =grandpaOf=, which aren't symbolically the same, but which can have very close /learned representations/, using something like [[https://arxiv.org/pdf/1606.06357][ComplEx]]. The =unify= module updates the input substitution set and creates a neural network for comparing vector representations of non-variable symbols in two sequences of terms (i.e. the terms in the two atoms). The module iterates pairwise through the terms of the two atoms being compared, and if one of the symbols is a variable, a substitution is added to the substitution set, and if they are both constants, their vector representations are compared using a [[https://en.wikipedia.org/wiki/Radial_basis_function_kernel][Radial Basis Function Kernel]].
+
+The following is the pseudocode for the =unify= module taken directly from the paper:
+
+[[/unify.png]]
+
+One thing that confused me about this is on line 4, where there seem to be two assignments. My educated guess is that they meant to say that $S' = (S'_{\psi}, S'_{\rho})$, but accidentally ended up writing $\text{unify}_{\theta}(H, G, S') = (S'_{\psi}, S'_{\rho})$, since only the former makes sense as a recursive definition.
+
+Moving on to actually analyzing the code, the two things of significance are the definitions of $S_{\psi}'$ and $S_{\rho}'$. The main pseudocode is very similar to the backward chaining pseudocode from earlier, with a couple of subtle differences. One difference is that there is no pattern match for the case $\text{unify}_{\theta}(\_,\_,\text{FAIL})$, since the final pattern match never results in a call to $\text{unify}_{\theta}$ with $S' = \text{FAIL}$ like it did in the original pseudocode. Another difference is that due to the new structure of $S$, the final case constructs the two different components of $S'$, only one of which was seen in the previous case (namely, $S_{\psi}'$). Another thing to notice is that $S_{\psi}'$ does not result in $\text{FAIL}$ even if neither term is a variable and the terms aren't equal. This is because the $S_{\rho}$ component explicitly contains the calculation of a score for the cases when neither term is a variable, which is the term $$\exp\left(\frac{-||\mathbf{\theta}_{h:} - \mathbf{\theta}_{g:}||_{2}}{2\mu^2}\right)$$
+
+Observe that when $h$ and $g$ are the same, they will have the same vector representation, and thus $\mathbf{\theta}_{g:} = \mathbf{\theta}_{h:}$, which results in $S_{\rho} = e^0 = 1$. The futher apart the vectors $\theta_{g:}$ and $\theta_{h:}$ are (with repsect to the Euclidean metric), the larger the norm of their difference is, which in turn translates to a smaller value of $S_{\rho}'$. In fact, the decay is exponential which means that only really similar vectors get high scores. Note that we are taking the minimum of this new score and the old score, which means that by the end of the algorithm, the remaining value of $S^{(n)}_{\rho}$ will be decided by the pair of terms furthest away from each other in their vector representations.
+
+#+CAPTION: Credit: Desmos
+[[/exp_decay.png]]
+
+Another observation pointed out in the paper is that with this new algorithm, the only cases where the $\text{FAIL}$ output can be achieved is when the two atoms don't have the same number of terms (i.e. arity mismatch).
+
+*** OR Module
+The =or= module is defined as
+
+[[/or.png]]
+
+The knowledge base, as a set of rules, is denoted by $\mathfrak{K}$. The =or= module in this case differs from the original symbolic =or= function in that it takes a new input, $d \in \mathbb{N}$, which defines the maximum proof depth of the neural network, and that it now uses the =unify= module, defined above, and the =and= module, defined below. The main difference between the symbolic and the neural =or= modules is that the neural module can capture similarities between different symbolic terms because it uses the neural =unify= module.
+
+*** AND Module
+The =and= module is defined as
+
+[[/and.png]]
+
+The new parameter, $d$, introduces one new case, where we automatically fail if $d = 0$. The main case (line 4) itself is different in that it uses the neural versions of =and= and =or= (the =substitute= function is actually the exact same as before), and makes sure that subsequent calls to =or= and =and= get lower proof depths.
+
+*** Final Model
+The final aggregate model for proving a goal $G$ using a Knowledge Base $\mathfrak{K}$ with parameters $\mathbf{\theta}$ and proof depth $d$ is given by
+
+[[/final.png]]
+
+*** Analysis of Final Model
+The final model takes in two inputs, the goal $G$, and the maximum proof depth, $d$. It then iterates through all the successful solutions produced by $\text{or}_{\mathbf{\theta}}^{\mathfrak{K}}(G,d,(\varnothing, 1))$, and finds the one with the highest $S_{\rho}$ score. The call $or_{\mathbf{\theta}}^{\mathfrak{K}}(G,d,(\varnothing, 1))$ starts by constructing several =unify= modules, which are then all connected to =and= modules, which then goes through =substitue= before going back to =or= with depth $d - 1$. This continues until there is either a succesful solution, or if $d = 0$ or unification fails, which only happens if arity doesn't match.
+
+** Training
+*** Training Objective
+The paper uses a /negative log-likelihood/ loss function on the proof success score defined above. This paper also uses corrupted fact triples much in the same way that the paper on [[/technical/neural-tensor-kb-completion][NTNs]] used them for training, with the main difference being that the corrupted data is explicitly given a score of $0$. The labeled training data is the set $\mathcal{T}$. The loss function is given by
+
+$$ \mathcal{L}_{\text{ntp}_{\mathbf{\theta}}^{\mathfrak{K}}} = \sum_{([s,i,j], y) \in \mathcal{T}} -y\log(\text{ntp}_{\mathbf{\theta}}^{\mathfrak{K}}([s,i,j],d)_{\rho}) - (1 - y)\log(1 - \text{ntp}_{\mathbf{\theta}}^{\mathfrak{K}}([s,i,j],d)_{\rho})$$
+
+where $[s, i, j]$ is an atom and $y$ is the labeled proof score, which is $1$ for original ground atoms and $0$ for the corrupted ones that were added in later.
+
+** Experimental Results
+Looking at the table of results, NTP$\lambda$ (NTP combined with ComplEx) had comparable results with ComplEx across the board, even though the accuracy was slighly higher in NTP$\lambda$ for most metrics. The paper points out that one advantange that NTPs have is that they are more interpretable, in the sense that their induced rules can be examined.
+
+** But what is "End-To-End Differentiable"?
+End-To-End Differentiability, from what I have understood, refers to the fact that each of the modules within the larger =ntp= module has a derivative with respect to the vector representations of terms, making it possible to perform gradient descent on the loss. According to the appendix, the caveat is that the graph is so large that it becomes infeasible to backpropogate through it to get an exact gradient, which means that they resort to a heuristic of the gradient.
+
+* Final Thoughts
+This paper was quite interesting and exposed me to several new concepts in automated reasoning and machine learning. I am not so sure whether this area has potential for future success, but it could remain in my purview. 

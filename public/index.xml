@@ -13,20 +13,192 @@
       <link>http://localhost:1313/technical/end-to-end-diff-prove/</link>
       <pubDate>Tue, 26 Nov 2024 09:11:00 -0600</pubDate>
       <guid>http://localhost:1313/technical/end-to-end-diff-prove/</guid>
-      <description>&lt;p&gt;
-Here, I summarize and try to explain in detail what I learned from the paper entitled &amp;#34;End-to-End Differentiable Proving&amp;#34;&lt;/p&gt;
-&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
-&lt;h2 id=&#34;headline-1&#34;&gt;
-Main Ideas
-&lt;/h2&gt;
-&lt;/div&gt;</description>
+      <description>Here, I summarize and try to explain in detail what I learned from the paper entitled &amp;#34;End-to-End Differentiable Proving&amp;#34; by Rocktäschel and Riedel.</description>
       <content:encoded><![CDATA[
 <p>
-Here, I summarize and try to explain in detail what I learned from the paper entitled &#34;End-to-End Differentiable Proving&#34;</p>
+Here, I summarize and try to explain in detail what I learned from the paper entitled <a href="https://arxiv.org/abs/1705.11040">&#34;End-to-End Differentiable Proving&#34;</a> by Rocktäschel and Riedel.</p>
 <div id="outline-container-headline-1" class="outline-2">
 <h2 id="headline-1">
 Main Ideas
 </h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>The main idea of this paper is to combine strategies from automated symbolic reasoning and learned vector representations symbolic entities to get a hybrid model of theorem proving, where proof search is enhanced by indicating that a proof is more likely to succeed if the entities within the goal have high similarity to entities in known proofs.</p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+Basics
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>The first barrier to entry in this paper is understanding the logic programming framework being used. Theorems are posed as queries to a database, proving a theorem involves systematically substituting the terms in the query until something that already exists in the database is reached, at which point the query is considered a success. If nothing is found, it fails.</p>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+Definitions:
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<ul>
+<li><strong>atom</strong>: An <em>atom</em> consists of a <em>predicate</em> and a list of terms. For example, something like $[\text{isCoprimeWith}, 8, 9]$. More generally, $[R, t_1, t_2, \ldots, t_n]$, where $R$ is an $n$-ary relation called the predicate. In this paper, a term can be either a <em>constant</em> or a <em>variable</em>. The example they use is $[\text{grandfatherOf}, Q, \text{BART}]$, where $\text{grandfatherOf}$ is the predicate, $Q$ is a variable, and $\text{BART}$ is a constant.</li>
+<li><strong>rule</strong>: A <em>rule</em> is a structure of the form $H \mathrel{:-} \mathbb{B}$, where $H$ is an atom called the <em>head</em> and $\mathbb{B}$ is a possibly empty conjuction of atoms called the <em>body</em> of the rule. From my understanding, a rule of the form $q \mathrel{:-} [p_1, p_2, \ldots, p_N]$ describes the implication $p_1 \land p_2 \land \ldots \land p_N \rightarrow q$. A rule with no free variables (all the variables are universally quantified) is called a <em>ground rule</em>, and a ground rule with no body is called a <em>fact</em>.</li>
+<li><strong>substitution set</strong>: A <em>substitution set</em> is a set of the form $\psi = \{X_1/t_1, \ldots, X_n/t_n\}$, which represents an assignment of free variables $X_1, \ldots, X_n$ to terms $t_1, \ldots, t_n$ respectively. Applying a substitution to an atom replaces all occurrences of variables in the substitution set with their repsective terms.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+Backward Chaining Algorithm:
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<p>The algorithm used to prove a statement or to The basic idea of the algorithm is as follows: a function called OR is applied to the query (the goal). It iterates through the set of all rules and finds a <a href="https://en.wikipedia.org/wiki/Unification_(computer_science)">unification</a> of the goal with the rule&#39;s head (by trying to substitute the variables in either formula to match each other, and by making sure that when both terms are constants that they are equal). If OR is succesful in finding a unification, it calls a function called AND, which then proves all the atoms in the body of that rule (since each rule is an implication based on a conjuction of premises). AND uses the substitution set that was used to unify the goal with the rule head, and applies it to the subgoals (the atoms in the body). It then calls OR on the subgoals one by one to prove them.</p>
+<p>
+As someone with no experience in prolog and this framework of thinking, I found the pseudocode for the backward chaining algorithm a little bit cryptic. Below I transliterate the pseudocode from the appendix of the paper in just plain text (the original had $\LaTeX$):</p>
+<div class="src src-text">
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span> or(G, S) = [S&#39; | S&#39; in and(B, unify(H, G, S)) for H :- B in K]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> and(_, FAIL) = FAIL
+</span></span><span style="display:flex;"><span> and([], S) = S
+</span></span><span style="display:flex;"><span> and(G : bigG, S) = [S&#39;&#39; | S&#39;&#39; in and(bigG, S&#39;) for S&#39; in or(substitute(G, S), S)]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> unify(_,_,FAIL) = FAIL
+</span></span><span style="display:flex;"><span> unify([],[],S) = S
+</span></span><span style="display:flex;"><span> unify([],_,_) = FAIL
+</span></span><span style="display:flex;"><span> unify(_,[],_) = FAIL
+</span></span><span style="display:flex;"><span> unify(h : H, g : G, S) = unify(H, G, S + {h/g} if h in V, 
+</span></span><span style="display:flex;"><span>                                      S + {g/h} if g in V and h not in V,
+</span></span><span style="display:flex;"><span>                                      S         if g = h
+</span></span><span style="display:flex;"><span>                                      FAIL      otherwise)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> substitute([], _) = []
+</span></span><span style="display:flex;"><span> substitute(g : G, S) = x if g/x in S, g otherwise : substitute(G,S)</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+Explanation: 
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<p>The first function, <code class="verbatim">or</code>, is collecting sets <code class="verbatim">S&#39;</code> such that they belong to the result of taking applying <code class="verbatim">and</code> to the bodies, <code class="verbatim">B</code>, of the rule heads, <code class="verbatim">H</code>, that manage to be unified with the goal, <code class="verbatim">G</code>. The <code class="verbatim">and</code> function, when given a set of subgoals, called <code class="verbatim">bigG,</code> and an existing substitution set <code class="verbatim">S</code>, goes through the subgoals one by one and applies <code class="verbatim">or</code> to them after applying the substitution corresponding to <code class="verbatim">S</code>. If <code class="verbatim">or</code> succeeds, it returns a new substitution set <code class="verbatim">S&#39;</code>, which can then be used for the remaining subgoals in <code class="verbatim">bigG</code>. If <code class="verbatim">and</code> succesfully goes through all subgoals, it returns a final set of substitution sets that essentially together contain the proof for <code class="verbatim">G</code>. The logic used for <code class="verbatim">unify</code> and <code class="verbatim">substitute</code> is really straightforward, so I won&#39;t go into that here. The notational quirk that I was somewhat unware of, is the use of the colon <code class="verbatim">:</code> to denote splitting a list&#39;s first element from the rest of the list. This is really quite similar to the way Haskell splits lists, with the notation <code class="verbatim">[x:xs]</code> used to denote the list as a whole but with the first element <code class="verbatim">x</code> and the rest of the list <code class="verbatim">xs</code> accessible as values.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+Differentiable Prover
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>The main thing defined in this paper is the NTP (Neural Theorem Prover), which is a neural network that takes in a goal and tries to prove it using a modified version of prolog&#39;s backward chaining algorithm, and spits out a sucess score. NTPS are defined in terms of <em>modules</em>, which are subgraphs that are designed for one particular task that is part of a larger goal of the whole network. Each module takes atoms, rules, and a <em>proof state</em> as input, and returns a list of new proof states. A proof state is a tuple $S = (\psi, \rho)$, where $\psi$ is the substitution set constructed in the proof so far, and $\rho$ is a neural network that outputs a real valued success score of a partial proof. Once a module is constructed, it recursively instantiates submodules to continue the proof. The substitution set of a proof state $S$ is denoted $S_{\psi}$, and the corresponding neural network for calculating proof success is denoted $S_{\rho}$.</p>
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+Unification Module
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<p>One of the main modifications that NTPs make to the original backward chaining algorithm is that when unifying two atoms, symbol comparison is replaced with a computation that measures the similarity of the vector representations of those two symbols. The example used is the comparison of the predicates <code class="verbatim">grandfatherOf</code> and <code class="verbatim">grandpaOf</code>, which aren&#39;t symbolically the same, but which can have very close <em>learned representations</em>, using something like <a href="https://arxiv.org/pdf/1606.06357">ComplEx</a>. The <code class="verbatim">unify</code> module updates the input substitution set and creates a neural network for comparing vector representations of non-variable symbols in two sequences of terms (i.e. the terms in the two atoms). The module iterates pairwise through the terms of the two atoms being compared, and if one of the symbols is a variable, a substitution is added to the substitution set, and if they are both constants, their vector representations are compared using a <a href="https://en.wikipedia.org/wiki/Radial_basis_function_kernel">Radial Basis Function Kernel</a>.</p>
+<p>
+The following is the pseudocode for the <code class="verbatim">unify</code> module taken directly from the paper:</p>
+<p>
+<img src="/unify.png" alt="/unify.png" title="/unify.png" /></p>
+<p>
+One thing that confused me about this is on line 4, where there seem to be two assignments. My educated guess is that they meant to say that $S&#39; = (S&#39;_{\psi}, S&#39;_{\rho})$, but accidentally ended up writing $\text{unify}_{\theta}(H, G, S&#39;) = (S&#39;_{\psi}, S&#39;_{\rho})$, since only the former makes sense as a recursive definition.</p>
+<p>
+Moving on to actually analyzing the code, the two things of significance are the definitions of $S_{\psi}&#39;$ and $S_{\rho}&#39;$. The main pseudocode is very similar to the backward chaining pseudocode from earlier, with a couple of subtle differences. One difference is that there is no pattern match for the case $\text{unify}_{\theta}(\_,\_,\text{FAIL})$, since the final pattern match never results in a call to $\text{unify}_{\theta}$ with $S&#39; = \text{FAIL}$ like it did in the original pseudocode. Another difference is that due to the new structure of $S$, the final case constructs the two different components of $S&#39;$, only one of which was seen in the previous case (namely, $S_{\psi}&#39;$). Another thing to notice is that $S_{\psi}&#39;$ does not result in $\text{FAIL}$ even if neither term is a variable and the terms aren&#39;t equal. This is because the $S_{\rho}$ component explicitly contains the calculation of a score for the cases when neither term is a variable, which is the term $$\exp\left(\frac{-||\mathbf{\theta}_{h:} - \mathbf{\theta}_{g:}||_{2}}{2\mu^2}\right)$$</p>
+<p>
+Observe that when $h$ and $g$ are the same, they will have the same vector representation, and thus $\mathbf{\theta}_{g:} = \mathbf{\theta}_{h:}$, which results in $S_{\rho} = e^0 = 1$. The futher apart the vectors $\theta_{g:}$ and $\theta_{h:}$ are (with repsect to the Euclidean metric), the larger the norm of their difference is, which in turn translates to a smaller value of $S_{\rho}&#39;$. In fact, the decay is exponential which means that only really similar vectors get high scores. Note that we are taking the minimum of this new score and the old score, which means that by the end of the algorithm, the remaining value of $S^{(n)}_{\rho}$ will be decided by the pair of terms furthest away from each other in their vector representations.</p>
+<figure>
+<img src="/exp_decay.png" alt="/exp_decay.png" title="/exp_decay.png" /><figcaption>
+Credit: Desmos
+</figcaption>
+</figure>
+<p>
+Another observation pointed out in the paper is that with this new algorithm, the only cases where the $\text{FAIL}$ output can be achieved is when the two atoms don&#39;t have the same number of terms (i.e. arity mismatch).</p>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+OR Module
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>The <code class="verbatim">or</code> module is defined as</p>
+<p>
+<img src="/or.png" alt="/or.png" title="/or.png" /></p>
+<p>
+The knowledge base, as a set of rules, is denoted by $\mathfrak{K}$. The <code class="verbatim">or</code> module in this case differs from the original symbolic <code class="verbatim">or</code> function in that it takes a new input, $d \in \mathbb{N}$, which defines the maximum proof depth of the neural network, and that it now uses the <code class="verbatim">unify</code> module, defined above, and the <code class="verbatim">and</code> module, defined below. The main difference between the symbolic and the neural <code class="verbatim">or</code> modules is that the neural module can capture similarities between different symbolic terms because it uses the neural <code class="verbatim">unify</code> module.</p>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+AND Module
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<p>The <code class="verbatim">and</code> module is defined as</p>
+<p>
+<img src="/and.png" alt="/and.png" title="/and.png" /></p>
+<p>
+The new parameter, $d$, introduces one new case, where we automatically fail if $d = 0$. The main case (line 4) itself is different in that it uses the neural versions of <code class="verbatim">and</code> and <code class="verbatim">or</code> (the <code class="verbatim">substitute</code> function is actually the exact same as before), and makes sure that subsequent calls to <code class="verbatim">or</code> and <code class="verbatim">and</code> get lower proof depths.</p>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+Final Model
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<p>The final aggregate model for proving a goal $G$ using a Knowledge Base $\mathfrak{K}$ with parameters $\mathbf{\theta}$ and proof depth $d$ is given by</p>
+<p>
+<img src="/final.png" alt="/final.png" title="/final.png" /></p>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+Analysis of Final Model
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>The final model takes in two inputs, the goal $G$, and the maximum proof depth, $d$. It then iterates through all the successful solutions produced by $\text{or}_{\mathbf{\theta}}^{\mathfrak{K}}(G,d,(\varnothing, 1))$, and finds the one with the highest $S_{\rho}$ score. The call $or_{\mathbf{\theta}}^{\mathfrak{K}}(G,d,(\varnothing, 1))$ starts by constructing several <code class="verbatim">unify</code> modules, which are then all connected to <code class="verbatim">and</code> modules, which then goes through <code class="verbatim">substitue</code> before going back to <code class="verbatim">or</code> with depth $d - 1$. This continues until there is either a succesful solution, or if $d = 0$ or unification fails, which only happens if arity doesn&#39;t match.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
+Training
+</h3>
+<div id="outline-text-headline-12" class="outline-text-3">
+<div id="outline-container-headline-13" class="outline-4">
+<h4 id="headline-13">
+Training Objective
+</h4>
+<div id="outline-text-headline-13" class="outline-text-4">
+<p>The paper uses a <em>negative log-likelihood</em> loss function on the proof success score defined above. This paper also uses corrupted fact triples much in the same way that the paper on <a href="/technical/neural-tensor-kb-completion">NTNs</a> used them for training, with the main difference being that the corrupted data is explicitly given a score of $0$. The labeled training data is the set $\mathcal{T}$. The loss function is given by</p>
+<p>
+$$ \mathcal{L}_{\text{ntp}_{\mathbf{\theta}}^{\mathfrak{K}}} = \sum_{([s,i,j], y) \in \mathcal{T}} -y\log(\text{ntp}_{\mathbf{\theta}}^{\mathfrak{K}}([s,i,j],d)_{\rho}) - (1 - y)\log(1 - \text{ntp}_{\mathbf{\theta}}^{\mathfrak{K}}([s,i,j],d)_{\rho})$$</p>
+<p>
+where $[s, i, j]$ is an atom and $y$ is the labeled proof score, which is $1$ for original ground atoms and $0$ for the corrupted ones that were added in later.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-3">
+<h3 id="headline-14">
+Experimental Results
+</h3>
+<div id="outline-text-headline-14" class="outline-text-3">
+<p>Looking at the table of results, NTP$\lambda$ (NTP combined with ComplEx) had comparable results with ComplEx across the board, even though the accuracy was slighly higher in NTP$\lambda$ for most metrics. The paper points out that one advantange that NTPs have is that they are more interpretable, in the sense that their induced rules can be examined.</p>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-3">
+<h3 id="headline-15">
+But what is &#34;End-To-End Differentiable&#34;?
+</h3>
+<div id="outline-text-headline-15" class="outline-text-3">
+<p>End-To-End Differentiability, from what I have understood, refers to the fact that each of the modules within the larger <code class="verbatim">ntp</code> module has a derivative with respect to the vector representations of terms, making it possible to perform gradient descent on the loss. According to the appendix, the caveat is that the graph is so large that it becomes infeasible to backpropogate through it to get an exact gradient, which means that they resort to a heuristic of the gradient.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-2">
+<h2 id="headline-16">
+Final Thoughts
+</h2>
+<div id="outline-text-headline-16" class="outline-text-2">
+<p>This paper was quite interesting and exposed me to several new concepts in automated reasoning and machine learning. I am not so sure whether this area has potential for future success, but it could remain in my purview. </p>
+</div>
 </div>
 ]]></content:encoded>
     </item>
@@ -121,7 +293,7 @@ Vector Representations
 <div id="outline-text-headline-4" class="outline-text-3">
 <p>In the framework being used for this paper, each entity has a vector representation $e \in \mathbb{R}^d$. It seems like this framework was being used in multiple papers in the early 2010s, including in <a href="https://ronan.collobert.com/pub/2011_knowbases_aaai.pdf">&#34;Learning Structured Embeddings of Knowledge Bases&#34;</a> by Bordes, Weston, Collobert, and Bengio, in which a way of assigning entities vector representations is discussed. </p>
 <p>
-The NTN paper (the one currently being summarized) proposes a new scheme for representing entities using the composition of <em>word vectors</em>, which are vectors in $\mathbb{R}^d$. An entity is represnted by the average of the vectors of words that compose to it. For example, $v_{\textit{homo sapiens}} = 0.5(v_{\textit{homo}} + v_{\textit{sapiens}})$. </p>
+The NTN paper (the one currently being summarized) states that the NTN model works well with randomly initialized entity vectors, which are then learned for each entity through the training process (since the actually relationships between entity vectors are part of the traning data, which then translates to the learned function $g$). The paper also proposes a new scheme for representing entities using the composition of <em>word vectors</em>, which are vectors in $\mathbb{R}^d$. An entity is represnted by the average of the vectors of words that compose to it. For example, $v_{\textit{homo sapiens}} = 0.5(v_{\textit{homo}} + v_{\textit{sapiens}})$. This can then embed some similarities between entities before even training. The example used in the training is <em>homo erectus</em>. If this entity hasn&#39;t been seen before, a fact about <em>homo sapiens</em> can still be extended to it due to the fact that $v_{\textit{homo}}$ is in the word compositions for both vector representations, which means that $v_{\textit{homo erectus}}$ will start out relatively close to $v_{\textit{homo sapiens}}$ even though $v_{\textit{erectus}}$ is random.</p>
 <p>
 The total number of entities is $N_E$ and the total number of unique words is $N_W$. If the training is done on words, the entity embedding is $E \in \mathbb{R}^{d \times N_W}$ and if the training is performed with whole vectors, the entity embedding is $E \in \mathbb{R}^{d \times N_E}$. </p>
 </div>
@@ -151,7 +323,7 @@ Final Thoughts
       <link>http://localhost:1313/technical/putnam-bench/</link>
       <pubDate>Sun, 24 Nov 2024 16:52:52 -0600</pubDate>
       <guid>http://localhost:1313/technical/putnam-bench/</guid>
-      <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Chaudhuri et al., where the capabilities of modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
+      <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Tsoukalas et al., where the capabilities of modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
       <content:encoded><![CDATA[
 <p>
 While looking at computer science research areas that I could find interesting, I stumbled upon formal methods, and more specifically, automated symbolic reasoning, theorem proving, and the integration of modern machine learning with formal reasoning. I decided to read some research papers to get a feel for this area, since it looked quite interesting to me. In this article, I am going to review and outline one interesting paper I read in this area. I will continue writing further articles about other papers I read.</p>
@@ -160,7 +332,7 @@ While looking at computer science research areas that I could find interesting, 
 PUTNAMBENCH
 </h2>
 <div id="outline-text-headline-1" class="outline-text-2">
-<p>The first interesting paper I stumbled upon was the <a href="https://arxiv.org/abs/2407.11214">PUTNAMBENCH</a> paper by Chaudhuri et al., where the capabilities of modern <em>neural models</em> in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition. </p>
+<p>The first interesting paper I stumbled upon was the <a href="https://arxiv.org/abs/2407.11214">PUTNAMBENCH</a> paper by Tsoukalas et al., where the capabilities of modern <em>neural models</em> in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition. </p>
 <p>
 The improvement that PUTNAMBENCH makes on existing benchmarks is that it introduces college level problems into the mix, with some problems even requiring ideas from research level mathematics, according to the paper. A few additional reasons cited for the creation of this benchmark were:</p>
 <ul>

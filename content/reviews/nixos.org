@@ -1,6 +1,6 @@
 ---
 title: "The NixOS Dual Boot Nightmare"
-date: 2024-12-18T22:51:16-06:00
+date: 2024-12-19T00:01:00-06:00
 summary: Dual booting NixOS with another linux distro has been a major pain point for me when trying out this OS for the first time. Here I go into why it is so inconvenient to set up dual booting in NixOS.
 ---
 

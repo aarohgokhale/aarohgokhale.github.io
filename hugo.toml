@@ -57,3 +57,4 @@ PluralizeListTitles = false
   ShowCodeCopyButtons = true
   ShowFullTextinRSS = true
   ShowReadingTime = true
+  RobotsNoIndex = false

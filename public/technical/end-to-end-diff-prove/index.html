@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>A Summary of &#34;End-to-End Differentiable Proving&#34; | Aaroh&#39;s Blog</title>
 <meta name="keywords" content="">
 <meta name="description" content="Here, I summarize and try to explain in detail what I learned from the paper entitled &#34;End-to-End Differentiable Proving&#34; by Rocktäschel and Riedel.">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/technical/end-to-end-diff-prove/">
+<link rel="canonical" href="https://aaroh.github.io/technical/end-to-end-diff-prove/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.d6fcd20a4fb86efa4dfac8ec95da60244cc8871042183da1ef28e3a762ad79c8.css" integrity="sha256-1vzSCk&#43;4bvpN&#43;sjsldpgJEzIhxBCGD2h7yjjp2Ktecg=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://aaroh.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://aaroh.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://aaroh.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://aaroh.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://aaroh.github.io/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/technical/end-to-end-diff-prove/">
+<link rel="alternate" hreflang="en" href="https://aaroh.github.io/technical/end-to-end-diff-prove/">
 <noscript>
     <style>
         #theme-toggle,
@@ -75,7 +75,69 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
+<meta property="og:url" content="https://aaroh.github.io/technical/end-to-end-diff-prove/">
+  <meta property="og:site_name" content="Aaroh&#39;s Blog">
+  <meta property="og:title" content="A Summary of &#34;End-to-End Differentiable Proving&#34;">
+  <meta property="og:description" content="Here, I summarize and try to explain in detail what I learned from the paper entitled &#34;End-to-End Differentiable Proving&#34; by Rocktäschel and Riedel.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="technical">
+    <meta property="article:published_time" content="2024-11-30T09:11:30-06:00">
+    <meta property="article:modified_time" content="2024-11-30T09:11:30-06:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="A Summary of &#34;End-to-End Differentiable Proving&#34;">
+<meta name="twitter:description" content="Here, I summarize and try to explain in detail what I learned from the paper entitled &#34;End-to-End Differentiable Proving&#34; by Rocktäschel and Riedel.">
 
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Technical",
+      "item": "https://aaroh.github.io/technical/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "A Summary of \"End-to-End Differentiable Proving\"",
+      "item": "https://aaroh.github.io/technical/end-to-end-diff-prove/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "A Summary of \"End-to-End Differentiable Proving\"",
+  "name": "A Summary of \u0022End-to-End Differentiable Proving\u0022",
+  "description": "Here, I summarize and try to explain in detail what I learned from the paper entitled \u0026#34;End-to-End Differentiable Proving\u0026#34; by Rocktäschel and Riedel.",
+  "keywords": [
+    
+  ],
+  "articleBody": " Here, I summarize and try to explain in detail what I learned from the paper entitled \"End-to-End Differentiable Proving\" by Rocktäschel and Riedel.\nMain Ideas The main idea of this paper is to combine strategies from automated symbolic reasoning and learned vector representations symbolic entities to get a hybrid model of theorem proving, where proof search is enhanced by indicating that a proof is more likely to succeed if the entities within the goal have high similarity to entities in known proofs.\nBasics The first barrier to entry in this paper is understanding the logic programming framework being used. Theorems are posed as queries to a database, proving a theorem involves systematically substituting the terms in the query until something that already exists in the database is reached, at which point the query is considered a success. If nothing is found, it fails.\nDefinitions: atom: An atom consists of a predicate and a list of terms. For example, something like $[\\text{isCoprimeWith}, 8, 9]$. More generally, $[R, t_1, t_2, \\ldots, t_n]$, where $R$ is an $n$-ary relation called the predicate. In this paper, a term can be either a constant or a variable. The example they use is $[\\text{grandfatherOf}, Q, \\text{BART}]$, where $\\text{grandfatherOf}$ is the predicate, $Q$ is a variable, and $\\text{BART}$ is a constant. rule: A rule is a structure of the form $H \\mathrel{:-} \\mathbb{B}$, where $H$ is an atom called the head and $\\mathbb{B}$ is a possibly empty conjuction of atoms called the body of the rule. From my understanding, a rule of the form $q \\mathrel{:-} [p_1, p_2, \\ldots, p_N]$ describes the implication $p_1 \\land p_2 \\land \\ldots \\land p_N \\rightarrow q$. A rule with no free variables (all the variables are universally quantified) is called a ground rule, and a ground rule with no body is called a fact. substitution set: A substitution set is a set of the form $\\psi = \\{X_1/t_1, \\ldots, X_n/t_n\\}$, which represents an assignment of free variables $X_1, \\ldots, X_n$ to terms $t_1, \\ldots, t_n$ respectively. Applying a substitution to an atom replaces all occurrences of variables in the substitution set with their repsective terms. Backward Chaining Algorithm: The algorithm used to prove a statement or to The basic idea of the algorithm is as follows: a function called OR is applied to the query (the goal). It iterates through the set of all rules and finds a unification of the goal with the rule's head (by trying to substitute the variables in either formula to match each other, and by making sure that when both terms are constants that they are equal). If OR is succesful in finding a unification, it calls a function called AND, which then proves all the atoms in the body of that rule (since each rule is an implication based on a conjuction of premises). AND uses the substitution set that was used to unify the goal with the rule head, and applies it to the subgoals (the atoms in the body). It then calls OR on the subgoals one by one to prove them.\nAs someone with no experience in prolog and this framework of thinking, I found the pseudocode for the backward chaining algorithm a little bit cryptic. Below I transliterate the pseudocode from the appendix of the paper in just plain text (the original had $\\LaTeX$):\nor(G, S) = [S' | S' in and(B, unify(H, G, S)) for H :- B in K] and(_, FAIL) = FAIL and([], S) = S and(G : bigG, S) = [S'' | S'' in and(bigG, S') for S' in or(substitute(G, S), S)] unify(_,_,FAIL) = FAIL unify([],[],S) = S unify([],_,_) = FAIL unify(_,[],_) = FAIL unify(h : H, g : G, S) = unify(H, G, S + {h/g} if h in V, S + {g/h} if g in V and h not in V, S if g = h FAIL otherwise) substitute([], _) = [] substitute(g : G, S) = x if g/x in S, g otherwise : substitute(G,S) Explanation: The first function, or, is collecting sets S' such that they belong to the result of taking applying and to the bodies, B, of the rule heads, H, that manage to be unified with the goal, G. The and function, when given a set of subgoals, called bigG, and an existing substitution set S, goes through the subgoals one by one and applies or to them after applying the substitution corresponding to S. If or succeeds, it returns a new substitution set S', which can then be used for the remaining subgoals in bigG. If and succesfully goes through all subgoals, it returns a final set of substitution sets that essentially together contain the proof for G. The logic used for unify and substitute is really straightforward, so I won't go into that here. The notational quirk that I was somewhat unware of, is the use of the colon : to denote splitting a list's first element from the rest of the list. This is really quite similar to the way Haskell splits lists, with the notation [x:xs] used to denote the list as a whole but with the first element x and the rest of the list xs accessible as values.\nDifferentiable Prover The main thing defined in this paper is the NTP (Neural Theorem Prover), which is a neural network that takes in a goal and tries to prove it using a modified version of prolog's backward chaining algorithm, and spits out a sucess score. NTPS are defined in terms of modules, which are subgraphs that are designed for one particular task that is part of a larger goal of the whole network. Each module takes atoms, rules, and a proof state as input, and returns a list of new proof states. A proof state is a tuple $S = (\\psi, \\rho)$, where $\\psi$ is the substitution set constructed in the proof so far, and $\\rho$ is a neural network that outputs a real valued success score of a partial proof. Once a module is constructed, it recursively instantiates submodules to continue the proof. The substitution set of a proof state $S$ is denoted $S_{\\psi}$, and the corresponding neural network for calculating proof success is denoted $S_{\\rho}$.\nUnification Module One of the main modifications that NTPs make to the original backward chaining algorithm is that when unifying two atoms, symbol comparison is replaced with a computation that measures the similarity of the vector representations of those two symbols. The example used is the comparison of the predicates grandfatherOf and grandpaOf, which aren't symbolically the same, but which can have very close learned representations, using something like ComplEx. The unify module updates the input substitution set and creates a neural network for comparing vector representations of non-variable symbols in two sequences of terms (i.e. the terms in the two atoms). The module iterates pairwise through the terms of the two atoms being compared, and if one of the symbols is a variable, a substitution is added to the substitution set, and if they are both constants, their vector representations are compared using a Radial Basis Function Kernel.\nThe following is the pseudocode for the unify module taken directly from the paper:\nOne thing that confused me about this is on line 4, where there seem to be two assignments. My educated guess is that they meant to say that $S' = (S'_{\\psi}, S'_{\\rho})$, but accidentally ended up writing $\\text{unify}_{\\theta}(H, G, S') = (S'_{\\psi}, S'_{\\rho})$, since only the former makes sense as a recursive definition.\nMoving on to actually analyzing the code, the two things of significance are the definitions of $S_{\\psi}'$ and $S_{\\rho}'$. The main pseudocode is very similar to the backward chaining pseudocode from earlier, with a couple of subtle differences. One difference is that there is no pattern match for the case $\\text{unify}_{\\theta}(\\_,\\_,\\text{FAIL})$, since the final pattern match never results in a call to $\\text{unify}_{\\theta}$ with $S' = \\text{FAIL}$ like it did in the original pseudocode. Another difference is that due to the new structure of $S$, the final case constructs the two different components of $S'$, only one of which was seen in the previous case (namely, $S_{\\psi}'$). Another thing to notice is that $S_{\\psi}'$ does not result in $\\text{FAIL}$ even if neither term is a variable and the terms aren't equal. This is because the $S_{\\rho}$ component explicitly contains the calculation of a score for the cases when neither term is a variable, which is the term $$\\exp\\left(\\frac{-||\\mathbf{\\theta}_{h:} - \\mathbf{\\theta}_{g:}||_{2}}{2\\mu^2}\\right)$$\nObserve that when $h$ and $g$ are the same, they will have the same vector representation, and thus $\\mathbf{\\theta}_{g:} = \\mathbf{\\theta}_{h:}$, which results in $S_{\\rho} = e^0 = 1$. The futher apart the vectors $\\theta_{g:}$ and $\\theta_{h:}$ are (with repsect to the Euclidean metric), the larger the norm of their difference is, which in turn translates to a smaller value of $S_{\\rho}'$. In fact, the decay is exponential which means that only really similar vectors get high scores. Note that we are taking the minimum of this new score and the old score, which means that by the end of the algorithm, the remaining value of $S^{(n)}_{\\rho}$ will be decided by the pair of terms furthest away from each other in their vector representations.\nCredit: Desmos Another observation pointed out in the paper is that with this new algorithm, the only cases where the $\\text{FAIL}$ output can be achieved is when the two atoms don't have the same number of terms (i.e. arity mismatch).\nOR Module The or module is defined as\nThe knowledge base, as a set of rules, is denoted by $\\mathfrak{K}$. The or module in this case differs from the original symbolic or function in that it takes a new input, $d \\in \\mathbb{N}$, which defines the maximum proof depth of the neural network, and that it now uses the unify module, defined above, and the and module, defined below. The main difference between the symbolic and the neural or modules is that the neural module can capture similarities between different symbolic terms because it uses the neural unify module.\nAND Module The and module is defined as\nThe new parameter, $d$, introduces one new case, where we automatically fail if $d = 0$. The main case (line 4) itself is different in that it uses the neural versions of and and or (the substitute function is actually the exact same as before), and makes sure that subsequent calls to or and and get lower proof depths.\nFinal Model The final aggregate model for proving a goal $G$ using a Knowledge Base $\\mathfrak{K}$ with parameters $\\mathbf{\\theta}$ and proof depth $d$ is given by\nAnalysis of Final Model The final model takes in two inputs, the goal $G$, and the maximum proof depth, $d$. It then iterates through all the successful solutions produced by $\\text{or}_{\\mathbf{\\theta}}^{\\mathfrak{K}}(G,d,(\\varnothing, 1))$, and finds the one with the highest $S_{\\rho}$ score. The call $or_{\\mathbf{\\theta}}^{\\mathfrak{K}}(G,d,(\\varnothing, 1))$ starts by constructing several unify modules, which are then all connected to and modules, which then goes through substitue before going back to or with depth $d - 1$. This continues until there is either a succesful solution, or if $d = 0$ or unification fails, which only happens if arity doesn't match.\nTraining Training Objective The paper uses a negative log-likelihood loss function on the proof success score defined above. This paper also uses corrupted fact triples much in the same way that the paper on NTNs used them for training, with the main difference being that the corrupted data is explicitly given a score of $0$. The labeled training data is the set $\\mathcal{T}$. The loss function is given by\n$$ \\mathcal{L}_{\\text{ntp}_{\\mathbf{\\theta}}^{\\mathfrak{K}}} = \\sum_{([s,i,j], y) \\in \\mathcal{T}} -y\\log(\\text{ntp}_{\\mathbf{\\theta}}^{\\mathfrak{K}}([s,i,j],d)_{\\rho}) - (1 - y)\\log(1 - \\text{ntp}_{\\mathbf{\\theta}}^{\\mathfrak{K}}([s,i,j],d)_{\\rho})$$\nwhere $[s, i, j]$ is an atom and $y$ is the labeled proof score, which is $1$ for original ground atoms and $0$ for the corrupted ones that were added in later.\nExperimental Results Looking at the table of results, NTP$\\lambda$ (NTP combined with ComplEx) had comparable results with ComplEx across the board, even though the accuracy was slighly higher in NTP$\\lambda$ for most metrics. The paper points out that one advantange that NTPs have is that they are more interpretable, in the sense that their induced rules can be examined.\nBut what is \"End-To-End Differentiable\"? End-To-End Differentiability, from what I have understood, refers to the fact that each of the modules within the larger ntp module has a derivative with respect to the vector representations of terms, making it possible to perform gradient descent on the loss. According to the appendix, the caveat is that the graph is so large that it becomes infeasible to backpropogate through it to get an exact gradient, which means that they resort to a heuristic of the gradient.\nFinal Thoughts This paper was quite interesting and exposed me to several new concepts in automated reasoning and machine learning. I am not so sure whether this area has potential for future success, but it could remain in my purview. ",
+  "wordCount" : "2160",
+  "inLanguage": "en",
+  "datePublished": "2024-11-30T09:11:30-06:00",
+  "dateModified": "2024-11-30T09:11:30-06:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://aaroh.github.io/technical/end-to-end-diff-prove/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Aaroh's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://aaroh.github.io/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
 <body class="" id="top">
@@ -93,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="Aaroh&#39;s Blog (Alt + H)">Aaroh&#39;s Blog</a>
+            <a href="https://aaroh.github.io/" accesskey="h" title="Aaroh&#39;s Blog (Alt + H)">Aaroh&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -119,32 +181,32 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/" title="Home">
+                <a href="https://aaroh.github.io/" title="Home">
                     <span>Home</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/technical/" title="Technical">
+                <a href="https://aaroh.github.io/technical/" title="Technical">
                     <span>Technical</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/reviews/" title="Reviews">
+                <a href="https://aaroh.github.io/reviews/" title="Reviews">
                     <span>Reviews</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/ramblings/" title="Ramblings">
+                <a href="https://aaroh.github.io/ramblings/" title="Ramblings">
                     <span>Ramblings</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/short-stories/" title="Short Stories">
+                <a href="https://aaroh.github.io/short-stories/" title="Short Stories">
                     <span>Short Stories</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/archives/" title="Archive">
+                <a href="https://aaroh.github.io/archives/" title="Archive">
                     <span>Archive</span>
                 </a>
             </li>
@@ -361,7 +423,7 @@ Final Thoughts
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="http://localhost:1313/">Aaroh&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="https://aaroh.github.io/">Aaroh&#39;s Blog</a></span> · 
 
     <span>
         Powered by

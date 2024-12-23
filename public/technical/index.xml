@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Technical on Aaroh&#39;s Blog</title>
-    <link>https://aaroh.github.io/technical/</link>
+    <link>http://localhost:1313/technical/</link>
     <description>Recent content in Technical on Aaroh&#39;s Blog</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 30 Nov 2024 09:11:30 -0600</lastBuildDate>
-    <atom:link href="https://aaroh.github.io/technical/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/technical/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A Summary of &#34;End-to-End Differentiable Proving&#34;</title>
-      <link>https://aaroh.github.io/technical/end-to-end-diff-prove/</link>
+      <link>http://localhost:1313/technical/end-to-end-diff-prove/</link>
       <pubDate>Sat, 30 Nov 2024 09:11:30 -0600</pubDate>
-      <guid>https://aaroh.github.io/technical/end-to-end-diff-prove/</guid>
+      <guid>http://localhost:1313/technical/end-to-end-diff-prove/</guid>
       <description>Here, I summarize and try to explain in detail what I learned from the paper entitled &amp;#34;End-to-End Differentiable Proving&amp;#34; by Rocktäschel and Riedel.</description>
       <content:encoded><![CDATA[
 <p>
@@ -204,9 +204,9 @@ Final Thoughts
     </item>
     <item>
       <title>A Summary of &#34;Reasoning With Neural Tensor Networks for Knowledge Base Completion&#34;</title>
-      <link>https://aaroh.github.io/technical/neural-tensor-kb-completion/</link>
+      <link>http://localhost:1313/technical/neural-tensor-kb-completion/</link>
       <pubDate>Tue, 26 Nov 2024 01:00:00 -0600</pubDate>
-      <guid>https://aaroh.github.io/technical/neural-tensor-kb-completion/</guid>
+      <guid>http://localhost:1313/technical/neural-tensor-kb-completion/</guid>
       <description>Here, I summarize and try to explain in detail what I read and understood in the paper entitled &amp;#34;Reasoning With Neural Tensor Networks for Knowledge Base Completion&amp;#34; by Socher, Chen, Manning, and Ng from Stanford.</description>
       <content:encoded><![CDATA[
 <p>
@@ -320,9 +320,9 @@ Final Thoughts
     </item>
     <item>
       <title>A Summary of PUTNAMBENCH</title>
-      <link>https://aaroh.github.io/technical/putnam-bench/</link>
+      <link>http://localhost:1313/technical/putnam-bench/</link>
       <pubDate>Sun, 24 Nov 2024 16:52:52 -0600</pubDate>
-      <guid>https://aaroh.github.io/technical/putnam-bench/</guid>
+      <guid>http://localhost:1313/technical/putnam-bench/</guid>
       <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Tsoukalas et al., where the capabilities of modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
       <content:encoded><![CDATA[
 <p>

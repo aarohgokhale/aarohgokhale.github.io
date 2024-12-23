@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Reviews on Aaroh&#39;s Blog</title>
-    <link>https://aaroh.github.io/reviews/</link>
+    <link>http://localhost:1313/reviews/</link>
     <description>Recent content in Reviews on Aaroh&#39;s Blog</description>
     <generator>Hugo -- 0.140.0</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 Dec 2024 22:51:16 -0600</lastBuildDate>
-    <atom:link href="https://aaroh.github.io/reviews/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 Dec 2024 00:01:00 -0600</lastBuildDate>
+    <atom:link href="http://localhost:1313/reviews/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The NixOS Dual Boot Nightmare</title>
-      <link>https://aaroh.github.io/reviews/nixos/</link>
-      <pubDate>Wed, 18 Dec 2024 22:51:16 -0600</pubDate>
-      <guid>https://aaroh.github.io/reviews/nixos/</guid>
+      <link>http://localhost:1313/reviews/nixos/</link>
+      <pubDate>Thu, 19 Dec 2024 00:01:00 -0600</pubDate>
+      <guid>http://localhost:1313/reviews/nixos/</guid>
       <description>Dual booting NixOS with another linux distro has been a major pain point for me when trying out this OS for the first time. Here I go into why it is so inconvenient to set up dual booting in NixOS.</description>
       <content:encoded><![CDATA[<p>
 <img src="/nixos.png" alt="/nixos.png" title="/nixos.png" /></p>
@@ -50,9 +50,9 @@ Overall, I have certainly had more pleasant experiences when setting up and usin
     </item>
     <item>
       <title>A Review of Org Roam and Org Roam UI</title>
-      <link>https://aaroh.github.io/reviews/org-roam-review/</link>
+      <link>http://localhost:1313/reviews/org-roam-review/</link>
       <pubDate>Sat, 23 Nov 2024 22:04:12 -0600</pubDate>
-      <guid>https://aaroh.github.io/reviews/org-roam-review/</guid>
+      <guid>http://localhost:1313/reviews/org-roam-review/</guid>
       <description>I have been using the &lt;a href=&#34;https://www.orgroam.com/&#34;&gt;Org Roam&lt;/a&gt; package on emacs on and off for the last semester or so for taking notes for various subjects including compilers, point set (and a little bit of algebraic) topology, abstract algebra, some measure theory, machine learning, and even neuroevolution. Org roam is based on the &lt;a href=&#34;https://en.wikipedia.org/wiki/Zettelkasten&#34;&gt;zettelkasten&lt;/a&gt; philosophy of notetaking, which has been explored and talked about by many people on the internet, so I won&amp;#39;t go into that here. Instead, I have gathered some of my thoughts after some use of org roam and I will be writing them here.</description>
       <content:encoded><![CDATA[
 <p>
@@ -130,9 +130,9 @@ Final Thoughts
     </item>
     <item>
       <title>My Utter Disappointment with Trigun</title>
-      <link>https://aaroh.github.io/reviews/trigun-review/</link>
+      <link>http://localhost:1313/reviews/trigun-review/</link>
       <pubDate>Tue, 19 Nov 2024 12:03:11 -0600</pubDate>
-      <guid>https://aaroh.github.io/reviews/trigun-review/</guid>
+      <guid>http://localhost:1313/reviews/trigun-review/</guid>
       <description>When you listen to the &lt;em&gt;Trigun&lt;/em&gt; OP, you are electrified. The energetic guitar riffs, combined with the cool visuals that make the main character look like a badass, really got me pumped for the show ahead of me. Add to that the near-legendary reputation &lt;em&gt;Trigun&lt;/em&gt; has garnered on internet Anime spaces, and you have a show that may only live up to its expectations through incredible quality and depth. &lt;em&gt;Trigun&lt;/em&gt; is neither of those. In fact, it&amp;#39;s not even a good show.</description>
       <content:encoded><![CDATA[
 <p>

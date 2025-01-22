@@ -4,10 +4,90 @@
     <title>Reviews on Aaroh&#39;s Blog</title>
     <link>http://localhost:1313/reviews/</link>
     <description>Recent content in Reviews on Aaroh&#39;s Blog</description>
-    <generator>Hugo -- 0.140.0</generator>
+    <generator>Hugo -- 0.140.2</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Dec 2024 00:01:00 -0600</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jan 2025 20:18:49 -0600</lastBuildDate>
     <atom:link href="http://localhost:1313/reviews/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Reading List for 2025</title>
+      <link>http://localhost:1313/reviews/books2025/</link>
+      <pubDate>Wed, 01 Jan 2025 20:18:49 -0600</pubDate>
+      <guid>http://localhost:1313/reviews/books2025/</guid>
+      <description>Here are the books that I will read and review in 2025.</description>
+      <content:encoded><![CDATA[
+<p>
+Starting this year, I have decided to make a list of books that I will try to read and write a review of by the end of the year. Expect to see reviews for most if not all of these in 2025.</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Books in English
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+Fiction
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<ul>
+<li><em>Crime and Punishment</em>, Fyodor Dostoyevsky (I already started this, but I&#39;m not that far in)</li>
+<li><em>The Divine Comedy</em>, Dante Alighieri</li>
+<li><em>The Metamorphosis</em>, Franz Kafka</li>
+<li><em>The Call of Cthulhu</em>, H.P. Lovecraft</li>
+<li><em>Neuromancer</em>, William Gibson</li>
+<li><em>Snow Crash</em>, Neal Stephenson</li>
+<li><em>War and Peace</em>, Leo Tolstoy</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+Non-Fiction 
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<ul>
+<li><em>Guns, Germs, and Steel</em>, Jared Diamond</li>
+<li><em>How to Win Friends and Influence People</em>, Dale Carnegie</li>
+<li><em>Beyond Good and Evil</em>, Friedrich Nietzsche</li>
+<li><em>A Treatist of Human Nature</em>, David Hume</li>
+<li><em>Fear and Trembling</em>, Søren Kierkegaard</li>
+<li><em>Behave: The Biology of Humans at Our Best and Worst</em>, Robert Sapolsky</li>
+<li><em>Evariste Galois 1811–1832</em>, Laura Toti Rigatelli</li>
+<li><em>Leonhard Euler: Mathematical Genius in the Englightenment</em>, Ronald S. Calinger</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-2">
+<h2 id="headline-4">
+Books in Marathi
+</h2>
+<div id="outline-text-headline-4" class="outline-text-2">
+<p>I will be reading significantly fewer marathi books but the aim is to improve my proficiency in reading Marathi.</p>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+Fiction
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<ul>
+<li><em>व्यक्ती आणि वल्ली</em>, पु.ल. देशपांडे</li>
+<li><em>असा मी असामी</em>, पु.ल. देशपांडे</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+Non-Fiction
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<ul>
+<li><em>युद्धनेतृत्व</em>, दि.वि. गोखले</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+]]></content:encoded>
+    </item>
     <item>
       <title>The NixOS Dual Boot Nightmare</title>
       <link>http://localhost:1313/reviews/nixos/</link>

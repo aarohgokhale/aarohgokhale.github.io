@@ -4,10 +4,115 @@
     <title>Aaroh&#39;s Blog</title>
     <link>http://localhost:1313/</link>
     <description>Recent content on Aaroh&#39;s Blog</description>
-    <generator>Hugo -- 0.140.0</generator>
+    <generator>Hugo -- 0.140.2</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Dec 2024 00:01:00 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 21 Jan 2025 21:39:20 -0600</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Physics View of Function Optimization</title>
+      <link>http://localhost:1313/technical/continuous_time_optimizers/</link>
+      <pubDate>Tue, 21 Jan 2025 21:39:20 -0600</pubDate>
+      <guid>http://localhost:1313/technical/continuous_time_optimizers/</guid>
+      <description>An exploration of how the common problem of function optimization over $\mathbb{R}^d$ can be viewed through the lens of physics, and in particular, Hamiltonian mechanics. This perspective is taken by many modern papers on optimization algorithms, and none of them seem to go too deep into the motivations.</description>
+      <content:encoded><![CDATA[
+<p>
+In my recent readings, I have encountered several papers that convert the usual <a href="https://optimization.cbe.cornell.edu/index.php?title=Momentum">momentum-based</a> <a href="https://en.wikipedia.org/wiki/Mathematical_optimization">optimization</a> algorithms such as <a href="https://pages.cs.wisc.edu/~brecht/cs726docs/HeavyBallLinear.pdf">Polyak&#39;s Heavy Ball Method</a> or <a href="https://optimization.cbe.cornell.edu/index.php?title=Adam">Adam</a> to their <em>continuous-time</em> variants in order to perform some form of analysis on them.</p>
+<p>
+Here, I would like to explore the broad notions used in these papers.</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Continuous Time Forms
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>One of the interesting notions in many of these papers is to look at the <em>continuous-time</em> forms of momentum based optimizers. The main problem I tend to face is that these papers usually just don&#39;t explain how they arrived to a particular system of differential equations for the continuous time form of a particular optimizer. A friend of mine suggested that it could be just looking at the differential equations for which the optimizer update matches <a href="https://en.wikipedia.org/wiki/Euler_method">Euler&#39;s Method</a> for solving ODEs. For example, the usual vanilla gradient descent rule is</p>
+<p>
+$$x_{t^{(i + 1)}} = x_{t^{(i)}} - \eta \cdot \nabla f (x_{t^{(i)}})$$</p>
+<p>
+where $f$ is the loss function and $\eta$ is some learning rate. If we instead let $\eta = t^{(i + 1)} - t^{(i)} = \Delta t$, we get</p>
+<p>
+$$x_{t^{(i + 1)}} = x_{t^{(i)}} - \nabla f (x_{t^{(i)}}) \Delta t$$</p>
+<p>
+which is indeed the recurrence relation of Euler&#39;s method for the differential equation</p>
+<p>
+$$x&#39; = -\nabla f(x)$$</p>
+<p>
+The classic momentum update rule described by Polyak is given by</p>
+<p>
+$$p_{t^{(i)}} = \beta \cdot p_{t^{(i - 1)}} - (1 - \beta)\nabla f(x_{t^{(i)}})$$</p>
+<p>
+$$x_{t^{(i + 1)}} = x_{t^{(i)}} - \alpha \cdot p_{t^{(i)}}$$</p>
+<p>
+We can try to write this as a <em>system</em> of two differential equations. The first equation isn&#39;t yet in the typical Euler form, so we rewrite it as</p>
+<p>
+$$p_{t^{(i)}} = p_{t^{(i - 1)}} + (\beta - 1)\cdot p_{t^{(i - 1)}} - (1 - \beta) \cdot \nabla f(x_{t^{(i)}})$$</p>
+<p>
+Factoring out $(\beta - 1)$ from the last two terms, we get</p>
+<p>
+$$p_{t^{(i)}} = p_{t^{(i - 1)}} + (\beta - 1) \cdot (p_{t^{(i - 1)}} + \nabla f(x_{t^{(i)}}))$$</p>
+<p>
+Then if $\beta = \Delta t + 1$, we have the standard form of Euler&#39;s method for the differential equation</p>
+<p>
+$$p&#39; = p + \nabla f(x)$$</p>
+<p>
+For the other equation, we have a simpler differential equation, $x&#39; = -p$.</p>
+<p>
+We can then put them together by replacing $p&#39;$ with $-x&#39;&#39;$, giving us</p>
+<p>
+$$x&#39;&#39; = -p - \nabla f (x)$$</p>
+<p>
+Since $-p = x&#39;$,</p>
+<p>
+$$x&#39;&#39; = -x&#39; - \nabla f(x)$$</p>
+<p>
+Though this still seems a bit odd and contrived to me, it does seem that the momentum optimizer is the correct Euler method reccurence for this system of differential equations, and should therefore work to find the true trajectory defined by the differential equations when $p + \nabla f(x)$ is Lipschitz. Of course, just because the approximation is correct doesn&#39;t mean that the trajectory is of any use. It must be shown that $x(t)$ converges a stationary point of the loss function $f$. </p>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-2">
+<h2 id="headline-2">
+Hamiltonian Dynamics
+</h2>
+<div id="outline-text-headline-2" class="outline-text-2">
+<p>
+The paper entitled <a href="https://arxiv.org/abs/1809.05042">&#34;Hamiltonian Descent Methods&#34;</a> by Maddison et al. notes that this system mirrors a Hamiltonian dynamics system from physics, which is typically stated as</p>
+<p>
+$$x&#39;_t = \nabla_p \mathcal{H}(x_t, p_t) = \nabla k(p_t)$$</p>
+<p>
+$$p&#39;_t = -\nabla_x \mathcal{H}(x_t, p_t) = -\nabla f(x)$$</p>
+<p>
+where $\mathcal{H}(x_t, p_t)$ is the total in the system as a function of the position and momentum, $k$ is the kinetic energy as a function of the momentum, and $f$ is the potential energy as a function of the position. If we let $k(p_t) = \langle p_t, p_t \rangle / 2$, the equations are nearly identical to the previously continuous time version of th e momentum optimizer (note that since I&#39;m using the version where momentum is <em>subtracted</em>, the sign is flipped), with the caveat that the the second differential equation also has the term $p$, which the paper talks about as a &#34;disspiation field&#34; of the form $p&#39;_t = -\gamma \cdot p_t$, thus giving us a final field $(x&#39;_t, p&#39;_t) = F(x_t, p_t) + G(x_t, p_t)$ where $F$ is the Hamiltonian field $(\nabla k (p_t), -\nabla f(x))$ and $G$ is the dissipation field $(0, -\gamma \cdot p_t)$. The paper calls this a &#34;conformal&#34; Hamiltonian field/system. It also allows for a notion of a more general conformal Hamiltonian system, where $k$ is allowed to be an arbitrary nonnegative convex function with $k(0) = 0$ and $\gamma &gt; 0$. </p>
+<p>
+This poses the problem of optimization as a problem of computing the trajectory of a particle $x$ placed in a force field defined by the loss function $f$ starting at some position $x_0$ with some velocity $p_0$, where there also exists a dissipation force that scales with the particle&#39;s velocity and makes it an important factor in deciding where the particle will go next. The solutions to the system of differential equations remains in the set $\{(x, p)  : \mathcal{H}(x, p) = H_0\}$ for conservative forces $\nabla f$. However, when we add a disspitation force, such as the one defined by the momentum term in our optimizer, the total energy of the system decreases over time. </p>
+<p>
+A result from this paper is that given sufficiently nice conditions to the system, there exists a unique solution $(x_t, p_t)$ given initial conditions $(x_0, p_0)$ and that the position function $x$ converges to a stationary point of $f$.</p>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+Conditions
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>The specific conditions for existence are as follows:</p>
+<ul>
+<li>$k$ is nonnegative and convex with $k(0) = 0$ (I stated this above as the domain of functions that $k$ can be chosen from).</li>
+<li>$\nabla f$ and $\nabla k$ are continuous. </li>
+<li>$\mathcal{H}$ is <em>radially unbounded</em>: $\mathcal{H}(x, p) \to \infty$ as $||(x, p)||_{2} \to \infty$. This notation is a little unclear to me. The best guess I can make is that for any $\epsilon &gt; 0$, there exists $\delta &gt; 0$ such that for all $(x, p)$, $||(x, p)||_2 &gt; \delta \implies \mathcal{H}(x, p) &gt; \epsilon$.</li>
+</ul>
+<p>For uniquness, the additional condition that $\nabla f$ and $\nabla k$ are continuously differentiable is imposed.</p>
+<p>
+For convergence to a stationary point of $f$, given a solution $(x_t, p_t)$ to the system with initial conditions $(x_0, p_0) = (x, p)$, the following conditions are imposed:</p>
+<ul>
+<li>$f$ and $k$ are continuously differentiable</li>
+<li>$k$ is strictly convex with a minimum $k(0) = 0$</li>
+<li>$\mathcal{H}$ is radially unbounded</li>
+<li>$f$ is bounded bel, though it might not be so useful for those that are only really familiar with the mathematics of it. </li>
+</ul>
+<p>Given the above conditions, the paper shows that $||\nabla f(x_t)||_2 \to 0$.</p>
+<p>
+Looking at this optimization problem from a physics perspective is perhaps insightful for people who have a strong understanding of and intuition for physics, though it might not be so useful for those that are only really familiar with the mathematics of it. </p>
+</div>
+</div>
+</div>
+</div>
+]]></content:encoded>
+    </item>
     <item>
       <title>The NixOS Dual Boot Nightmare</title>
       <link>http://localhost:1313/reviews/nixos/</link>
@@ -363,7 +468,7 @@ Final Thoughts
       <link>http://localhost:1313/technical/putnam-bench/</link>
       <pubDate>Sun, 24 Nov 2024 16:52:52 -0600</pubDate>
       <guid>http://localhost:1313/technical/putnam-bench/</guid>
-      <description>The first interesting paper I stumbled upon was the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Tsoukalas et al., where the capabilities of modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition.</description>
+      <description>A summary of the &lt;a href=&#34;https://arxiv.org/abs/2407.11214&#34;&gt;PUTNAMBENCH&lt;/a&gt; paper by Tsoukalas et al. In this paper, the authors formalized hundreds of problems from the William Lowell Putnam Mathematical Competition in order to test the capabilities oe modern &lt;em&gt;neural models&lt;/em&gt; in proving theorems in the framework of theorem provers such as Lean 4, Isabelle, and Coq are tested. These frameworks can automatically and rigorously verify the correctness of the proofs provided by the neural models.</description>
       <content:encoded><![CDATA[
 <p>
 While looking at computer science research areas that I could find interesting, I stumbled upon formal methods, and more specifically, automated symbolic reasoning, theorem proving, and the integration of modern machine learning with formal reasoning. I decided to read some research papers to get a feel for this area, since it looked quite interesting to me. In this article, I am going to review and outline one interesting paper I read in this area. I will continue writing further articles about other papers I read.</p>

@@ -23,33 +23,46 @@ $$x' = -\nabla f(x)$$
 
 The classic momentum update rule described by Polyak is given by
 
-$$p_{t^{(i)}} = \beta \cdot p_{t^{(i - 1)}} - (1 - \beta)\nabla f(x_{t^{(i)}})$$
+$$p_{t^{(i)}} = (1 - \beta)p_{t^{(i - 1)}} - \beta\nabla f(x_{t^{(i)}})$$
 
-$$x_{t^{(i + 1)}} = x_{t^{(i)}} - \alpha \cdot p_{t^{(i)}}$$
+$$x_{t^{(i + 1)}} = x_{t^{(i)}} + \beta \cdot p_{t^{(i)}}$$
 
-We can try to write this as a /system/ of two differential equations. The first equation isn't yet in the typical Euler form, so we rewrite it as
+where $\beta$ is the size of the timestep.
 
-$$p_{t^{(i)}} = p_{t^{(i - 1)}} + (\beta - 1)\cdot p_{t^{(i - 1)}} - (1 - \beta) \cdot \nabla f(x_{t^{(i)}})$$
+We may see that this is just a discretization of the following second order system of differential equations:
 
-Factoring out $(\beta - 1)$ from the last two terms, we get
+$$p' = -p - \nabla f(x)$$
+$$x' = p$$
 
-$$p_{t^{(i)}} = p_{t^{(i - 1)}} + (\beta - 1) \cdot (p_{t^{(i - 1)}} + \nabla f(x_{t^{(i)}}))$$
+To see that these do indeed map to the discrete versions, we can use [[https://en.wikipedia.org/wiki/Finite_difference][finite differences]]:
 
-Then if $\beta = \Delta t + 1$, we have the standard form of Euler's method for the differential equation
+$$x' \approx \dfrac{x_{t^{(i)}} - x_{t^{(i - 1)}}}{\beta}$$
 
-$$p' = p + \nabla f(x)$$
+$$x'' \approx \dfrac{x_{t^{(i + 1)}} - 2x_{t^{(i)}} + x_{t^{(i - 1)}}}{\beta^2}$$
 
-For the other equation, we have a simpler differential equation, $x' = -p$.
+Then since $p = x'$, we get:
 
-We can then put them together by replacing $p'$ with $-x''$, giving us
+$$\dfrac{x_{t^{(i + 1)}} - 2x_{t^{(i)}} + x_{t^{(i - 1)}}}{\beta^2} = -\dfrac{x_{t^{(i)}} - x_{t^{(i - 1)}}}{\beta} - \nabla f(x_{t^{(i)}})$$
 
-$$x'' = -p - \nabla f (x)$$
+$$\iff x_{t^{(i + 1)}} - 2x_{t^{(i)}} + x_{t^{(i - 1)}} = -\beta (x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
 
-Since $-p = x'$,
+$$\iff x_{t^{(i + 1)}}  = 2x_{t^{(i)}} - x_{t^{(i - 1)}} -\beta (x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
 
-$$x'' = -x' - \nabla f(x)$$
+$$\iff x_{t^{(i + 1)}}  = x_{t^{(i)}} + x_{t^{(i)}} - x_{t^{(i - 1)}} -\beta (x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
 
-Though this still seems a bit odd and contrived to me, it does seem that the momentum optimizer is the correct Euler method reccurence for this system of differential equations, and should therefore work to find the true trajectory defined by the differential equations when $p + \nabla f(x)$ is Lipschitz. Of course, just because the approximation is correct doesn't mean that the trajectory is of any use. It must be shown that $x(t)$ converges a stationary point of the loss function $f$. 
+$$\iff x_{t^{(i + 1)}}  = x_{t^{(i)}} + (1 - \beta)(x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
+
+Since $p_{t^{(i)}} = (1 - \beta)p_{t^{(i - 1)}} - \beta\nabla f(x_{t^{(i)}})$ in our discretization, we need to show that
+
+$$\beta((1 - \beta)p_{t^{(i - 1)}} - \beta\nabla f(x_{t^{(i)}})) = (1 - \beta)(x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
+
+Which trivially boils down to showing
+
+$$\beta(1 - \beta)p_{t^{(i - 1)}} = (1 - \beta)(x_{t^{(i)}} - x_{t^{(i - 1)}})$$
+
+Since $p = x'$, this is true by the first order approximation. 
+
+Of course, just because the approximation is correct doesn't mean that the trajectory is of any use. It must be shown that $x(t)$ converges a stationary point of the loss function $f$. 
 
 * Hamiltonian Dynamics
 
@@ -57,7 +70,7 @@ The paper entitled [[https://arxiv.org/abs/1809.05042]["Hamiltonian Descent Meth
 
 $$x'_t = \nabla_p \mathcal{H}(x_t, p_t) = \nabla k(p_t)$$
 
-$$p'_t = -\nabla_x \mathcal{H}(x_t, p_t) = -\nabla f(x)$$
+$$p'_t = -\nabla_x \mathcal{H}(x_t, p_t) = -\nabla f(x)$$a
 
 where $\mathcal{H}(x_t, p_t)$ is the total energy in the system as a function of the position and momentum, $k$ is the kinetic energy as a function of the momentum, and $f$ is the potential energy as a function of the position. If we let $k(p_t) = \langle p_t, p_t \rangle / 2$, the equations are nearly identical to the previously continuous time version of th e momentum optimizer (note that since I'm using the version where momentum is /subtracted/, the sign is flipped), with the caveat that the the second differential equation also has the term $p$, which the paper talks about as a "disspiation field" of the form $p'_t = -\gamma \cdot p_t$, thus giving us a final field $(x'_t, p'_t) = F(x_t, p_t) + G(x_t, p_t)$ where $F$ is the Hamiltonian field $(\nabla k (p_t), -\nabla f(x))$ and $G$ is the dissipation field $(0, -\gamma \cdot p_t)$. The paper calls this a "conformal" Hamiltonian field/system. It also allows for a notion of a more general conformal Hamiltonian system, where $k$ is allowed to be an arbitrary nonnegative convex function with $k(0) = 0$ and $\gamma > 0$. 
 

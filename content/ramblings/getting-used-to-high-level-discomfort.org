@@ -1,6 +1,7 @@
  ---
 title: "Getting Used to High Level Discomfort"
 date: 2025-04-15T21:41:35-05:00
+showtoc: false
 Summary: The title might sound a bit odd, and perhaps you might have a completely different idea of what you might expect to read in this article than what is actually present here. I left out a summary on purpose to keep the title a little cryptic. What even is "High Level Discomfort"? 
 ---
 

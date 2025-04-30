@@ -1,7 +1,7 @@
 ---
 title: "A Physics View of Function Optimization"
 date: 2025-01-21T21:39:20-06:00
-Summary: An exploration of how the common problem of function optimization over $\mathbb{R}^d$ can be viewed through the lens of physics, and in particular, Hamiltonian mechanics. This perspective is taken by many modern papers on optimization algorithms, and none of them seem to go too deep into the motivations.
+Summary: An exploration of how the common problem of function optimization over $\mathbb{R}^d$ can be viewed through the lens of physics, and in particular, Hamiltonian mechanics. This perspective is taken by many modern papers on optimization algorithms, and I attempt to give a brief and accessible introduction to it here.
 ---
 
 In my recent readings, I have encountered several papers that convert the usual [[https://optimization.cbe.cornell.edu/index.php?title=Momentum][momentum-based]] [[https://en.wikipedia.org/wiki/Mathematical_optimization][optimization]] algorithms such as [[https://pages.cs.wisc.edu/~brecht/cs726docs/HeavyBallLinear.pdf][Polyak's Heavy Ball Method]] or [[https://optimization.cbe.cornell.edu/index.php?title=Adam][Adam]] to their /continuous-time/ variants in order to perform some form of analysis on them.

@@ -19,28 +19,10 @@ PluralizeListTitles = false
     weight = 2
 
   [[menu.main]]
-    identifier = "reviews"
-    name = "Reviews"
-    url = "/reviews/"
-    weight = 3
-
-  [[menu.main]]
-    identifier = "ramblings"
-    name = "Ramblings"
-    url = "/ramblings/"
-    weight = 4
-
-  [[menu.main]]
-    identifier = "short-stories"
-    name = "Short Stories"
-    url = "/short-stories/"
-    weight = 5
-
-  [[menu.main]]
     identifier = "archives"
     name = "Archive"
     url = "/archives/"
-    weight = 6
+    weight = 5
   
 
 [outputs]
@@ -58,3 +40,8 @@ PluralizeListTitles = false
   ShowFullTextinRSS = true
   ShowReadingTime = true
   RobotsNoIndex = false
+
+[markup]
+[markup.goldmark]
+[markup.goldmark.renderer]
+    unsafe = true

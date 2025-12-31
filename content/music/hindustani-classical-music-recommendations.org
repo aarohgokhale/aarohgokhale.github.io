@@ -1,0 +1,240 @@
+---
+title: "Hindustani Classical Music Recommendations"
+date: 2025-10-12T14:41:08-05:00
+draft: true
+exclude: true
+toc: false
+---
+
+This is a collection of some of my favorite Hindustani classical music performances on YouTube grouped by [[https://en.wikipedia.org/wiki/Raga][Raag]]. The raags aren't guaranteed to appear in any particular order, though I have tried to list them cyclically according to the time of day during which they are performed. The section names, i.e. the names of the raags, are clickable links. They lead to pages on https://ragajunglism.org/, which is a great resource for learning more about Hindustani classical music.
+
+Some of the below groups are short because I haven't listened to enough recordings of the given raag. Others are short because the listed performances are so incredible that I didn't feel the need to add any more. Differentiating between the two types is left as an exercise for the reader.
+
+* [[https://ragajunglism.org/ragas/yaman/][Yaman]] 
+- [[https://www.youtube.com/watch?v=viYGhyqSyOU][Malini Rajurkar]]
+  - Duration: 53:26
+- [[https://www.youtube.com/watch?v=25f1u2nOALg][Bhimsen Joshi]]
+  - Duration: 1:19:32
+- [[https://www.youtube.com/watch?v=toJnqAL_nZs][Amir Khan]]
+  - Duration: 54:43
+- [[https://www.youtube.com/watch?v=yg3fuQ6ONoA][Nikhil Banerjee]]
+  - Duration: 1:05:09
+- [[https://www.youtube.com/watch?v=pUYyw5YuD1k][Sultan Khan]]
+  - Duration: 27:04
+- [[https://www.youtube.com/watch?v=pOnh_qw2aCw][Jitendra Abhisheki]]
+  - Duration: 59:45
+- [[https://www.youtube.com/watch?v=zFQMsIDHMOo][Uday Bhawalkar]]
+  - Duration: 1:14:05
+- [[https://www.youtube.com/watch?v=Vxc0PTmNozA][Jayateerth Mevundi]]
+  - Duration: 43:59
+
+* [[https://ragajunglism.org/ragas/darbari/][Darbari Kanada]] 
+- [[https://www.youtube.com/watch?v=e70Py6kgEsc][Amir Khan]]
+  - Duration: 1:06:38
+- [[https://www.youtube.com/watch?v=TsZ6t-mv29A][Bhimsen Joshi - 1st]] 
+  - Duration: 1:03:39
+- [[https://www.youtube.com/watch?v=1aRdlGtxj0g][Bhimsen Joshi - 2nd]]
+  - Duration: 1:00:41
+- [[https://www.youtube.com/watch?v=oF2hZcbBRlM][Veena Sahasrabuddhe]]
+  - Duration: 30:04
+- [[https://www.youtube.com/watch?v=VMMHWAsNLAc][Munir Khan]]
+  - Duration: 18:34
+- [[https://www.youtube.com/watch?v=R_cgVTKozOg][Nikhil Banerjee]]
+  - Duration: 59:32
+- [[https://www.youtube.com/watch?v=jTRKzUT0oHI][Gundecha Brothers]]
+  - Duration: 1:16:32
+- [[https://www.youtube.com/watch?v=RpwaN8FrGS8][Jasraj]]
+  - Duration: 1:09:31
+- [[https://www.youtube.com/watch?v=I3gXldbe2DA][Mallikarjun Mansur]]
+  - Duration: 14:37
+
+
+* [[https://ragajunglism.org/ragas/bhairav/][Bhairav]] 
+- [[https://www.youtube.com/watch?v=r4KI5X-HFUU][Nikhil Banerjee]]
+  - Duration: 1:19:49
+- [[https://www.youtube.com/watch?v=jG21qUpkfUI][Uday Bhawalkar]]
+  - Duration: 1:29:31
+- [[https://www.youtube.com/watch?v=QRmVmROOQnk][Niloy Ahsan]]
+  - Duration: 59:30
+
+* [[https://ragajunglism.org/ragas/todi/][Todi]] 
+- [[https://www.youtube.com/watch?v=4D7QW8-1Yhg][Bhimsen Joshi]]
+  - Duration: 1:09:03
+- [[https://www.youtube.com/watch?v=ctLaRB0pdDk][Kishori Amonkar]]
+  - Duration: 1:07:22
+- [[https://www.youtube.com/watch?v=wQhkNikrWuw][Venkatesh Kumar]]
+  - Duration: 43:29
+- [[https://www.youtube.com/watch?v=UZAkJo8A2Xk][Rashid Khan]]
+  - Duration: 42:06
+- [[https://www.youtube.com/watch?v=U16iq-xfM3Y][Nikhil Banerjee]]
+  - Duration: 49:27
+- [[https://www.youtube.com/watch?v=CG4hbwjzBkw&list=PL6I5-ko4NsWdLDrd7SzOYpo4pS9LR-1DN&index=16][Amjad Ali Khan]]
+  - Duration: 30:34
+
+* [[https://ragajunglism.org/ragas/bhimpalasi/][Bhimpalasi]] 
+- [[https://www.youtube.com/watch?v=G5YOMD6tmUY][Ulhas Kashalkhar]]
+  - Duration: 50:59
+- [[https://www.youtube.com/watch?v=YdHe4dTc4Dw][Nikhil Banerjee]]
+  - Duration: 35:38
+- [[https://www.youtube.com/watch?v=UzZETJX0DCg][Kumar Gandharva]]
+  - Duration: 32:40
+- [[https://www.youtube.com/watch?v=1AoWoiK24uw][Sultan Khan]]
+  - Duration: 14:44
+- [[https://www.youtube.com/watch?v=22mMRzcoaco][Jasraj]]
+  - Duration: 1:12:04
+- [[https://www.youtube.com/watch?v=gjIshcdWJmc][Kaushiki Chakraborty]]
+  - Duration: 57:30
+- [[https://www.youtube.com/watch?v=hHQELL2wVN4][Ashiwini Bhide-Deshpande]]
+  - Duration: 29:49
+- [[https://www.youtube.com/watch?v=jHhLEZlF2yA][Aniruddh Aithal]]
+  - Duration: 23:38
+
+* [[https://ragajunglism.org/ragas/multani/][Multani]] 
+- [[https://www.youtube.com/watch?v=nY2jq0_aWGg][Bhimsen Joshi]]
+  - Duration: 35:54
+- [[https://www.youtube.com/watch?v=7yFnaXK2fNE][Kumar Gandharva]]
+  - Duration: 41:38
+- [[https://www.youtube.com/watch?v=kjgRHd6FaAo][Mallikarjun Mansur]]
+  - Duration: 41:47
+- [[https://www.youtube.com/watch?v=493CUAt7CcU][Uday Bhawalkar]]
+  - Duration: 1:18:02
+- [[https://www.youtube.com/watch?v=gHqJzptHs5g][Sabri Khan]]
+  - Duration: 21:11
+- [[https://www.youtube.com/watch?v=Oe_81EQZCys][Ali Akbar Khan]]
+  - Duration: 19:02
+
+* [[https://ragajunglism.org/ragas/marwa/][Marwa]] 
+- [[https://www.youtube.com/watch?v=fVQD1BblyJw][Amir Khan - 1st]]
+  - Duration: 18:35
+- [[https://www.youtube.com/watch?v=vlUvz333vUc][Amir Khan - 2nd]]
+  - Duration: 1:02:51
+- [[https://www.youtube.com/watch?v=So-7HT0K9Mk][Vasantrao Deshpande]]
+  - Duration: 43:55
+- [[https://www.youtube.com/watch?v=T0H7dThCD88][Kishori Amonkar]]
+  - Duration: 39:40
+- [[https://www.youtube.com/watch?v=IVLlBVmyiiE][Rashid Khan]]
+  - Duration: 52:14
+- [[https://www.youtube.com/watch?v=ey7MZBvL0Wc][Chandrakant Limaye]]
+  - Duration: 19:51
+- [[https://www.youtube.com/watch?v=_x50spsv7oE][Jitendra Abhisheki]]
+  - Duration: 18:44
+- [[https://www.youtube.com/watch?v=iij8GX1IFRQ][Sultan Khan]]
+  - Duration: 56:57
+
+* [[https://ragajunglism.org/ragas/shuddha-kalyan/][Shuddha Kalyan]]
+- [[https://www.youtube.com/watch?v=NMO0G4Bwxe4][Bhimsen Joshi]]
+  - Duration: 58:32
+- [[https://www.youtube.com/watch?v=1aoMeRvGasw][Abdul Karim Khan]]
+  - Duration: 4:21
+- [[https://www.youtube.com/watch?v=ZM1WB5RLBGQ][Venkatesh Kumar]]
+  - Duration: 49:55
+- [[https://www.youtube.com/watch?v=Icgcgya3qM4][Uday Bhawalkar]]
+  - Duration: 1:04:02
+- [[https://www.youtube.com/watch?v=qT0VS3lR1sI][Kishori Amonkar]]
+  - Duration: 56:05
+- [[https://www.youtube.com/watch?v=UBN-GQVASa8][Amir Khan]]
+  - Duration: 39:25
+- [[https://www.youtube.com/watch?v=JS1TZMcHjD0][Ajoy Chakraborty]]
+  - Duration: 13:04
+
+* [[https://ragajunglism.org/ragas/malkauns/][Malkauns]]
+- [[https://www.youtube.com/watch?v=HVhtf0T9O0Q][Bhimsen Joshi - 1st]]
+  - Duration: 43:06
+- [[https://www.youtube.com/watch?v=sneMFUOomv8][Bhimsen Joshi - 2nd]]
+  - Duration: 54:18
+- [[https://www.youtube.com/watch?v=-HXSIDYYw28][Kumar Gandharva]]
+  - Duration: 57:51
+- [[https://www.youtube.com/watch?v=ssO9fHiDJrg][Nikhil Banerjee]]
+  - Duration: 41:24
+- [[https://www.youtube.com/watch?v=vMidQAtLxLU][Amir Khan]]
+  - Duration: 21:34 
+- [[https://www.youtube.com/watch?v=9wQSCKuXN28][Bade Ghulam Ali Khan]]
+  - Duration: 17:56
+- [[https://www.youtube.com/watch?v=8E98kSSWKHc][Vasantrao Deshpande]]
+  - Duration: 29:25
+- [[https://www.youtube.com/watch?v=kGzh-_H-FDY][Uday Bhawalkar]]
+  - Duration: 1:28:58
+
+* [[https://ragajunglism.org/ragas/lalit/][Lalit]]
+- [[https://www.youtube.com/watch?v=eCu0k1xKVwU][Amir Khan]]
+  - Duration: 22:16
+- [[https://www.youtube.com/watch?v=v1HXfU0mUn8][Kesarbai Kerkar]]
+  - Duration: 4:18
+- [[https://www.youtube.com/watch?v=QN_dCGdJ_wo][Bhimsen Joshi]]
+  - Duration: 12:13
+- [[https://www.youtube.com/watch?v=I9QaQDEAVtc][Rashid Khan]]
+  - Duration: 49:16
+- [[https://www.youtube.com/watch?v=lwyDGFDrTtI][Vijay Koparkar]]
+  - Duration: 56:28
+- [[https://www.youtube.com/watch?v=d-r24pNyiQ8][Rajan and Sajan Mishra]] (Mislabelled by YouTube as Bhairavi)
+  - Duration: 8:17
+- [[https://www.youtube.com/watch?v=YEGcWTxj9x8][Jayateerth Mevundi]]
+  - Duration: 25:40 (not the whole video)
+
+* [[https://ragajunglism.org/ragas/jaunpuri/][Jaunpuri]]
+- [[https://www.youtube.com/watch?v=CdFUa-cgAQ0][Malini Rajurkar]]
+  - Duration: 22:06
+- [[https://www.youtube.com/watch?v=hR2W1VKIJOE][Venkatesh Kumar]]
+  - Duration: 27:36
+- [[https://www.youtube.com/watch?v=-SoI0RQJ4Nw][Bhimsen Joshi]]
+  - Duration: 8:51
+
+* [[https://ragajunglism.org/ragas/sarang/][Vrndavani Sarang]]
+- [[https://www.youtube.com/watch?v=feI65rC0_EE][Bhimsen Joshi]]
+  - Duration: 17:45
+- [[https://www.youtube.com/watch?v=ggdfILW74dQ][Jitendra Abhisheki]]
+  - Duration: 17:20
+- [[https://www.youtube.com/watch?v=o7uT9VR4JoM][Rashid Khan]]
+  - Duration: 42:11
+- [[https://www.youtube.com/watch?v=EiV4GQFAtKY][Venkatesh Kumar]]
+  - Duration: 19:18 
+- [[https://www.youtube.com/watch?v=6ZukNCazU_Q][Ulhas Kashalkhar]]
+  - Duration: 25:50
+
+* [[https://ragajunglism.org/ragas/puriya-dhanashree/][Puriya Dhanashree]]
+- [[https://www.youtube.com/watch?v=weCnFtHhPWo][Bhimsen Joshi]]
+  - Duration: 15:32
+- [[https://www.youtube.com/watch?v=CWoi5P897Mo][Veena Sahasrabuddhe]]
+  - Duration: 47:41
+- [[https://www.youtube.com/watch?v=UthKMPfRgG8][Vasantrao Deshpande]]
+  - Duration: 17:14
+
+* [[https://ragajunglism.org/ragas/hansadhwani/][Haunsadhwani]]
+- [[https://www.youtube.com/watch?v=wtX2AbX2s_4][Amir Khan]]
+  - Duration: 20:02
+- [[https://www.youtube.com/watch?v=GJnjyN-n_zE][Kishori Amonkar]]
+  - Duration: 8:58
+- [[https://www.youtube.com/watch?v=-6e1RlJTpdw][Jayateerth Mevundi]]
+  - Duration: 46:15
+
+* [[https://ragajunglism.org/ragas/kalavati/][Kalavati]] 
+- [[https://www.youtube.com/watch?v=eUAeZxuf98g][Salamat and Nazakat Ali Khan]]
+  - Duration: 22:13
+- [[https://www.youtube.com/watch?v=sGu2H8E8LLM][Sanjeev Abhyankar]]
+  - Duration: 25:33
+- [[https://www.youtube.com/watch?v=Ij94gTPqsoc][Ajoy Chakraborty]]
+  - Duration: 19:32 
+- [[https://www.youtube.com/watch?v=AwEQqcszjHc][Prabha Atre]]
+  - Duration: 10:35
+- [[https://www.youtube.com/watch?v=Kycok2Jktpo][Nikhil Banerjee]]
+  - Duration: 27:28
+    
+* [[https://ragajunglism.org/ragas/bahar/][Bahar]]
+- [[https://www.youtube.com/watch?v=GcPekkQADWs][Dattatreya Vishnu Paluskar]]
+  - Duration: 4:49
+- [[https://www.youtube.com/watch?v=8W1n5O7eDa0][Bhimsen Joshi]]
+  - Duration: 9:09
+- [[https://www.youtube.com/watch?v=pW4CktanGlc][Kumar Gandharva]]
+  - Duration: 7:40
+- [[https://www.youtube.com/watch?v=GEvovM-I_og][Jayateerth Mevundi]]
+  - Duration: 9:08
+
+* [[https://ragajunglism.org/ragas/asavari/][Asavari Todi]]
+- [[https://www.youtube.com/watch?v=JwCCYksVfjM][Bhimsen Joshi]]
+  - Duration: 56:06 (not the whole video)
+- [[https://www.youtube.com/watch?v=lahaD7-B8DQ][Amir Khan]]
+  - Duration: 45:29
+- [[https://www.youtube.com/watch?v=aLWAlahKGAg][Jayateerth Mevundi]]
+  - Duration: 54:12
+- [[https://www.youtube.com/watch?v=QxuDG00m3-Y][Venkatesh Kumar]]
+  - Duration: 43:42

@@ -1,0 +1,112 @@
+---
+title: "RaagRecog"
+author: "Aaroh Gokhale"
+date: 2025-04-17T22:09:02-05:00
+draft: true
+showtoc: true
+summary: This is the documentaiton of my journey of building RaagRecog, my software program for classifying Hindustani classical raags through modern machine learning and audio processing techniques. 
+---
+
+TL;DR
+#+BEGIN_QUOTE
+RaagRecog is an audio classification project that aims to classify audio recordings of Indian classical recordings according to which "raag" they are in. The raag is a musical framework central to Indian classical music, and it is valuable to be able to distinguish pieces by which raag they are being performed in. The main model is dependent on LSTMs for capturing temporal dependencies which are crucial in the structure of raags.
+#+END_QUOTE
+
+All the code can be found at: [[link]]
+
+
+* Introduction
+Indian classical music is likely not something that the most people in the world are familiar with. It is quite a bit different from popular music of the modern day, and quite different from western music in particular. Even within India, only a small minority of people partakes in listening to this traditional form. Those who do listen to it, however, know of its immense structure, complexity, and most importantly, beauty. Indian classical music, also known as शास्त्रीय संगीत (/shastriya sangeet,/ IPA: ɕɑːst̪riːjə sⁿgiːt̪ə), is not only my favorite type of music, it is my favorite form of /art/, period. 
+
+For the past two years (since summer 2023 to be precise), I have been repeatedly coming back to a project idea that I thought up a couple of summers ago. Back then, I was quite new to this music, and had just started learning how to recognize a couple of distinct raags such as [[https://en.wikipedia.org/wiki/Yaman_(raga)][Yaman]] and [[https://en.wikipedia.org/wiki/Malhar][Malhar]]. I was trying to think of projects to get some practice with machine learning, and I thought, "what if I could make a model that could classify any audio recording of Hindustani classical music by raag?" Unfortunately, I didn't make any progress back then. My father had recommended using [[https://en.wikipedia.org/wiki/Recurrent_neural_network][RNNs]], and I had downloaded a free dataset from Kaggle and looked at some basics of audio processing such as [[https://en.wikipedia.org/wiki/Mel-frequency_cepstrum][Mel Spectrograms]], but that was where it stopped. Ever since that summer, however, I have been hit with a desire to go back and actually build such a model over and over. This is the documentation of how I finally actually went about doing so. 
+
+Before we dive into the world of audio processing and machine learning models, here is some Hindustani classical music background:
+
+** What are Raags?
+The /Raag/ or [[https://en.wikipedia.org/wiki/Raga][Raga]] is a fundamental concept belonging to the two main classical music traditions of India, Hindustani and Carnatic. My interest is primarily in the Hindustani tradition, so that's the variant of this term that I'll attempt to briefly explain here. Raags are the very essence of Indian classical music, be it in the form of live, improvised performances, or carefully laid out of compositions. They are a way to bring out particular "atmospheres" when they are performed, and each raag has its own personality. 
+
+From a more technical perspective, we can think of a raag as a language or grammar that informs the formation of compositions and improvised performances. I'm more inclined to thinking of it as a language, since we say that certain compositions are "in" a particular raag, whereas a grammar only specifies which sentences are and aren't legal in a language. A raag's grammar is specified in two main ways: explicitly stating which notes are and aren't legal to use (there are actually two distinct sets of legal notes for ascent and descent), and, more fuzzily, by the stating which /phrases/ of notes are idiomatic (called the /chalan/ of the raag). Moreover, Hindustani classical music makes heavy use of /ornamentation/ (things like microtones, glides, etc), and a raag will also specify which ornamentation needs to be applied in a particular phrase for it to actually be idiomatic. The specification of idiomatic phrases, to the best of my knowledge, is only inclusion based. There isn't much of an attempt to explicitly discard phrases (unlike individual notes), but artists avoid phrases that cross the boundary into another raag. In this way, raag grammars seem closer to [[https://en.wikipedia.org/wiki/Stochastic_grammar][stochastic grammars]] than to [[https://en.wikipedia.org/wiki/Formal_grammar][formal grammars]]. 
+
+All this might seem a little bit abstract, and it is quite so. I didn't quite get what a raag really was until I listened to several explanations, and even then it felt quite abstract. I was only able to grasp it as something tangible after listening to several performances of particular raags. If you still feel a little confused, this [[https://www.youtube.com/watch?v=CBtFt3HUkT0][video]] does a decent job of explaining them at a basic level. If you would like to actually listen to a performance of a raag, [[https://www.youtube.com/watch?v=Vxc0PTmNozA][this]] is a nice performance of raag Yaman to start with. Also, the formal and mathematical explanation isn't how you actually *experience* a raag. The actual experience should be intuitive, at least in my opinion.
+
+That being said, let's move on to the actual project.
+
+* Project Overview
+The specifics of the project morphed a little bit over the years, but the main idea was always to create a model that is able to classify an audio sample as being "in" a particular raag. The number of raags I wanted to classify varied, but I finally settled on four, since that seemed like an okay number to start with for a prototype.
+
+I decided to make a model that learns classification with the following labels:
+
+- [[https://en.wikipedia.org/wiki/Yaman_(raga)][Yaman]]
+- [[https://en.wikipedia.org/wiki/Darbari_Kanada][Darbari Kanada]]
+- [[https://en.wikipedia.org/wiki/Marva_(raga)][Marwa]]
+- [[https://en.wikipedia.org/wiki/Kalavati][Kalavati]]
+
+Why these four in particular? It was based on my own intuition (formed by listening to many performances) that these four raags are all quite distinct from each other and should be relatively simple to distinguish if a model properly learns their key phrases.
+
+The idea was to feed in sample audio containing a small (roughly 20 second) segment of one of these raags being performed, and generating an output determining which raag it was.
+
+* The First Attempt
+The first attempt existed to give me a feel for audio preprocessing and classification. As such, I didn't think too deeply about the arhictecture and just went with something intuitive, with the goal of coming back and trying other things.
+
+** Preprocessing
+During the first attempt, the preprocessing step was as follows:
+
+#+BEGIN_QUOTE
+$$\text{Audio Recording in opus or m4a} \xrightarrow{\text{ffmpeg}} \text{Audio Recording in wav}$$
+
+$$\text{Audio Recording in wav} \xrightarrow{\text{ffmpeg}} \text{20 second long slices from Audio Recording in wav}$$
+
+$$\text{20 second long slices from Audio Recording in wav} \xrightarrow{\text{librosa}} \text{MIDI sequences for each 20 second slice}$$
+
+$$\text{MIDI sequences for each 20 second slice} \xrightarrow{\text{subtract median pitch}} \text{normalized MIDI sequences}$$
+#+END_QUOTE
+
+This let me generate thousands of relative-pitched MIDI sequences from just a couple of gigabytes of training audio. I was a little bit skeptical of how useful a feature the "dominant frequency" (extracted using =librosa.pyin= and then converted to MIDI using =librosa.hz_to_midi=) would be for such a classification task, but I went with it because I was eager to get a first draft. I realized that the =pyin= module was extremely slow for even a single 20 second audio clip, so I parallelized the process using =concurrent.futures.ProcessPoolExecutor=, though it still took a fairly long time (several hours) with this. After generating these, I stored them with =pickle= for later use.
+
+** Model Architecture
+Going in, I had the general idea that I wanted to use an [[https://en.wikipedia.org/wiki/Long_short-term_memory][LSTM]] to capture temporal patterns and long term dependencies. I did think of using transformers, but I didn't have a beefy GPU so I thought they would take way too long to train. With some assistance from GPT, I decided of the following architecture:
+
+$$ \text{MIDI-seq vector} \rightarrow M \rightarrow \text{LSTM} \rightarrow \text{Global Pooling} \rightarrow \text{FC} \rightarrow C \rightarrow \text{SoftMax}$$
+
+Here, $M$ is a learnable embedding matrix that takes the MIDI sequence vector, and maps each unit within that vector to a separate $64$ dimensional vector, giving a final shape of $(\text{sequence size}, 64)$ to be fed into the LSTM. After going through the LSTM, I did global mean pooling, and then a fully connected layer before finally passing it into the classification layer (4 neurons) and applying $\text{SoftMax}$. Since the sequence length could be variable, I padded each sequence to make it as long as the longest sequence in the training set (for inference, this involves clipping down to this size if necessary).
+
+** Training
+I chose =CrossEntropyLoss= from =torch.nn= as the loss function, and used the Adam optimizer with mini-batches of size 32. Initially, I just wanted to see how the loss would perform, so I didn't bother setting up a cross validation loop. The training happened for 1000 epochs with weights saved in a new file after every 100 epochs. While the model fit the training data quite well, the question of whether it generalized to unseen data was still open.
+
+** Basic Testing
+I had actually kept a sort of "discard pile" of the Yaman recordings, since I had a disproportionate volume of them and wanted to even out the data for all the raags. I used this discard pile for testing, and found out that the best performing model, the one saved at epoch 300, labeled about 50% of the segments created from the discard pile as actually being Yaman. Of course, this is actually quite a decent bit better than a totally random model, which would be expected to only get about 25% of them right. However, this was far from a "good" model for me. I was especially certain that there was a lot of room for improvement when I actually listened to some of the mislabeled clips and found out that there were incredibly obvious (to me) Yaman phrases in them, which a good model ought to pick up on.
+
+** Cross Validation
+I didn't have a discard pile for the other raags, but I still wanted to see how the model generalized to them. Thus, I ran a 5-fold cross validation loop, sliding a 20% window over the shuffled data, taking the segments in the window as the validation set and the rest as the training set. 
+
+I started my cross-validation loop, got through through three iterations of it (so the validation set window went from [0%-20%], [20%-40%], and finally [40%-60%], this is okay because the data was shuffled at the start), and then I got this familiar message:
+
+#+BEGIN_SRC
+Segmentation fault (core dumped)
+#+END_SRC
+
+At this point, I decided to not retry the entire cross-validation loop, since it had already taken up several hours of my time so far. Also, I think three iterations were good enough to give me a decent idea:
+
+- When the validation window was the first 20% of the shuffled data, the model got an accuracy of 60.86% on the validation set
+- When the validation window was the second 20% of the shuffled data, the model got an accuracy of 61.46% on the validation set
+- When the validation window was the third 20% of the shuffled data, the model got an accuracy of 62.67% on the validation set
+
+So the model was getting about 60% of the queries correct, more or less. Also , even though the model was never trained on the validation set, it is true that the validation set is drawn from the existing training samples, and thus might be much closer to the training distribution than data drawn from recordings entirely unseen by the model. This could help explain the 50% accuracy on the unseen Yaman pile, unless it really was the case that the model did amazingly well on raags other than Yaman. For the individual raag accuracies, I got:
+
+- Yaman Accuracy: 61.11%
+- Darbari Accuracy: 67.16%
+- Marwa Accuracy: 65.79%
+- Kalavati Accuracy: 55.62%
+
+So, as expected, it wasn't the case that the model was exceptionally terrible at generalizing to Yaman, it just seemed to generalize slightly better when the testing data came from the same performances as the training data. This isn't a terribly surprising discovery, but it does mean that maybe the aim for cross-validated accuracy should be higher than the aim for accuracy on external data.
+
+* The Second Attempt
+** Mel Spectrograms after all?
+With the sort of unsuccessful first run, I decided to examine my pipeline for sources of improvement. It might have been too early to abandon the dominant frequency approach, but it was the part that I had been somewhat skeptical of from the start. A Hindustani classical music piece doesn't just contain the central melody, it also contains other interfering sounds such as the sound of the [[https://en.wikipedia.org/wiki/Tabla][Tabla]] as well as the droning sounds of the [[https://en.wikipedia.org/wiki/Tanpura][Tambura]]. If =librosa.pyin= isn't able to pick up on the voice and instead ends up picking up on one of these as the dominant frequency, it will surely hurt the model. I wanted to have more flexibility in the features that were extracted from the audio waveform. Maybe if I just let the model pick out the features that might actually be useful from a piece of audio instead of deciding that the dominant frequency is good enough, I would get better results. Of course, since the dominant frequency was good enough to actually drive down the loss quite a bit, it could be the case that the model would still just end up picking some useful feature that didn't generalize, but it was still worth a try.
+
+Thus, I decided to use [[https://en.wikipedia.org/wiki/Mel-frequency_cepstrum][Mel spectrograms]] generated from my wav files as my starting input instead. I also chose to for a slightly different architecture. 
+
+$$ \text{Mel Spectrogram} \rightarrow \text{CNN} \rightarrow \text{LSTM} \rightarrow \text{FC} \rightarrow C \rightarrow \text{SoftMax}$$
+
+#+CAPTION: A Mel Spectrogram of a 20-second raag Yaman clip from a performance by [[https://en.wikipedia.org/wiki/Malini_Rajurkar][Vidushi Malini Rajurkar]]
+[[/yaman-rajurkar35.png]]

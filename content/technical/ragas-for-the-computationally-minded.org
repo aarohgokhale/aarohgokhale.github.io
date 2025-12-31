@@ -1,0 +1,10 @@
+---
+title: "Ragas for the Computationally Minded"
+date: 2025-09-26T21:24:49-05:00
+showtoc: true
+draft: true
+Summary: TBD
+---
+
+The [[https://en.wikipedia.org/wiki/Raga][/raga/]] or /raag/ is a sophisticated idea from the world of Indian classical music. In my experience, exposition about this topic online has varying levels of effectiveness. Given that the knowledge of raags has primarily been transmitted orally over hundreds, if not thousands of years, many written accounts fail to completely capture their main idea fully.  
+

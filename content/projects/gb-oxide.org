@@ -1,0 +1,23 @@
+---
+title: "Gb Oxide"
+author: "Aaroh Gokhale"
+date: 2025-10-03T10:39:35-05:00
+draft: true
+showtoc: true
+summary: I created a Game Boy emulator in Rust.
+---
+
+* Introduction
+I have been wanting to create a personal project in the area of low level systems programming for a while now. After looking at a few of the potential options, I landed on creating an emulator for the Nintendo Game Boy handheld from 1989. I chose this project instead of a compiler or shell because it had an immediate and fun reward upon completion: I could play games with it. 
+
+
+* CPU-PPU Synchronization
+On a real Game Boy, the CPU and PPU are perfectly in sync. Specifically, each clock cycle applies to both the CPU and PPU at the same time. The PPU simply updates its state machine based on this cycle count. Technically speaking, the CPU and PPU run in parallel. The PPU has no idea what the CPU is doing. It simply responds to changes in cycle count. I wanted to transform this into a model where the CPU first executes an instruction and updates the number of cycles, and only then does the PPU take a step. The problem with this new model is that it is essentially sending cycles to the PPU in batches rather than one at a time. This means that in order to perfectly simulate the hardware PPU operation, we must ensure that the PPU cannot be late for points in game where it "actually matters" for the PPU and CPU to be synchronized. What I needed to do was formalized this vague notion of points that "actually matter". 
+
+To begin with, we can start with an extremely simple model. Since each scanline takes exactly 456 cycles to process, we wait for 456 cycles to accumulate, and process the next scanline. It turns out that this process is too simplistic if we consider the subsections involved in processing a scanline. The PPU goes through three "modes" for each scanline:
+
+- The first is Mode 2: OAM Scan. Here the PPU sequentially walks the Object Attribute Memory and collects positional data for the first ten objects or "sprites" that coincide with the current scanline. Mode 2 takes exactly 80 cycles to run, and makes the OAM inaccessible to the CPU during this time, except through DMA.
+
+- Next the PPU enters Mode 3: Drawing Pixels. The PPU computes the value to be displayed for each pixel in the current scanline, and outputs the line to the display. This mode has a variable cycle length which lies in the range 172-289, inclusive. The length of each instance of the Mode 3 depends on a relatively convoluted policy. One thing we might notice here is that the the Game Boy updates the screen one scanline at a time, not one frame at a time. The way I'm choosing to render the graphics involves simply updating once the entirety of the next frame has been computed, since =minifb= requires a buffer that is at least the size of the display screen. While I don't think this should be much of an issue, it does prevent so-called raster effects which exploit the fact that object parameters can be changed within a single frame to create interesting effects. 
+
+- After Mode 3, the PPU transitions to Mode 0: Horizontal Blank. In Horizontal Blank, the PPU waits out 

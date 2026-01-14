@@ -1,15 +1,46 @@
 ---
-title: "Gb Oxide"
+title: "GB-oxide"
 author: "Aaroh Gokhale"
-date: 2025-10-03T10:39:35-05:00
+date: 2026-01-11T22:39:35-05:00
 draft: true
 showtoc: true
-summary: I created a Game Boy emulator in Rust.
+summary: I created my very own Game Boy emulator in Rust. This article outlines my design choices, programming proces, and some lessons I learned along the way.
 ---
 
-* Introduction
-I have been wanting to create a personal project in the area of low level systems programming for a while now. After looking at a few of the potential options, I landed on creating an emulator for the Nintendo Game Boy handheld from 1989. I chose this project instead of a compiler or shell because it had an immediate and fun reward upon completion: I could play games with it. 
+The code for this project can be found at [[https://github.com/gokhaleaaroh/GB-oxide]]
 
+* Introduction
+Emulators have been a part of my gaming experience since 2012, when I receive a retro gaming handheld capable of playing games from the Game Boy Advance and SNES (along with backward compatability with their predecessors). It took a while for me to figure out what emulators were and discover that my handheld was capable of emulating games from the past. After that, emulation became a regular part of gaming for me. I had always hoped to one day be able to understand how in the world it was possible to play games made for completely different hardware in a completely different era on my handheld and my PC. Recently, while I was taking a course in virtualization, I realized that the time had finally come for me to write my own emulator. I thus set out to write an emulator for the [[https://en.wikipedia.org/wiki/Game_Boy][Game Boy]] (aka the DMG-01 if you're a nerd). I chose this particular console for practical reasons: it was one of the most popular gaming handhelds ever created, it ran on a simple 8-bit CPU, and it had some of the most beloved games ever, including /Tetris/ and /Pokémon/. 
+
+* Design Choices
+The design of the emulator came in stages, but I initially knew two things: I wanted to write it in Rust, and I wanted to emulate the instructions directly in software without implementing fancier techniques like [[https://en.wikipedia.org/wiki/Dynamic_recompilation][dynarec]]. After some iteration, I ended up going with a layout that splits the emulator into two parts: the computation and the state. While this isn't anything new in the world of software, it is an abstraction that paid dividends the further along I went. 
+
+** The State
+In the state, I added the following components:
+
+- General-purpose registers (use Rust's =enum= which allows enumerations to hold values)
+- Flags
+- Joypad state and IO Registers
+- Four arrays of memory, including:
+  - wram
+  - vram (video ram)
+  - oam (object attribute memory)
+  - hram (high ram)
+- A cartridge struct containing:
+  - MBC type
+  - The game rom
+  - sram (battery-powered in real cartridges)
+
+Along with the structures to hold these things, I added functions that allowed me to reliably modify the various forms of state as needed from the other portion of the emulator where all the computations happened. I wrapped all the state up into a =struct= called =GameState=, and passed around an instance of =GameState= to the code for the CPU and PPU, which operated on this state. 
+
+** The Computation
+In the computation-heavy side of the emulator, I created a further split between the PPU and CPU. The PPU is a special hardware component of the Game Boy that independently generates game graphics by reading and operating on state it shares with the CPU. The game code dictates the flow of graphics by making the CPU write the appropriate data to the appropriate locations in shared memory, which is then picked up by the PPU to generate the final graphics. 
+
+In the CPU, I created a loop for interpreting instructions coming from the game state's rom by reading from the memory address stored in the PC. Since the Game Boy does not have fixed sized instructions, I had to add further logic to decide how many bytes to read to get the full instruction. There are roughly five hundred instructions in the Game Boy's instruction set. 
+
+The final emulation loop went as follows:
+
+[[/Flow.png]]
 
 * CPU-PPU Synchronization
 On a real Game Boy, the CPU and PPU are perfectly in sync. Specifically, each clock cycle applies to both the CPU and PPU at the same time. The PPU simply updates its state machine based on this cycle count. Technically speaking, the CPU and PPU run in parallel. The PPU has no idea what the CPU is doing. It simply responds to changes in cycle count. I wanted to transform this into a model where the CPU first executes an instruction and updates the number of cycles, and only then does the PPU take a step. The problem with this new model is that it is essentially sending cycles to the PPU in batches rather than one at a time. This means that in order to perfectly simulate the hardware PPU operation, we must ensure that the PPU cannot be late for points in game where it "actually matters" for the PPU and CPU to be synchronized. What I needed to do was formalized this vague notion of points that "actually matter". 

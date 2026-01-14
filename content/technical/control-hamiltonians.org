@@ -1,5 +1,5 @@
 ---
-title: Exploring Hamiltonians in Control Theory and Machine Learning
+title: Exploring Hamiltonians in Control Theory
 date: 2025-11-07T17:55:24-06:00
 showtoc: true
 draft: true

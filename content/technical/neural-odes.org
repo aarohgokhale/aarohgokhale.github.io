@@ -1,0 +1,118 @@
+---
+title: "Neural ODEs"
+date: 2026-02-01T10:22:32-06:00
+draft: true
+showtoc: true
+summary: Neural ODEs are a relatively niche deep learning architecture designed to represent continuous-time differential processes. In this post, I provide an introduction to the basics of Neural ODEs and a simple application to demonstrate their use case. 
+---
+
+All code for the demos can be found at https://github.com/gokhaleaaroh/NeuralODE-experiments/
+
+* Introduction
+Neural networks are capable of learning complex, nonlinear functions between high-dimensional spaces through empirical risk minimization. Often, neural networks are designed to be of the form of a long sequence of differentiable transformations that progressively increase the expressive power of the network. Certain neural networks are defined by /adding/ to an existing hidden state rather than applying a transformation to it directly:
+
+$$\mathbf{h}_{t + 1} = \mathbf{h}_t + f(\mathbf{h}_t, \boldsymbol{\theta}_t)$$
+
+[[https://en.wikipedia.org/wiki/Residual_neural_network][ResNets]] are a clear example of this type of architecture. Certain normalizing flows, such as planar and radial flows, also obey this residual form. [[papers.nips.cc/paper_files/paper/2018/hash/69386f6bb1dfed68692a24c8686939b9-Abstract.html][Neural ODEs]] (Chen et al., 2018) are built on the observation that this form is exactly the Euler's method discretization of the differential equation
+
+$$\dfrac{d\mathbf{h}}{dt} = f(\mathbf{h}(t), \boldsymbol{\theta}(t), t)$$
+
+Neural ODEs aim to directly parameterize and learn $f = \dfrac{d\mathbf{h}}{dt}$ using a neural network, which then allows for a continuous-time representation of this evolution. Inferencing using this learned derivative involves integrating it forward in time along a desired set of time steps. A key feature of neural ODEs that makes them particularly interesting is that they allow the use of a black-box forward integrator/solver, even though the loss function is a function of the output of the numerical integration. This makes it so that various choices of integrators can be tested out with the same code base very quickly, without needing to determine whether they are internally auto-differentiable.
+
+* Computing Gradients
+** The Secret Sauce: the Adjoint Sensitivity Method
+In the previous paragraph, I essentially claimed that even if the loss is a function of some black box integrator, i.e. $\mathcal{L}\left(I\left[f_{\theta}\right]\right)$, we can train $f_{\theta}$ with backpropagation. How is that even possible? If we don't know how to make the gradients flow back from $I$, aren't we stuck? The /adjoint sensitivity method/, introduced by Pontryagin in the early 60s, allows us to compute the gradient by solving a second ODE, /backward in time/. Consider the following problem: given
+
+$$\mathcal{L}\left(\text{ODESolve}(\mathbf{z}(t_0), f, t_0, t_1, \theta)\right)$$
+
+, where $\text{ODESolve}$ is a callable forward integrator, $t_0$ is the initial time, $t_1$ is the final time, $\mathbf{z}(t)$ is the state, and $f$ is the current dynamics network parameterized by $\theta$, compute $\dfrac{\partial \mathcal{L}}{\partial \theta}$.
+
+First, define the /adjoint/, $\mathbf{a}(t)$, as the gradient of the loss with respect to the state $\mathbf{z}(t)$:
+
+$$\mathbf{a}(t) = \dfrac{\partial \mathcal{L}}{\partial \mathbf{z}(t)}$$
+
+The key identity that allows us to find $\dfrac{\partial \mathcal{L}}{\partial \theta}$ is:
+
+$$\dfrac{\partial \mathcal{L}}{\partial \theta} = - \displaystyle\int_{t_1}^{t_0} \mathbf{a}(t)^{T} \dfrac{\partial f(\mathbf{z}(t), t, \theta)}{\partial \theta} dt$$
+
+this means integrating $-\mathbf{a}(t)^T \dfrac{\partial f(\mathbf{z}(t), t, \theta)}{d\theta}$ backward in time allows us to retrieve the derivative of the loss function with respect to the parameters. Now as long as we know how to evaluate the trajectory of $\mathbf{a}(t)$ backward in time, we can get our gradients for backprop. Thus, it is of interest to know the dynamics of $\mathbf{a}(t)$. The following identity gives us just that:
+
+$$\dot{\mathbf{a}}(t) = -\mathbf{a}(t)^{T}\dfrac{\partial f(\mathbf{z}(t), t, \theta)}{\partial \mathbf{z}}$$
+
+One small point about the notation here, is that in the previous equation we had $\partial \mathbf{z}(t)$, whereas here we have $\partial \mathbf{z}$. The way I interpreted this was that because $\mathcal{L}$ is a /functional/ of the entire trajectory $\mathbf{z}([t_0, t_1])$, we need to specify /which/ $\mathbf{z}$ along the trajectory we're nudging. On the other hand, $f$ is just a regular function with three inputs, meaning there is only one $\mathbf{z}$ to nudge to begin with.
+
+Armed with the knowledge of how both $\mathbf{z}$ and $\mathbf{a}$ evolve backward in time, we run our numerical integrator on three sets of dynamics:
+
+$$(f, -\mathbf{a}(t)^T \dfrac{\partial{f}}{\partial \mathbf{z}}, 
+-\mathbf{a}(t)^T \dfrac{\partial{f}}{\partial \theta})$$
+
+with the third coordinate being of interest for the actual loss gradient. Another interesting point to note here is that since the third coordinate depends on both $\mathbf{a}(t)$ and $\mathbf{z}(t)$, there is a choice to be made of whether to use the updated or previous values of those functions when discretizing the evolution.
+
+I initially considered providing justifications for the above identities, but decided against it to prevent this post from getting excessively long. Interested readers can refer to [[https://vaipatel.com/posts/deriving-the-adjoint-equation-for-neural-odes-using-lagrange-multipliers/][Vaibhav Patel's blog post]] deriving these identities.
+
+** Classic Backward Propagation
+If the internal steps of the numerical integrator are known and written to be autodifferentiable, it is possible to compute the gradients by classic backpropagation. In fact, as we will see, this alternative, though not as mathematically elegant, might actually be preferable in certain scenarios. In the original paper, the adjoint sensitivity method is proposed as a more memory-efficient approach with significantly lower numerical error. However, in practice, I found that the adjoint sensitivity method took a very long time, and that the standard backprop approach yielded results that were just as good, if not better, for the simple problems posed in my experiments.
+
+* Applications
+The strength of neural ODEs is that they allow continuous time modeling of data. There is no need to specify the exact time-steps for which samples will be generated, since what is being trained is the time derivative of the output, rather than the actual value. Another major benefit of neural ODEs is that they ensure smooth trajectories automatically due to the fact that the learned operator is the derivative of the desired value function.
+
+I ran some experiments to test out neural ODEs for myself. The following subsections detail their designs and results. 
+** Learning Physical Dynamics
+One of the most natural applications of neural ODEs is to learn the propagation dynamics of physical systems by learning from trajectory data. Given a state vector $\mathbf{x}$ that evolves according to some hidden dynamics $f(\mathbf{x}, t)$, we can train a neural ODE to automatically interpolate meaningfully between observed points by training on observed data $(\mathbf{x}_{t_{k}})_{k = 0}^{k = N}$. The resulting neural ODE can then be used as a surrogate to simulate hypothetical trajectories. One important caveat is that the original method of adjoint sensitivity only outlines how we can compute the derivative of a loss that depends on the final state in the trajectory. In order to enforce trajectory consistency throughout the desired time-interval, we need to supervise with intermediate time-steps. The tricks necessary to incorporate intermediate points are beyond the scope of this article. In the following experiment, I trained a neural ODE to learn the dynamics of a [[https://en.wikipedia.org/wiki/Van_der_Pol_oscillator][Van der Pol oscillator]], which is a dynamical system that exhibits very interesting trajectories and evolves according to the following ODE:
+
+$$\ddot{x} ​=\mu (1 - x^2) \dot{x} - x$$
+
+I sampled the phase space coordinates $(x, \dot{x})$ over a time interval $[0, 20]$ with a step size of $0.1$ and a batch size of $16$, and trained a neural network for $5000$ iterations to learn propagation dynamics that result in trajectories that match these samples.
+
+*** A Note on Gradient Computation
+If the internals of the numerical integration algorithm are known, it is possible to compute the loss gradient by directly backpropagating through the steps of the solver. Initially, I unknowingly did just that, using =torchdiffeq.odeint= instead of =torchdiffeq.odeint_adjoint=, which actually uses the adjoint sensitivity method. To be thorough, I also ran the same experiment while using =torchdiffeq.odeint_adjoint= with the ="dopri5"= solver option (corresponding to the [[https://en.wikipedia.org/wiki/Dormand%E2%80%93Prince_method][Dormand-Prince method]]). What I discovered was that using the adjoint method was much, much slower than backproping through the solver steps. The difference was night and day. While the adjoint method eventually did manage to drive down the training and validation loss, it took several hours to do so, as opposed to the several minutes taken by classic backpropagation. This little detour ended up informing my understanding of how neural ODEs should be trained in practice. If the solver is known internally, classic backprop is certainly worth trying out, and might even be significantly better. In particular, the supervision of intermediate points is much better suited for classical backprop. If the internals of the solver are /truly/ unknown, the adjoint sensitivity method still provides a reliable way to compute gradients.
+
+The following visualizations demonstrate how the learned dynamics compare to the ground truth:
+
+Sample trajectory generated by dynamics learned with regular backprop:
+
+[[/phase_gt_vs_pred.gif]]
+
+Sample trajectory generated by dynamics learned with adjoint sensitivity:
+[[/phase_adjoint.gif]]
+
+Propagating from various different initial points (regular backprop):
+[[/good_phase_picture.png]]
+
+As can be seen above, neural ODEs are capable of learning dynamics that mimic the ground truth dynamics remarkably well from just trajectory data. 
+
+** Generative Modeling with Continuous Normalizing Flows
+Another cool application mentioned in the original paper is generative modeling with normalizing flows. The paper shows that using a continuous time representation of normalizing flows with neural ODEs allows evaluating flow models in $O(M)$ time, where $M$ is the number of hidden units. This is contrasted with standard normalizing flows, which need $O(M^3)$ operations for the same task. This means that neural ODEs are capable of efficiently evaluating "wide" flow layers where the dynamics might be defined as sum of several functions. The paper coins the term "Continuous Normalizing Flows" (CNF) for these continuous-time flow models. In the following experiment, I trained a CNF to learn how to morph a standard multivariate normal distribution in 2D into a spiral distribution defined by $(x, y)$, where
+
+$$x \sim r\cos{\theta} + \mathcal{N}(0, \sigma^2)$$
+$$y \sim r\sin{\theta} + \mathcal{N}(0, \sigma^2)$$
+$$\theta \sim 4\pi \cdot \mathcal{U}_{[0, 1)}$$
+$$r = a + b\theta$$
+
+The model generates a target distribution by first taking a sample $z_0 \sim \mathcal{N}(0, I_2)$ and then morphing it into a sample $x$ obtained by forward integrating $z_0$ with our dynamics neural network $f_{\theta}$. Some clever math from the original paper allows us to compute the log-probability of $x$ by finding the accumulated change in log-probability density by integrating negative the divergence of $f_{\theta}$ back in time. We train the network by sampling examples of $x$ from the target distribution defined above, then reverse integrating $(f_{\theta}, -\nabla \cdot f_{\theta})$ to find the corresponding basepoint $z$ and the accumulated change in log-probability density, and finally computing the parameter gradients. Interestingly enough, here the "forward pass" itself is a backward-in-time integration.
+
+I trained the model to integrate with $200$ steps over the time interval $[0, 1]$, with $5000$ training loop iterations and a batch (resampled every time with the spiral generator) of size 1024.
+
+The following visualizations demonstrate the learned transformation. In the first visual, we see the standard normal distribution in 2D morph into the learned distribution. In the second visual, we see the true spiral distribution superimposed onto the learned distribution. 
+
+|[[/spiral_morph.gif]]|[[ /improved_graph.png]]|
+
+As can be seen above, the CNF was able to roughly capture the shape of the target distribution. Generating a new sample is as simple as sampling from the standard normal distribution and forward propagating to get the corresponding sample in the learned distribution. Since it is normalizing flow, we also have the property that any sample from the learned probability distribution can be mapped back to a unique sample in the original standard normal distribution, which is done here with reverse integration.
+
+* Conclusion
+Neural ODEs offer an interesting and mathematically elegant way of moedeling continuous-time transformations of data. While their applications in real software are currently limited, they are part of ongoing research efforts in physics-informed machine learning and time-series modeling. This article has explored their basic structure and two simple applications in physical dynamics-learning and normalizing flows. One aspect of neural ODEs that this article hasn't covered in depth is their ability to incorporate irregular temporal data. Since neural ODEs learn the dynamics operator of a transformation rather than specific values at specific time-steps, they can incorporate data collected at arbitrary points in a trajectory. This ability could be the topic of a future project incorporating real world time-series data that is irregular and sporadic.
+
+* Further Readings
+The original paper proposing neural ODEs came out in 2018. Since then, there has been a growing body of machine learning research that has both improved and leveraged this architecture for various applications:
+
+- A more advanced variation on neural ODEs is modeling /stochastic differential equations/ (SDEs) with neural networks, [[https://proceedings.mlr.press/v108/li20i.html]["Scalable Gradients for Stochastic Differential Equations"]] as discussed in  by Li et al. 
+
+- Neural ODEs also enable incorporating certain interesting inductive biases, such as a Hamiltonian dynamics bias, as discussed in [[https://iclr.cc/virtual_2020/poster_ryxmb1rKDS.html]["Symplectic ODE-Net: Learning Hamiltonian Dynamics with Control"]] by Zhong et al., which also addresses how a control term $u$ can be incorporated into the existing neural ODE architecture, and how to handle prediction error in long time-horizons.
+
+- A proposed replacement to neural ODEs is provided in [[https://proceedings.neurips.cc/paper/2021/hash/b21f9f98829dea9a48fd8aaddc1f159d-Abstract.html]["Neural Flows: Efficient Alternative to Neural ODEs"]] by Biloš et al. This paper discusses an approach to modeling ODEs that does not require using numerical integration.
+
+* References
+Ricky T. Q. Chen et al. “Neural ordinary differential equations”. In: Proceedings of the 32nd In-
+ternational Conference on Neural Information Processing Systems. NIPS’18. Montréal, Canada:
+Curran Associates Inc., 2018, 6572â6583. [[papers.nips.cc/paper_files/paper/2018/hash/69386f6bb1dfed68692a24c8686939b9-Abstract.html]]
+

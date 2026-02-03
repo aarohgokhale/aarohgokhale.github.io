@@ -1,0 +1,101 @@
+---
+title: "A Physics View of Function Optimization"
+date: 2025-01-21T21:39:20-06:00
+Summary: An exploration of how the common problem of function optimization over $\mathbb{R}^d$ can be viewed through the lens of physics, and in particular, Hamiltonian mechanics. This perspective is taken by many modern papers on optimization algorithms, and I attempt to give a brief and accessible introduction to it here.
+---
+
+In my recent readings, I have encountered several papers that convert the usual [[https://optimization.cbe.cornell.edu/index.php?title=Momentum][momentum-based]] [[https://en.wikipedia.org/wiki/Mathematical_optimization][optimization]] algorithms such as [[https://pages.cs.wisc.edu/~brecht/cs726docs/HeavyBallLinear.pdf][Polyak's Heavy Ball Method]] or [[https://optimization.cbe.cornell.edu/index.php?title=Adam][Adam]] to their /continuous-time/ variants in order to perform some form of analysis on them.
+
+Here, I would like to explore the broad notions used in these papers.
+
+* Continuous Time Forms
+One of the interesting notions in many of these papers is to look at the /continuous-time/ forms of momentum based optimizers. The main problem I tend to face is that these papers usually just don't explain how they arrived to a particular system of differential equations for the continuous time form of a particular optimizer. A friend of mine suggested that it could be just looking at the differential equations for which the optimizer update matches [[https://en.wikipedia.org/wiki/Euler_method][Euler's Method]] for solving ODEs. For example, the usual vanilla gradient descent rule is
+
+$$x_{t^{(i + 1)}} = x_{t^{(i)}} - \eta \cdot \nabla f (x_{t^{(i)}})$$
+
+where $f$ is the loss function and $\eta$ is some learning rate. If we instead let $\eta = t^{(i + 1)} - t^{(i)} = \Delta t$, we get
+
+$$x_{t^{(i + 1)}} = x_{t^{(i)}} - \nabla f (x_{t^{(i)}}) \Delta t$$
+
+which is indeed the recurrence relation of Euler's method for the differential equation
+
+$$x' = -\nabla f(x)$$
+
+The classic momentum update rule described by Polyak is given by
+
+$$p_{t^{(i)}} = (1 - \beta)p_{t^{(i - 1)}} - \beta\nabla f(x_{t^{(i)}})$$
+
+$$x_{t^{(i + 1)}} = x_{t^{(i)}} + \beta \cdot p_{t^{(i)}}$$
+
+where $\beta$ is the size of the timestep.
+
+We may see that this is just a discretization of the following second order system of differential equations:
+
+$$p' = -p - \nabla f(x)$$
+$$x' = p$$
+
+To see that these do indeed map to the discrete versions, we can use [[https://en.wikipedia.org/wiki/Finite_difference][finite differences]]:
+
+$$x' \approx \dfrac{x_{t^{(i)}} - x_{t^{(i - 1)}}}{\beta}$$
+
+$$x'' \approx \dfrac{x_{t^{(i + 1)}} - 2x_{t^{(i)}} + x_{t^{(i - 1)}}}{\beta^2}$$
+
+Then since $p = x'$, we get:
+
+$$\dfrac{x_{t^{(i + 1)}} - 2x_{t^{(i)}} + x_{t^{(i - 1)}}}{\beta^2} = -\dfrac{x_{t^{(i)}} - x_{t^{(i - 1)}}}{\beta} - \nabla f(x_{t^{(i)}})$$
+
+$$\iff x_{t^{(i + 1)}} - 2x_{t^{(i)}} + x_{t^{(i - 1)}} = -\beta (x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
+
+$$\iff x_{t^{(i + 1)}}  = 2x_{t^{(i)}} - x_{t^{(i - 1)}} -\beta (x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
+
+$$\iff x_{t^{(i + 1)}}  = x_{t^{(i)}} + x_{t^{(i)}} - x_{t^{(i - 1)}} -\beta (x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
+
+$$\iff x_{t^{(i + 1)}}  = x_{t^{(i)}} + (1 - \beta)(x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
+
+Since $p_{t^{(i)}} = (1 - \beta)p_{t^{(i - 1)}} - \beta\nabla f(x_{t^{(i)}})$ in our discretization, we need to show that
+
+$$\beta((1 - \beta)p_{t^{(i - 1)}} - \beta\nabla f(x_{t^{(i)}})) = (1 - \beta)(x_{t^{(i)}} - x_{t^{(i - 1)}}) - \beta^2 \nabla f(x_{t^{(i)}})$$
+
+Which trivially boils down to showing
+
+$$\beta(1 - \beta)p_{t^{(i - 1)}} = (1 - \beta)(x_{t^{(i)}} - x_{t^{(i - 1)}})$$
+
+Since $p = x'$, this is true by the first order approximation. 
+
+Of course, just because the approximation is correct doesn't mean that the trajectory is of any use. It must be shown that $x(t)$ converges a stationary point of the loss function $f$. 
+
+* Hamiltonian Dynamics
+
+The paper entitled [[https://arxiv.org/abs/1809.05042]["Hamiltonian Descent Methods"]] by Maddison et al. notes that this system mirrors a Hamiltonian dynamics system from physics, which is typically stated as
+
+$$x'_t = \nabla_p \mathcal{H}(x_t, p_t) = \nabla k(p_t)$$
+
+$$p'_t = -\nabla_x \mathcal{H}(x_t, p_t) = -\nabla f(x)$$
+
+where $\mathcal{H}(x_t, p_t)$ is the total energy in the system as a function of the position and momentum, $k$ is the kinetic energy as a function of the momentum, and $f$ is the potential energy as a function of the position. If we let $k(p_t) = \langle p_t, p_t \rangle / 2$, the equations are nearly identical to the previously continuous time version of th e momentum optimizer, with the caveat that the the second differential equation from the previous section also has the term $-p$, which the paper talks about as a "disspiation field" of the form $p'_t = -\gamma \cdot p_t$, thus giving us a final field $(x'_t, p'_t) = F(x_t, p_t) + G(x_t, p_t)$ where $F$ is the Hamiltonian field $(\nabla k (p_t), -\nabla f(x))$ and $G$ is the dissipation field $(0, -\gamma \cdot p_t)$. The paper calls this a "conformal" Hamiltonian field/system. It also allows for a notion of a more general conformal Hamiltonian system, where $k$ is allowed to be an arbitrary nonnegative convex function with $k(0) = 0$ and $\gamma > 0$. 
+
+This poses the problem of optimization as a problem of computing the trajectory of a particle $x$ placed in a force field defined by the loss function $f$ starting at some position $x_0$ with some velocity $p_0$, where there also exists a dissipation force that scales with the particle's velocity and makes it an important factor in deciding where the particle will go next. The solutions to the system of differential equations remains in the set $\{(x, p)  : \mathcal{H}(x, p) = H_0\}$ for conservative forces $\nabla f$. However, when we add a disspitation force, such as the one defined by the momentum term in our optimizer, the total energy of the system decreases over time. 
+
+A result from this paper is that given sufficiently nice conditions to the system, there exists a unique solution $(x_t, p_t)$ given initial conditions $(x_0, p_0)$ and that the position function $x$ converges to a stationary point of $f$.
+
+** Conditions
+The specific conditions for existence are as follows:
+
+- $k$ is nonnegative and convex with $k(0) = 0$ (I stated this above as the domain of functions that $k$ can be chosen from).
+
+- $\nabla f$ and $\nabla k$ are continuous. 
+
+- $\mathcal{H}$ is /radially unbounded/: $\mathcal{H}(x, p) \to \infty$ as $||(x, p)||_{2} \to \infty$. This notation is a little unclear to me. The best guess I can make is that for any $\epsilon > 0$, there exists $\delta > 0$ such that for all $(x, p)$, $||(x, p)||_2 > \delta \implies \mathcal{H}(x, p) > \epsilon$.
+
+For uniquness, the additional condition that $\nabla f$ and $\nabla k$ are continuously differentiable is imposed.
+
+For convergence to a stationary point of $f$, given a solution $(x_t, p_t)$ to the system with initial conditions $(x_0, p_0) = (x, p)$, the following conditions are imposed:
+
+- $f$ and $k$ are continuously differentiable
+- $k$ is strictly convex with a minimum $k(0) = 0$
+- $\mathcal{H}$ is radially unbounded
+- $f$ is bounded bel, though it might not be so useful for those that are only really familiar with the mathematics of it. 
+
+Given the above conditions, the paper shows that $||\nabla f(x_t)||_2 \to 0$.
+
+Looking at this optimization problem from a physics perspective is perhaps insightful for people who have a strong understanding of and intuition for physics, though it might not be so useful for those that are only really familiar with the mathematics of it. 

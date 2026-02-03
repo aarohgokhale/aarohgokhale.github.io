@@ -2,7 +2,7 @@
 title: "Neural ODEs"
 date: 2026-02-03T09:33:00-06:00
 showtoc: true
-summary: Neural ODEs are a relatively niche deep learning architecture designed to represent continuous-time differential processes. In this post, I provide an introduction to the basics of Neural ODEs and a simple application to demonstrate their use case. 
+summary: Neural ODEs are a relatively niche deep learning architecture designed to represent continuous-time differential processes. In this post, I provide an introduction to the basics of Neural ODEs and two simple applications to demonstrate their use. 
 ---
 
 All code for the demos can be found at https://github.com/gokhaleaaroh/NeuralODE-experiments/

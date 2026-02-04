@@ -8,6 +8,11 @@ summary: Neural ODEs are a relatively niche deep learning architecture designed 
 All code for the demos can be found at https://github.com/gokhaleaaroh/NeuralODE-experiments/
 
 * Introduction
+Is it possible to learn a continuous representation of ordered data? Many temporal models such as RNNs and transformers are typically formulated on discrete steps, where the model state is updated at fixed sequence positions or fixed time intervals. Neural ODEs take a different approach: they aim to represent evolution in continuous time by learning a dynamics function rather than a discrete update rule. Neural ODEs learn a derivative field $\dot{x} = f_{\theta}(x,t)$ whose integral traces the observed trajectories. Training then amounts to integrating the learned dynamics and matching the result against trajectory samples.
+
+In this article, we’ll cover the basic design of neural ODEs, including approaches to computing their gradient with respect to their parameterization, and walk through two simple applications: learning the dynamics of a Van der Pol oscillator and training a continuous normalizing flow to match a 2D spiral distribution.
+
+* Basics
 Neural networks are capable of learning complex, nonlinear functions between high-dimensional spaces through empirical risk minimization. Often, neural networks are designed to be of the form of a long sequence of differentiable transformations that progressively increase the expressive power of the network. Certain neural networks are defined by /adding/ to an existing hidden state rather than applying a transformation to it directly:
 
 $$\mathbf{h}_{t + 1} = \mathbf{h}_t + f(\mathbf{h}_t, \boldsymbol{\theta}_t)$$

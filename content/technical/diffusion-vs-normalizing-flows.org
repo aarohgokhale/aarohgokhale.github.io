@@ -1,0 +1,112 @@
+---
+title: "Generative Modeling: Diffusion vs Normalizing Flows"
+date: 2026-02-15T21:49:58-06:00
+showtoc: true
+summary: Generative modeling has become an important aspect of modern machine learning and artificial intelligence. Diffusion and Flows are two ways of solving the challenge of synthetic data generation, but they go about it in starkly different ways. Diffusion has come to dominate the field of audio-visual media generation, but flows have their own strengths. In this article, I explore the difference between these models, demonstrate that difference through a small experiment, and discuss some promising recent developments in the use of flows for media generation tasks. 
+---
+
+All code for experiments can be found at [[https://github.com/gokhaleaaroh/diffusion-vs-flows/]]
+
+* Introduction
+Last week I talked about [[/technical/neural-odes/][neural ODEs and some of their applications]]. One of these applications was to use neural ODEs for generative modeling, and more specifically for implementing a continuous-time variant of normalizing flows. This week, I will be exploring normalizing flows in further depth and comparing them to the current heavyweight in generative modeling, diffusion models.
+
+* What is Generative Modeling? 
+For those unfamiliar with the term and for those that need a quick refresher, generative modeling is the field of machine learning that seeks to design and train models that are capable of learning an unknown data distribution from samples, with the goal of producing new samples that look like they come from the original distribution. More concretely, suppose we have samples $x \in \mathcal{X}$ drawn from some underlying distribution $p$. We train a model distribution $q_{\theta}$ that minimizes some notion of discrepancy from $p$, e.g. [[https://en.wikipedia.org/wiki/Kullback-Leibler_divergence][Kullback–Leibler divergence]]. We usually require $q_{\theta}$ to provide a tractable mechanism for producing fresh samples that follow this learned distribution. 
+
+* Normalizing Flows
+Normalizing flows were developed to model complex probability distributions while allowing for tractable evaluation of exact likelihood. The key trick used to achieve this is to start with a simple probability distribution with a known exact likelihood, such as the standard normal distribution, and then to morph it with learnable transformations that are differentiable, invertible, and whose inverses are differentiable, known otherwise as /diffeomorphisms/. Since the composition of diffeomorphisms is a diffeomorphism, we only need to ensure that each layer in the overall transformation is a diffeomorphism.  
+
+To evaluate the likelihood of a sample in the transformed distribution, we first invert it to find its origin in the source distribution, compute the likelihood in the source, and then use the Jacobian determinant of the inverse of the transformation to compute how the density expands or contracts, yielding the following formula:
+
+$$\log p(x) = \log p(z) + \log{\left | \det D_{x}f^{-1}(x) \right |}$$
+
+where $z$ is the point in the source distribution that maps to the sample $x$ in the transformed distribution under the learned map $f$. This formula is derived by applying the chain rule to a composition of probability densities. It is the the same idea as the change-of-variables constant from multivariable calculus. Though the Jacobian determinant is usually multiplied, we see an addition here due to fact that $\log(ab) = \log a + \log b$. The map $f$ is defined as the composition of the series of transformations that take the simple source distribution to the desired target distribution, and can parameterized by a neural network. As discussed in my previous article, if all the layers taken on the form $x_{t} = x_{t - 1} + f_{t - 1}(x_{t - 1})$, we can also express the flow as a continuous-time differential equation.
+
+For a more detailed survey of normalizing flows, the reader may refer to [[https://ieeexplore.ieee.org/document/9089305]["Normalizing Flows: An Introduction and Review of Current Methods"]] by Kobyzev et al.
+
+* Diffusion Models
+Diffusion models are a class of generative models that learn how to model a data distribution by successively adding noise to sample data and then learning how to "denoise" the result to reconstruct the original sample. In their popular formulation, the step that adds noise is isn't invertible, making exact likelihood computation difficult. In contrast, normalizing flows are explicitly designed with the goal of exact likelihood computation in mind. A common formulation of diffusion models is /Denoising Diffusion Probabilistic Models/ (DDPMs). In DDPMs, the idea of successively adding noise and then learnig how to successively denoise is formally modeled with two [[https://en.wikipedia.org/wiki/Markov_chain][Markov chains]], one going forward in time, and the other going backward. The forward Markov chain is fixed and models the process of adding noise over time, with the transition function being defined as a distribution $q(\mathbf{x}_t \mid \mathbf{x}_{t - 1})$, typically defined by
+
+$$q(\mathbf{x}_t \mid \mathbf{x}_{t - 1}) = \mathcal{N}(\mathbf{x}_t; \sqrt{1 - \beta_t}\mathbf{x}_{t - 1}, \beta_t I)$$
+
+which is the Gaussian distribution centered at $\sqrt{1 - \beta_t} \mathbf{x}_{t - 1}$ with covariance $\beta_t I$, where $\beta_t \in (0, 1)$ is a hyperparameter. The backward Markov chain is composed of learnable neural networks that learn how to transition backward in time, defined typically as
+
+$$p_{\theta}(\mathbf{x}_{t - 1} | \mathbf{x}_t) = \mathcal{N}(\mathbf{x}_{t - 1} \mid \mu_{\theta}(\mathbf{x}_t, t), \Sigma_{\theta}(\mathbf{x}_t, t))$$
+
+where $\mu_{\theta}$ and $\Sigma_{\theta}$ are parameterized by neural networks. These are trained to ensure that the joint probability distribution of the forward chain closely matches the joint probability distribution of the reverse chain. Once the model has been trained, generating a new sample involves generating a noisy sample, typically Gaussian, and then passing it through the reverse Markov chain to reconstruct a sample from the learned distribution.
+
+Readers interested in understanding diffusion models in further depth may refer to [[https://dl.acm.org/doi/full/10.1145/3626235]["Diffusion Models: A Comprehensive Survey of Methods and Applications"]] by Yang et al.
+
+* Which one should I use? 
+On the surface, we can see that both models give us a practical way to generate new samples that "look like" the samples from our data. Why should someone choose one model over the other? In their most common formulations, the clearest difference between these models is that normalizing flows allow you to easily compute an /exact/ likelihood for any given sample, whereas diffusion models don't. In a situtation where you would want to compute exact likelihoods, normalizing flows seem to be the way to go. Why, then, do we see such a dominance of diffusion models in the modern generative AI?
+
+There are a few key advantanges that diffusion models have over normalizing flows that make them well suited for high-dimensional generative tasks such as image, video, and audio generation:
+
+- *Jacobian Computation*: Normalizing flow models require computing the Jacobian of the neural network with respect to the full input. Naively, this means that the higher the dimension of your sample space is, the more work needs to be done by the autodifferentiation software to compute this value. While there are model design choices that minimize this cost, they serve to constrain the model. On the other hand, inversion in diffusion models is posed as a reverse time Markov chain where each transition is determined by a mean vector and a covariance matrix, parameterized by the network. The only gradients that need to be computed during training are with respect to network parameters, /not/ with respect to the full input.
+
+
+- *Flexibility*: Normalizing flows inherently constrain the kinds of neural architectures that can be used to build them. Any function used to construct a normalizing flow must be differentiable and invertible (with a differentiable inverse). Diffusion models are significantly more flexible in architecture choice. They allow swapping in countless state-of-the-art architectures (including transformers) for predicting the backward transitions.
+
+
+- *Sample Quality*: Another area where diffusion models win out is /sample quality/. Sample quality is a measure of how realistic and diverse the sample generation is. While sample quality can be measured through human evaluation, it is often measured more objectively with scores such as the Fréchet Inception Distance (FID). Papers consistently find relatively poor FID scores for flows when compared to diffusion models. [3][4][5][6]
+
+* Experiments
+In order to get a hands-on feel for the differences in these two models, I decided to train them for the same image generation task and examine the results visually and empirically with the FID score. I chose to train the models on the [[https://huggingface.co/datasets/huggan/AFHQ][AFHQ]] dataset, which is a large collection of face pictures of dogs, cats, and miscellaneous wild animals.
+
+** Model Choice and Results
+For the diffusion model, I used a small implementation of the [[https://link.springer.com/chapter/10.1007/978-3-319-24574-4_28][U-Net]] architecture with MSE loss, and for normalizing flows I used a version of the [[https://openreview.net/forum?id=HkpbnH9lx][Real NVP]] architecture (the original paper has promising generative results) with negative log-likelihood loss. I measured the FID score for both models using the =cleanfid= python library. Initially, I got really poor results on the normalizing flows model, with the resulting sampling being essentially complete noise. After some iteration and back-and-forth with LLMs, I was able to get a final version that showed some promising results. Both models were trained using NVIDIA A100 GPUs with 40GB of memory on a Google Colab Python 3 kernel. They were trained for the same number of iterations and the same training data. The iteration speed for training was also roughly the same, with about 1.11 iterations per second. With the final state of the models, the diffusion model achieved a FID score of roughly 330, and the flow achieved a FID score of roughly 336 (a lower score is better). It could be the case that due to the limited model and dataset size, it isn't as easy to distinguish between these two types of models. Another important note to keep in mind is that this experiment was more exploratory than definitive, and a deeper investigation would be necessary to obtain conclusive results. For example, I haven't outlined things such as parameter count or the exact model architecture, each of which would play a significant role in performance.
+
+Some of the produced images are outlined below.
+
+First, we take a look at simple generation.
+
+#+CAPTION: Image generation with diffusion
+#+attr_html: :width 800px
+[[/diffusion_generation.png]]
+
+#+CAPTION: Image generation with flows
+#+attr_html: :width 800px
+[[/flow_generation.png]]
+
+With the limited training size and the fact that the generation is unconditional, we do not expect to see any discernible animals. However, it is intuitively obvious in both figures that the images in the top row are much noisier than the images in the bottom row, which seem to be significantly more structured. 
+
+Next, we take a look at an illustrative figure that demonstrates a key difference between these two models: we take a known picture, pass it through the "noising" (or the normalizing direction for flows), and then "denoise" the result. 
+
+#+CAPTION: Noising and Denoising with Diffusion
+#+attr_html: :width 800px
+[[/diffusion_reconstruction.png]]
+
+#+CAPTION: Going Forward and Backward with Flows
+#+attr_html: :width 800px
+[[/flow_reconstruction.png]]
+
+The funny thing here, of course, is that the "denoising" step in the flow results in a perfect match for the original image. The constraint that flows be invertible ensures that no matter what image we feed into the normalizing direction of the flow model, inverting it will reconstruct that image exactly. On the other hand, the diffusion model progressively destroys information by injecting noise into the image at every step. The learned inverse operator is inexact. It learns how to /predict/ the noise, but it cannot know how to invert it exactly.
+
+* Recent Advancements in Normalizing Flows for Generative Modeling
+While diffusion models have dominated when it comes to media generation tasks in recent years, advancements in normalizing flows have shown promise. Last summer, Apple's Machine Learning Research team published a paper titled "Normalizing Flows are Capable Generative Models" (linked in an earlier section of this article), where they demonstrated state-of-the-art generative modeling capabalities with normalizing flows. In this paper, Zhai et al. show that implementing autoregressive flows with transformers significantly improves performance in image generation. With their model named /TarFlow/, the authors demonstrate state-of-the-art performance for likelihood estimation while having very promising and competitive performance on sample quality in image generation tasks. Even visually, some of the images generated by their model look quite impressive.
+
+* A Surprising Connection
+So far, we have discussed normalizing flow as generative modeling with exact likelihoods and diffusion models as generative modeling with better sampling quality and scaling. During my research for this article, I discovered that there is a surprising connection between these two that also touches on the topic for my previous article, neural ODEs. In [[https://papers.nips.cc/paper/2021/file/0a9fdbb17feb6ccb7ec405cfb85222c4-Paper.pdf]["Maximum Likelihood Training of Score-Based Diffusion Models"]] by Song et al., the authors discuss how it is possible to compute exact likelihood in a score-based diffusion model by transforming it into a continuous normalizing flow. The score-based formulation of diffusion models is at a reverse-time stochastic differential equation (SDE). Through some math that is far beyond the scope of this article, it is possible to convert the reverse-time SDE into what is called a /probability flow/ ODE, which is able to recover the marginal probability distribution of the original SDE at any time $t$. This transformation allows us to treat the continuous-time variant of diffusion as a continuous normalizing flow! This reformulation not only allows for better likelihood estimation, it also enables maximum likelihood training of the diffusion model (although that may be quite expensive).
+
+* Conclusion
+Diffusion models and normalizing flows both tackle generative modeling, but they do so in strikingly different ways. Each comes with clear trade-offs: normalizing flows choose invertibility and exact likelihood over architectural flexibility, while diffusion models choose flexibility and sample quality at the cost of information preservation. Though diffusion models have come to dominate the space of generative AI, recent research in normalizing flows suggests that they can remain competitive at modern standards. The bridge betwee normalizing flows and diffusion models through the theory of stochastic differential equations and neural ODEs is fascinating, and could be the topic of in-depth discussion for another day.
+
+* References
+[1] I. Kobyzev, S. J. D. Prince, and M. A. Brubaker, “Normalizing Flows: An Introduction and Review of Current Methods,” IEEE Transactions on Pattern Analysis and Machine Intelligence, pp. 1–1, 2020, doi: https://doi.org/10.1109/TPAMI.2020.2992934.
+
+[2] L. Yang et al., “Diffusion Models: A Comprehensive Survey of Methods and Applications,” ACM Computing Surveys, vol. 56, no. 4, pp. 1–39, Nov. 2023, doi: https://doi.org/10.1145/3626235.
+‌
+
+[3] A. Vahdat, K. Kreis, and J. Kautz, “Score-based Generative Modeling in Latent Space,” 2021. Accessed: Feb. 16, 2026. [Online]. Available: https://proceedings.nips.cc/paper/2021/file/5dca4c6b9e244d24a30b4c45601d9720-Paper.pdf
+
+[4] Q. Zhang and Y. Chen, “Diffusion Normalizing Flow,” 2021. Accessed: Feb. 16, 2026. [Online]. Available: https://proceedings.neurips.cc/paper/2021/file/876f1f9954de0aa402d91bb988d12cd4-Paper.pdf
+
+[5] S. Sajekar, “Diffusion Augmented Flows: Combining Normalizing Flows and Diffusion Models for Accurate Latent Space Mapping,” 2023. Accessed: Feb. 16, 2026. [Online]. Available: https://www.ai.uga.edu/sites/default/files/inline-files/theses/sajekar_soham_202305_ms.pdf
+
+[6] S. Zhai et al., “Normalizing Flows are Capable Generative Models,” Icml.cc, May 08, 2025. https://icml.cc/virtual/2025/poster/46564 (accessed Feb. 16, 2026).
+
+[7] O. Ronneberger, P. Fischer, and T. Brox, “U-Net: Convolutional Networks for Biomedical Image Segmentation,” Lecture Notes in Computer Science, vol. 9351, pp. 234–241, 2015, doi: https://doi.org/10.1007/978-3-319-24574-4_28.
+
+[8] L. Dinh, Jascha Sohl-Dickstein, and Samy Bengio, “Density estimation using Real NVP,” Openreview.net, Feb. 06, 2017. https://openreview.net/forum?id=HkpbnH9lx (accessed Feb. 16, 2026).
+
+[9] Y. Song, C. Durkans, I. Murray, and S. Ermon, “Maximum Likelihood Training of Score-Based Diffusion Models,” 2021. Accessed: Feb. 16, 2026. [Online]. Available: https://papers.nips.cc/paper/2021/file/0a9fdbb17feb6ccb7ec405cfb85222c4-Paper.pdf

@@ -40,8 +40,53 @@ PluralizeListTitles = false
   ShowFullTextinRSS = true
   ShowReadingTime = true
   RobotsNoIndex = false
+  defaultTheme = "light"
 
 [markup]
 [markup.goldmark]
 [markup.goldmark.renderer]
     unsafe = true
+
+
+
+[params.profileMode]
+enabled = true
+title = "Aaroh's Blog"
+subtitle = "CS Articles and Project Reports"
+imageUrl = "/me.jpg"
+imageTitle = "Da Goat"
+imageWidth = 120
+imageHeight = 120
+
+    [[params.profileMode.buttons]]
+  name = "Technical Articles"
+  url = "/technical"
+
+  [[params.profileMode.buttons]]
+  name = "Projects"
+  url = "/projects"
+
+  [[params.profileMode.buttons]]
+  name = "Music Recommendations"
+  url = "/music/"
+
+
+[[params.socialIcons]]
+name = "LinkedIn"
+url = "https://www.linkedin.com/in/aaroh-gokhale-14976b20a/"
+
+[[params.socialIcons]]
+name = "X"
+url = "https://x.com/aarohgokhale"
+
+[[params.socialIcons]]
+name = "GitHub"
+url = "https://github.com/gokhaleaaroh"
+
+[[params.socialIcons]]
+name = "Codeberg"
+url = "https://codeberg.org/aaroh"
+
+[[params.socialIcons]]
+name = "RSS"
+url = "/index.xml"

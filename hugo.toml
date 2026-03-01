@@ -10,23 +10,29 @@ PluralizeListTitles = false
     identifier = "home"
     name = "Home"
     url = "/"
-    weight = 1
+    weight = 2
 
+  [[menu.main]]
+    identifier = "search"
+    name = "Search"
+    url = "/search/"
+    weight = 1
+  
   [[menu.main]]
     identifier = "technical"
     name = "Technical"
     url = "/technical/"
-    weight = 2
+    weight = 3
 
   [[menu.main]]
     identifier = "archives"
     name = "Archive"
     url = "/archives/"
-    weight = 5
+    weight = 4
   
 
 [outputs]
-  home = ['html', 'rss']
+  home = ['html', 'rss', 'json']
   page = ['html']
   rss = ['rss']
   section = ['html', 'rss']
@@ -41,6 +47,8 @@ PluralizeListTitles = false
   ShowReadingTime = true
   RobotsNoIndex = false
   defaultTheme = "light"
+  ShowShareButtons = true
+
 
 [markup]
 [markup.goldmark]
@@ -90,3 +98,14 @@ url = "https://codeberg.org/aaroh"
 [[params.socialIcons]]
 name = "RSS"
 url = "/index.xml"
+
+[params.fuseOpts]
+isCaseSensitive = false
+includeScore = true
+shouldSort = true
+location = 0
+distance = 1_000
+threshold = 0.1
+minMatchCharLength = 0
+keys = [ "title", "permalink", "summary", "content" ]
+

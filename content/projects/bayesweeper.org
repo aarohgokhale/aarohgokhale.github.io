@@ -12,7 +12,7 @@ For those unfamiliar with [[https://en.wikipedia.org/wiki/Minesweeper_(video_gam
 
 One of the things about the Windows version of Minesweeper that has always bothered me is the existence of so-called 50-50 scenarios. Scenarios where there are two possible underlying configurations of the hidden tiles entirely consistent with *all* information revealed thus far. More generally, these are called [[https://minesweeper.fandom.com/wiki/Forced_Guess][Forced Guess]] scenarios. For example, there exist situations in common implementations of minesweeper in which not every tile is just as likely to be safe if give equal weight to all consistent configurations.The easiest illustrative example is the "Finned Box" configuration:
 
-[[/Finnedbox.webp]]
+[[/Finnedbox.png]]
 
 this configuration illustrates a scenario where we have the following valid configurations for the hidden tiles:
 

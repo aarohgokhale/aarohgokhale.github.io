@@ -1,0 +1,103 @@
+---
+title: "Bayesweeper"
+date: 2026-03-17T14:00:00-05:00
+showtoc: true
+summary: Introducing Bayesweeper A Bayesian taken on no-guess Minesweeper. Traditional no-guess Minesweeper ensures the existence of at least one deterministically mine-free tile at every point in the game. In this project, I introduce a twist on no-guess Minesweeper that maintains the non-deterministic nature of class Minesweeper while allowing a player to, in theory, always win. 
+---
+
+A prototype of Bayesweeper can be found at https://bayesweeper.vercel.app/
+
+* Introduction
+For those unfamiliar with [[https://en.wikipedia.org/wiki/Minesweeper_(video_game)][Minesweeper]], I suggest reading up on it and trying it out for yourself. Briefly, it is a game that involves uncovering hidden tiles on a rectangular board without opening any tiles that have a mine hidden underneath them. Every uncovered tile reveals a very important piece of information: the number of mines in its neighboring tiles. This number can range between 1 and 8, since any tile can have at most 8 neighboring tiles (essentially the cardinal and ordinal directions). Intelligent Minesweeper play traditionally involves uncovering tiles that are logically forced to be mine-free. In particular, the player may construct a mini-proof that having a mine under a particular tile would result in a contradiction with the information revealed thus far, thus making that tile safe to uncover.
+
+One of the things about the Windows version of Minesweeper that has always bothered me is the existence of so-called 50-50 scenarios. Scenarios where there are two possible underlying configurations of the hidden tiles entirely consistent with *all* information revealed thus far. More generally, these are called [[https://minesweeper.fandom.com/wiki/Forced_Guess][Forced Guess]] scenarios. For example, there exist situations in common implementations of minesweeper in which not every tile is just as likely to be safe if give equal weight to all consistent configurations.The easiest illustrative example is the "Finned Box" configuration:
+
+[[/Finnedbox.webp]]
+
+this configuration illustrates a scenario where we have the following valid configurations for the hidden tiles:
+
+M (empty), (empty) (empty) M
+
+M (empty), (empty) M (empty)
+
+(empty) M, M (empty) (empty)
+
+If we assume that each of the three configurations above has a $\frac{1}{3}$ chance of being the "true" state, the induced probability that any given hidden tile is a mine is uneven across the hidden tiles. For example, tiles in positions (4, 4), (5, 3), and (5, 5) (using 1-indexing) each have two configurations where they don't have an underlying mine, making it so that they each have a $\frac{1}{3}$ chance of being a mine. Meanwhile, tiles in positions (4, 3) and (5, 4) each have probability $\frac{2}{3}$ of being a mine.
+
+Forcing a guess out of the player has always felt unfair and against the spirit of a logic challenge. There are several no-guess implementations of Minesweeper available these days. These implementations make sure that at time step $t$, the resulting board is guaranteed to have at least one hidden tile that is logically guaranteed to be mine-free. Playing some of these no-guess options got me thinking: would it be possible to develop a variant of Minesweeper that preserves the existence of Forced Guess scenarios, but instead of punishing players for making Forced Guesses, rewards them for being good Bayesians?
+
+* Design
+The general idea with Bayesweeper is to reward players for making probabilistically optimal guesses, and to optionally punish them for making suboptimal guesses.
+
+** Background
+Let $X = (k, S)$ denote the state of the board, where $k$ is the total number of mines on the board, and $S$ is a matrix of dimension $m \times n$ where each cell contains the state of the corresponding tile: either "hidden" or the number of neighboring mines.  
+
+It turns out that if we start playing the game with the prior that every board state with the correct dimensions and mine count is equally likely, [[https://en.wikipedia.org/wiki/Bayes%27_theorem][Bayes' theorem]] reveals a neat posterior rule.
+
+If $x$ is a hidden tile and $S$ is the current board, we have the following statement:
+
+$$P(x \text{ is not a mine} \mid S) = \dfrac{P(S \mid x \text{ is not a mine}) \cdot P (x \text{ is not a mine})}{P(S)}$$
+
+Let $\Omega$ be the set of all possible fully revealed configurations for the fixed number of mines $k$ and the board shape $m \times n$. Then $P(S)$ is the number of those configurations that are consistent with $S$ divided by the size of $\Omega$:
+
+$$P(S) = \dfrac{|\{\omega \text{ is consistent with } S : \omega \in \Omega\}|}{|\Omega|}$$
+
+The likelihood $P(S \mid x \text{ is not a mine})$ is given by the number of states in $\Omega$ that are consistent with $S$ /and/ in which $x$ is not a mine, divided by the number of states in $\Omega$ in which $x$ is not a mine:
+
+$$P(S \mid x \text{ is not a mine}) = \dfrac{|\{\omega \text{ is consistent with } S \text{ and } x \text{ is not a mine in } \omega: \omega \in \Omega\}|}{|\{x \text{ is not a mine in } \omega : \omega \in \Omega\}|}$$
+
+Finally, the prior is
+
+$$P(x \text{ is not a mine}) = \dfrac{\{|x \text{ is not a mine in } \omega : \omega \in \Omega|\}}{|\Omega|}$$
+
+To keep symbolic manipulation concise, we define the following shorthands:
+
+- $A_x(\omega) := x \text{ is not a mine in } \omega$
+- $B_S(\omega) := \omega \text{ is consistent with } S$
+
+Then putting everything together, we get:
+
+$$P(x \text{ is not a mine} \mid S) = \dfrac{|\{A_x(\omega) \text{ and } B_S(\omega) : \omega \in \Omega\}||\{A_x(\omega) : \omega \in \Omega\}||\Omega|}{|\{A_x(\omega) : \omega \in \Omega\}||\Omega||\{B_S(\omega) : \omega \in \Omega\}|}$$
+
+cancelling out like terms, we get
+
+$$P(x \text{ is not a mine} \mid S) = \dfrac{|\{A_x(\omega) \text{ and } B_S(\omega) : \omega \in \Omega\}|}{|\{B_S(\omega) : \omega \in \Omega\}|}$$
+
+in short, the probability that the tile $x$ is not a mine, given the board state $S$, is the number of consistent configurations in which $x$ is safe divided by the total number of configurations consistent with $S$.
+
+** The Twist: Interventionist Creator
+The main twist introduced by Bayesweeper is a benevolent creator that perfectly rewards optimal play and (optionally) punishes suboptimal play. When the player starts by clicking anywhere on the board, a small, local portion of the tiles is revealed. In order to make sure that this initial state is even feasible, we can check that it is consistent with at least one global configuration. Next, for each tile, we maintain the probability that it is a safe tile given the current board state, as determined by the formula from the previous subsection. We define the set of optimal tiles $M(S)$:
+
+$$M(S) = \underset{{x \in {\text{ hidden tiles}}}}{\text{argmax}} P(x \text{ is not a mine} \mid S)$$
+
+If the player chooses a tile belonging to $M(S)$, we force the distribution to shrink by randomly sampling a configuration that is consistent with $S$ and in which $x$ is safe. That is the "perfect" reward. Suppose the player chooses a tile outside $M(S)$. We have two options:
+
+1. Harsh: the distribution immediately collapses to a configuration in which $x$ is a mine. This is a particularly difficult mode that would be extremely difficult to win. 
+
+2. Lenient: we just randomly sample a configuration for $x$ based on its computed posterior. This is a simpler mode that allows for slightly suboptimal players to still have a chance. It would be a very interesting task to train an RL agent to get good at this mode.  
+
+* The Implementation
+A fully functional prototype was created entirely with [[https://cursor.com][Cursor's]] plan mode, which can be tried now [[https://bayesweeper.vercel.app/][here]].
+
+I described the game's specification and let Cursor figure out the implementation details. I also mentioned that I wanted it to be a webapp in order to make it accessible. My biggest concern going into it was how it would resolve the complexity associated with enumeration. Naively, performing the enumeration of tiles in $M(S)$ is very expensive. The agent correctly identified this and searched the web for solutions. 
+
+The following article:  https://www.lrvideckis.com/blog/2020/07/17/minesweeper_probability.html describes a heuristically improved approach to computing the probability that a given tile is a mine. It uses clever optimization tricks including splitting by components, dynamic programming, and local deductions to come up with an algorithm that works very quickly in many cases. The agent used this algorithm along with some information from other articles to come up with an engine that could compute the necessary probabilities. 
+
+While I haven't had the time to do a deep dive into the algorithm design, it seems to be working well for toy test cases. A much deeper dive into the algorithm and all the optimizations is a potential topic for a future article. For now, in Opus we trust.
+
+The current implementation operates under the "harsh" mode described earlier, where any suboptimal move is punished by triggering a mine immediately. Adding the "lenient" mode is in the works, and will allow for a more forgiving human-friendly version of the game. There is also currently an option to display tile safety probabilities, which is essentially a "cheat" mode.
+
+[[/bayesweeper.png]]
+
+Two things to note about the current implementation:
+
+- Even with the optimizations, the game can sometimes take a long time to sample a board update. Making it more responsive in general is another direction of improvement.
+
+- It is often the case that there are no Forced Guess scenarios for the entire game. This is especially true about the smaller boards. Yet another direction to further develop the game would be to modify the sampling process to increase the likelihood of getting Forced Guess scenarios.
+
+I invite readers to play around with the code base at https://github.com/gokhaleaaroh/Bayesweeper if they would like to make improvements or adjustments to the existing prototype.
+
+* Conclusion
+The main focus of this article has been to introduce a no-guess variant of Minesweeper that requires the player to move beyond pure logic and into the realm of Bayesian statistics to achieve perfect play. While this variant of Minesweeper allows theoretical perfect play, it would be very difficult for a human to actually learn how to play it perfectly. Though my initial hopes were to create a more intellectually stimulating version of Minesweeper, I have my doubts about whether Bayesweeper would even be fun to play for humans. For now, it can exist as a fun demo and a playground for AI. 
+
+A future project idea that I am seriously considering is to train a reinforcement learning agent to play this game well. There is a good chance that an RL agent could learn how to perform quite well in the "lenient" mode, though I have my doubts regarding the "harsh" mode.

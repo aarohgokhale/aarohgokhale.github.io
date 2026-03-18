@@ -2,7 +2,7 @@
 title: "Bayesweeper"
 date: 2026-03-17T14:00:00-05:00
 showtoc: true
-summary: Introducing Bayesweeper A Bayesian taken on no-guess Minesweeper. Traditional no-guess Minesweeper ensures the existence of at least one deterministically mine-free tile at every point in the game. In this project, I introduce a twist on no-guess Minesweeper that maintains the non-deterministic nature of class Minesweeper while allowing a player to, in theory, always win. 
+summary: Introducing Bayesweeper - A Bayesian take on no-guess Minesweeper. Traditional no-guess Minesweeper ensures the existence of at least one deterministically mine-free tile at every point in the game. In this project, I introduce a twist on no-guess Minesweeper that maintains the non-deterministic nature of class Minesweeper while allowing a player to, in theory, always win. 
 ---
 
 A prototype of Bayesweeper can be found at https://bayesweeper.vercel.app/
@@ -10,7 +10,7 @@ A prototype of Bayesweeper can be found at https://bayesweeper.vercel.app/
 * Introduction
 For those unfamiliar with [[https://en.wikipedia.org/wiki/Minesweeper_(video_game)][Minesweeper]], I suggest reading up on it and trying it out for yourself. Briefly, it is a game that involves uncovering hidden tiles on a rectangular board without opening any tiles that have a mine hidden underneath them. Every uncovered tile reveals a very important piece of information: the number of mines in its neighboring tiles. This number can range between 1 and 8, since any tile can have at most 8 neighboring tiles (essentially the cardinal and ordinal directions). Intelligent Minesweeper play traditionally involves uncovering tiles that are logically forced to be mine-free. In particular, the player may construct a mini-proof that having a mine under a particular tile would result in a contradiction with the information revealed thus far, thus making that tile safe to uncover.
 
-One of the things about the Windows version of Minesweeper that has always bothered me is the existence of so-called 50-50 scenarios. Scenarios where there are two possible underlying configurations of the hidden tiles entirely consistent with *all* information revealed thus far. More generally, these are called [[https://minesweeper.fandom.com/wiki/Forced_Guess][Forced Guess]] scenarios. For example, there exist situations in common implementations of minesweeper in which not every tile is just as likely to be safe if give equal weight to all consistent configurations.The easiest illustrative example is the "Finned Box" configuration:
+One of the things about the Windows version of Minesweeper that has always bothered me is the existence of so-called 50-50 scenarios. Scenarios where there are two possible underlying configurations of the hidden tiles entirely consistent with *all* information revealed thus far. More generally, these are called [[https://minesweeper.fandom.com/wiki/Forced_Guess][Forced Guess]] scenarios. For example, there exist situations in common implementations of minesweeper in which not every tile is just as likely to be safe if we give equal weight to all consistent configurations. The easiest illustrative example is the "Finned Box" configuration:
 
 [[/Finnedbox.png]]
 

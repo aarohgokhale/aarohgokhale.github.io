@@ -48,7 +48,7 @@ $$P(S \mid x \text{ is not a mine}) = \dfrac{|\{\omega \text{ is consistent with
 
 Finally, the prior is
 
-$$P(x \text{ is not a mine}) = \dfrac{\{|x \text{ is not a mine in } \omega : \omega \in \Omega|\}}{|\Omega|}$$
+$$P(x \text{ is not a mine}) = \dfrac{|\{x \text{ is not a mine in } \omega : \omega \in \Omega\}|}{|\Omega|}$$
 
 To keep symbolic manipulation concise, we define the following shorthands:
 
